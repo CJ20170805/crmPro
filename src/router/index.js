@@ -1,0 +1,32 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+import login from '../components/login'
+import index from '../components/index'
+
+Vue.use(Router)
+// Router.beforeEach((to, from, next) => {
+//   // to and from are both route objects
+//   if (to.path === '/login') {
+//     next()
+//   } else {
+//     next({
+//       path: '/login'
+//     })
+//   }
+// })
+
+export default new Router({
+  mode: 'history',
+  routes: [
+    {
+      path: '/login',
+      name: 'login',
+      component: login
+    },
+    {
+      path: '/index',
+      name: 'index',
+      component: index
+    }
+  ]
+})
