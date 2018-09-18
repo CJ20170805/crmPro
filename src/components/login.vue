@@ -1,16 +1,54 @@
 <template>
     <div class="login-wrap">
       <div class="login-form">
-          <form action="" method="get">
-               <el-input placeholder="请选择日期" suffix-icon="el-icon-edit" v-model="input2"> </el-input>
-               <el-input placeholder="请选择日期" suffix-icon="el-icon-share" v-model="input2"> </el-input>
-               <el-button type="info" plain>登陆</el-button>
+          <div class="login-logo">
+              <img src="../assets/logo.png" alt="logo" height="180px">
+          </div>
+          <form action="a.php" method="get">
+               <el-input class="username" placeholder="请输入用户名" v-model="un" type="text" suffix-icon="el-icon-edit"> </el-input>
+               <el-input class="password" placeholder="请输入密码" v-model="pw" type="password" suffix-icon="el-icon-setting"> </el-input>
+               <el-button class="resetInput" type="info" plain @click="resetLogin">重置</el-button>
+               <el-button class="loginIn" type="info" plain @click="submitLogin">登陆</el-button>
+               <el-button type="danger" disabled v-show="loginStatus">密码错误</el-button>
           </form>
       </div>
     </div>
 </template>
 <script>
 export default {
+  data () {
+    return {
+      loginStatus: 0,
+      un: '',
+      pw: ''
+    }
+  },
+  methods: {
+    submitLogin () {
+    //   sessionStorage.setItem('aaaccc', 'bbbe123')
+    //   this.$router.push({path: '/index'})
+    //   alert(sessionStorage.getItem('aaac'))
+      let that = this
+      this.$http.get('api_login.php?un=' + this.un + '&pw=' + this.pw)
+        .then(function (res) {
+          console.log(res.data)
+          let loginCode = res.data.loginCode
+          if (loginCode === '10000') {
+            sessionStorage.setItem('loginFlag', res.data.userName)
+            that.$router.push({path: '/index'})
+          } else {
+            that.loginStatus = 1
+          }
+        }).catch(function (err) {
+          console.log(err)
+        })
+    },
+    resetLogin () {
+      alert(1)
+    }
+  },
+  created () {
+  }
 }
 </script>
 <style lang="less">
@@ -27,6 +65,22 @@ export default {
         height: 400px;
         background-color: #f4f4f4;
         margin: 12% auto 0;
+        border-radius: 6px;
+        padding:10px;
+        box-sizing: border-box;
+        .login-logo{
+            width: 100%;
+            height: 180px;
+        }
+        form{
+          input{
+              margin: 10px 0;
+          }
+          button{
+              float:right;
+              margin: 10px 6px;
+          }
+        }
     }
 }
 </style>

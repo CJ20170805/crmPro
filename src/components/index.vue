@@ -11,12 +11,12 @@
                 <el-submenu index="1">
                     <template slot="title">
                     <i class="el-icon-location"></i>
-                    <span slot="title">导航一</span>
+                    <span slot="title">员工管理</span>
                     </template>
                     <el-menu-item-group>
                     <span slot="title">分组一</span>
-                    <el-menu-item index="001" @click="switchComp('ref1')">选项1</el-menu-item>
-                    <el-menu-item index="002" @click="switchComp('ref2')">选项2</el-menu-item>
+                    <el-menu-item index="001" @click="switchComp('ref1')">员工列表</el-menu-item>
+                    <el-menu-item index="002" @click="switchComp('ref2')">员工添加</el-menu-item>
                     </el-menu-item-group>
                     <el-menu-item-group title="分组2">
                     <el-menu-item index="1-3">选项3</el-menu-item>
@@ -63,19 +63,18 @@ export default {
   methods: {
     switchComp (aa) {
       switch (aa) {
-          case 'ref1':
-            this.cName = 'headerC'  
-            break;
-          case 'ref2':  
-            this.cName = 'staffList'  
-          default:
-            break;
+        case 'ref1':
+          this.cName = 'headerC'
+          break
+        case 'ref2':
+          this.cName = 'staffList'
+          break
       }
     },
-    handleOpen(key, keyPath) {
+    handleOpen (key, keyPath) {
       console.log(key, keyPath)
     },
-    handleClose(key, keyPath) {
+    handleClose (key, keyPath) {
       console.log(key, keyPath)
     }
   }
@@ -87,4 +86,3 @@ export default {
     min-height: 400px;
   }
 </style>
-

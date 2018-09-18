@@ -3,10 +3,8 @@
         <el-container>
             <el-header>
                 <el-menu
-                    :default-active="activeIndex2"
                     class="el-menu-demo"
                     mode="horizontal"
-                    @select="handleSelect"
                     background-color="#545c64"
                     text-color="#fff"
                     active-text-color="#ffd04b">
@@ -25,6 +23,7 @@
                     </el-submenu>
                     <el-menu-item index="3" disabled>消息中心</el-menu-item>
                     <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+                    <el-button type="info" plain @click="loginOut">Login out</el-button>
             </el-menu>
         </el-header>
     </el-container>
@@ -32,6 +31,12 @@
 </template>
 <script>
 export default {
+  methods: {
+    loginOut () {
+      sessionStorage.removeItem('loginFlag')
+      location.reload()
+    }
+  }
 }
 </script>
 <style lang="less">
