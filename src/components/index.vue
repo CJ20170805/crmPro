@@ -14,7 +14,7 @@
                     <span slot="title">员工管理</span>
                     </template>
                     <el-menu-item-group>
-                    <span slot="title">分组一</span>
+                    <span slot="title">---</span>
                     <el-menu-item index="001" @click="switchComp('ref1')">员工列表</el-menu-item>
                     <el-menu-item index="002" @click="switchComp('ref2')">员工添加</el-menu-item>
                     </el-menu-item-group>
@@ -86,5 +86,17 @@ export default {
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;
+  }
+  .el-aside{
+    margin-top: 20px;
+  }
+  .el-menu-item{
+    font-size: 12px;
+  }
+  .el-submenu__title{
+    font-weight: bold;
+  }
+  .el-submenu .el-menu-item{
+    padding-left: 80px!important;
   }
 </style>

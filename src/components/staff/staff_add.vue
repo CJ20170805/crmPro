@@ -38,7 +38,7 @@
                 <tr>
                   <td class="input-name">身份证号：</td>
                     <td>
-                      <el-input class="input-fl" type="number" v-model="cardNum" placeholder="请输入身份证号码"></el-input>
+                      <el-input class="input-fl" v-model="cardNum" placeholder="请输入身份证号码"></el-input>
                     </td>
                </tr>
                <tr>
@@ -82,19 +82,25 @@
             </thead>
             <tbody>
                 <tr>
-                    <td class="input-name">现住址：</td>
+                    <td class="input-name">部门：</td>
                     <td class="input-main">
-                    <el-input class="input-fl" v-model="nowAddress" placeholder="请输入现住址"></el-input>
+                       <el-cascader
+                        :options="departmentOptions"
+                        v-model="departmentVal"
+                        ></el-cascader>
                     </td>
                </tr>
                <tr>
-                    <td class="input-name">联系电话：</td>
+                    <td class="input-name">职位：</td>
                     <td class="input-main">
-                    <el-input class="input-fl" v-model="staffPhone" placeholder="请输入联系电话"></el-input>
+                        <el-cascader
+                        :options="departmentOptions"
+                        v-model="departmentVal"
+                        ></el-cascader>
                     </td>
                </tr>
                 <tr>
-                    <td class="input-name">备用联系方式：</td>
+                    <td class="input-name">备注信息：</td>
                     <td class="input-main">
                     <el-input class="input-fl" v-model="staffPhone2" placeholder="请输入备用联系方式"></el-input>
                     </td>
@@ -102,7 +108,7 @@
                <tr>
                    <td></td>
                    <td>
-                      <el-button style="float:right" type="primary">提交录入</el-button>
+                      <el-button style="float:right" type="primary" @click="submitInfo">提交录入</el-button>
                    </td>
                </tr>
             </tbody>
@@ -121,6 +127,69 @@ export default {
       staffPhone: '',
       staffPhone2: '',
       nowAddress: '',
+      departmentVal: '',
+      departmentOptions: [
+        {
+          value: '石一',
+          label: '石一',
+          children: [
+            {
+              value: '石一家一',
+              label: '石一家一'
+            },
+            {
+              value: '石一家二',
+              label: '石一家二'
+            },
+            {
+              value: '石一家三',
+              label: '石一家三'
+            },
+            {
+              value: '石一销一',
+              label: '石一销一'
+            },
+            {
+              value: '石一销二',
+              label: '石一销二'
+            },
+            {
+              value: '石一销三',
+              label: '石一销三'
+            }
+          ]
+        },
+        {
+          value: '石二',
+          label: '石二',
+          children: [
+            {
+              value: '石二家一',
+              label: '石二家一'
+            },
+            {
+              value: '石二家二',
+              label: '石二家二'
+            },
+            {
+              value: '石二家三',
+              label: '石二家三'
+            },
+            {
+              value: '石二销一',
+              label: '石二销一'
+            },
+            {
+              value: '石二销二',
+              label: '石二销二'
+            },
+            {
+              value: '石二销三',
+              label: '石二销三'
+            }
+          ]
+        }
+      ],
       pickerOptions1: {
         disabledDate (time) {
           return time.getTime() > Date.now()
@@ -146,6 +215,11 @@ export default {
           }
         }]
       }
+    }
+  },
+  methods: {
+    submitInfo () {
+      console.log(this.joinDate)
     }
   }
 }
