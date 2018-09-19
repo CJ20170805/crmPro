@@ -48,7 +48,8 @@
 </template>
 <script>
 import headerC from './nav/header'
-import staffList from './staff_list'
+import staffList from './staff/staff_list'
+import staffAdd from './staff/staff_add'
 export default {
   data () {
     return {
@@ -58,16 +59,17 @@ export default {
   },
   components: {
     headerC,
-    staffList
+    staffList,
+    staffAdd
   },
   methods: {
     switchComp (aa) {
       switch (aa) {
         case 'ref1':
-          this.cName = 'headerC'
+          this.cName = 'staffList'
           break
         case 'ref2':
-          this.cName = 'staffList'
+          this.cName = 'staffAdd'
           break
       }
     },

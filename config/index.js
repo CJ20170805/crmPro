@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: "http://localhost/api",
+        target: "http://localhost/crmproApi",
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
