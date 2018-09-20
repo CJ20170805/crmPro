@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '../components/login'
 import index from '../components/index'
-
+import staffAdd from '../components/staff/staff_add'
 Vue.use(Router)
 
 export default new Router({
@@ -21,6 +21,11 @@ export default new Router({
       path: '/index',
       name: 'index',
       component: index
+    },
+    {
+      path: '/staffAdd',
+      name: 'staffAdd',
+      component: staffAdd
     }
   ]
 })

@@ -57,6 +57,9 @@ export default {
       isCollapse: false
     }
   },
+  mounted () {
+    // alert(this.$store.state.toStaffList)
+  },
   components: {
     headerC,
     staffList,

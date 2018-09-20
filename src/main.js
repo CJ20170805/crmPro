@@ -6,11 +6,14 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Axios from 'axios'
+import vuex from 'vuex'
+import store from './store/store.js'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.prototype.$http = Axios
 Axios.defaults.baseURL = '/api'
+Vue.use(vuex)
 
 router.beforeEach((to, from, next) => {
   let LoginToken = sessionStorage.getItem('loginFlag')
@@ -25,6 +28,7 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>',
   render: h => h(App)

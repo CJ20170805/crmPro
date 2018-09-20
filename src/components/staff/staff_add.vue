@@ -31,6 +31,8 @@
                         type="date"
                         placeholder="选择日期"
                         class="input-fl"
+                        format="yyyy 年 MM 月 dd 日"
+                        value-format="yyyy-MM-dd"
                         :picker-options="pickerOptions1">
                         </el-date-picker>
                     </td>
@@ -240,10 +242,14 @@ export default {
     }
   },
   methods: {
+    abc () {
+      // this.$store.getters.toSfList
+    },
     submitInfo () {
-      console.log(this.jobVal)
+      console.log(this.joinDate)
       let that = this
       let formData = new FormData()
+      formData.append('st_flag', 'add')
       formData.append('st_name', this.staffName)
       formData.append('st_sex', this.staffSex)
       formData.append('st_joinDate', this.joinDate)
@@ -263,11 +269,42 @@ export default {
       this.$http.post('staff_mng.php', formData, config)
         .then(function (res) {
           console.log(res)
-          that.staffData = res.data
+          if (res.data === 'AddSuccess') {
+            that.staffData = res.data
+            that.addBox()
+          } else {
+            alert('添加失败！')
+          }
         }).catch(function (err) {
           console.log(err)
         })
+    },
+    addBox () {
+      this.$confirm('信息添加成功，是否继续添加？', '添加成功', {
+        distinguishCancelAndClose: true,
+        confirmButtonText: '查看列表',
+        cancelButtonText: '继续添加',
+        type: 'success'
+      })
+        .then(() => {
+          this.$message({
+            type: 'info',
+            message: '员工信息列表'
+          })
+          // this.$store.getters.toSfList
+        })
+        .catch(action => {
+          this.$message({
+            type: 'info',
+            message: action === 'cancel'
+              ? '继续添加员工信息'
+              : '停留在当前页面'
+          })
+        })
     }
+  },
+  mounted () {
+    // this.open6()
   }
 }
 </script>

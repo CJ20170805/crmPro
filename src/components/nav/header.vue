@@ -31,7 +31,7 @@
                 </el-submenu>
                   <li style="float:right;line-height:60px;margin-right:30px;">
                       <el-badge :value="12" class="item">
-                            <el-button size="small">通知</el-button>
+                         <el-button size="small">通知</el-button>
                       </el-badge>
                   </li>
                 </el-menu>
