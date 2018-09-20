@@ -94,15 +94,20 @@
                     <td class="input-name">职位：</td>
                     <td class="input-main">
                         <el-cascader
-                        :options="departmentOptions"
-                        v-model="departmentVal"
+                        :options="jobOptions"
+                        v-model="jobVal"
                         ></el-cascader>
                     </td>
                </tr>
                 <tr>
                     <td class="input-name">备注信息：</td>
                     <td class="input-main">
-                    <el-input class="input-fl" v-model="staffPhone2" placeholder="请输入备用联系方式"></el-input>
+                    <el-input
+                      type="textarea"
+                      :rows="3"
+                      placeholder="请输入内容"
+                      v-model="elseInfo">
+                    </el-input>
                     </td>
                </tr>
                <tr>
@@ -124,10 +129,13 @@ export default {
       birthDate: '',
       address: '',
       joinDate: '',
+      cardNum: '',
       staffPhone: '',
       staffPhone2: '',
       nowAddress: '',
-      departmentVal: '',
+      departmentVal: [],
+      jobVal: ['运营'],
+      elseInfo: '',
       departmentOptions: [
         {
           value: '石一',
@@ -190,6 +198,20 @@ export default {
           ]
         }
       ],
+      jobOptions: [
+        {
+          value: '运营',
+          label: '运营'
+        },
+        {
+          value: '销售',
+          label: '销售'
+        },
+        {
+          value: '美工',
+          label: '美工'
+        }
+      ],
       pickerOptions1: {
         disabledDate (time) {
           return time.getTime() > Date.now()
@@ -219,7 +241,32 @@ export default {
   },
   methods: {
     submitInfo () {
-      console.log(this.joinDate)
+      console.log(this.jobVal)
+      let that = this
+      let formData = new FormData()
+      formData.append('st_name', this.staffName)
+      formData.append('st_sex', this.staffSex)
+      formData.append('st_joinDate', this.joinDate)
+      formData.append('st_cardNum', this.cardNum)
+      formData.append('st_address', this.address)
+      formData.append('st_nowAddress', this.nowAddress)
+      formData.append('st_staffPhone', this.staffPhone)
+      formData.append('st_staffPhone2', this.staffPhone2)
+      formData.append('st_departmentVal', this.departmentVal)
+      formData.append('st_jobVal', this.jobVal)
+      formData.append('st_elseInfo', this.elseInfo)
+      let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      this.$http.post('staff_mng.php', formData, config)
+        .then(function (res) {
+          console.log(res)
+          that.staffData = res.data
+        }).catch(function (err) {
+          console.log(err)
+        })
     }
   }
 }

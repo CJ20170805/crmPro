@@ -36,7 +36,7 @@
       label="职位"
       >
       <template slot-scope="scope">
-        <span style="margin-left: 10px">{{ scope.row.st_sex }}</span>
+        <span style="margin-left: 10px">{{ scope.row.st_jobVal }}</span>
       </template>
     </el-table-column>
      <el-table-column
@@ -44,7 +44,7 @@
       label="任职部门"
       >
       <template slot-scope="scope">
-        <span style="margin-left: 10px">{{ scope.row.st_name }}</span>
+        <span style="margin-left: 10px">{{ scope.row.st_departmentVal }}</span>
       </template>
     </el-table-column>
     <el-table-column
@@ -52,7 +52,7 @@
       >
       <template slot-scope="scope">
         <i class="el-icon-time"></i>
-        <span style="margin-left: 10px">{{ scope.row.reg_date }}</span>
+        <span style="margin-left: 10px">{{ scope.row.joinDate }}</span>
       </template>
     </el-table-column>
     <el-table-column label="操作" width="180">
