@@ -242,9 +242,6 @@ export default {
     }
   },
   methods: {
-    abc () {
-      // this.$store.getters.toSfList
-    },
     submitInfo () {
       console.log(this.joinDate)
       let that = this
@@ -292,6 +289,7 @@ export default {
             message: '员工信息列表'
           })
           // this.$store.getters.toSfList
+          this.$store.state.defaultComp = 'staffList'
         })
         .catch(action => {
           this.$message({

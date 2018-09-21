@@ -15,8 +15,8 @@
                     </template>
                     <el-menu-item-group>
                     <span slot="title">---</span>
-                    <el-menu-item index="001" @click="switchComp('ref1')">员工列表</el-menu-item>
-                    <el-menu-item index="002" @click="switchComp('ref2')">员工添加</el-menu-item>
+                    <el-menu-item index="001" @click="switchComp('staffList')">员工列表</el-menu-item>
+                    <el-menu-item index="002" @click="switchComp('staffAdd')">员工添加</el-menu-item>
                     </el-menu-item-group>
                     <el-menu-item-group title="分组2">
                     <el-menu-item index="1-3">选项3</el-menu-item>
@@ -41,7 +41,7 @@
                 </el-menu>
             </el-aside>
             <el-main>
-                <component :is="cName" class="compon-sc"></component>
+                <component :is="this.$store.state.defaultComp" class="compon-sc"></component>
             </el-main>
         </el-container>
     </div>
@@ -67,14 +67,15 @@ export default {
   },
   methods: {
     switchComp (aa) {
-      switch (aa) {
-        case 'ref1':
-          this.cName = 'staffList'
-          break
-        case 'ref2':
-          this.cName = 'staffAdd'
-          break
-      }
+      this.$store.state.defaultComp = aa
+      // switch (aa) {
+      //   case 'ref1':
+      //     this.cName = 'staffList'
+      //     break
+      //   case 'ref2':
+      //     this.cName = this.$store.state.toStaffAdd
+      //     break
+      // }
     },
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
