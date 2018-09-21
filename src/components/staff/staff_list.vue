@@ -100,7 +100,7 @@
             class="input-fl"
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
-            :picker-options="pickerOptions1">
+            >
             </el-date-picker>
         </td>
         <td></td>
@@ -172,7 +172,7 @@ export default {
     return {
       staffData: [],
       itemData: {},
-      dialogTableVisible: true,
+      dialogTableVisible: false,
       m_name: '',
       m_sex: '',
       m_joinDate: '',
@@ -188,12 +188,12 @@ export default {
   },
   methods: {
     handleEdit (index, row) {
-      console.log(index,row)
+      console.log(index, row)
       this.itemData = row
       this.dialogTableVisible = true
       this.m_name = row.st_name
       this.m_sex = row.st_sex
-      this.m_joinDate = row.st_joinDate 
+      this.m_joinDate = row.st_joinDate
       this.m_cardNum = row.st_cardNum
       this.m_address = row.st_address
       this.m_nowAddress = row.st_nowAddress
