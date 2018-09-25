@@ -283,7 +283,7 @@ export default {
     let that = this
     this.$http.get('table_json.php?code=1')
       .then(function (res) {
-        // console.log(res.data)
+      //  console.log(res.data)
         that.staffData = res.data
       }).catch(function (err) {
         console.log(err)

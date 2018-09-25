@@ -2,6 +2,9 @@
     <div class="header">
         <el-container>
            <el-header>
+
+ <!-- 先获取当前登陆用户名  然后通过此用户名 查询数据库 获取其他相关信息 -->
+
               <el-menu :default-active="activeIndex"
                class="el-menu-demo"
                mode="horizontal"
@@ -18,9 +21,9 @@
                 <el-menu-item index="1">首页</el-menu-item>
                 <el-submenu index="2" style="float:right;" class="userInfo">
                     <template slot="title">
-                         <img src="../../assets/66b38614.jpg" alt="userLogo" width="40px" height="40px">
+                         <img :src="headerAvatar" alt="userLogo" width="40px" height="40px">
                     </template>
-                    <li style="padding:10px;color:#ffffff">当前用户:<span style="margin-left:20px">Admin</span></li>
+                    <li style="padding:10px;color:#ffffff">当前用户:<span style="margin-left:20px">{{ userName }}</span></li>
                     <el-menu-item index="2-1" @click="userInfoSet">资料设置</el-menu-item>
                     <el-submenu index="2-4">
                       <template slot="title">用户切换</template>
@@ -31,7 +34,15 @@
                 </el-submenu>
                   <li style="float:right;line-height:60px;margin-right:30px;">
                       <el-badge :value="12" class="item">
-                         <el-button size="small">通知</el-button>
+                           <el-popover
+                                placement="bottom"
+                                title="标题"
+                                width="220"
+                                trigger="click"
+                                content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+                                <el-button slot="reference">click 激活</el-button>
+                            </el-popover>
+
                       </el-badge>
                   </li>
                 </el-menu>
@@ -41,6 +52,12 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
+      headerAvatar: 'http://localhost:8080/static/img/66b38614.949ceb9.jpg',
+      userName: '3443'
+    }
+  },
   methods: {
     loginOut () {
       sessionStorage.removeItem('loginFlag')
@@ -49,6 +66,18 @@ export default {
     userInfoSet () {
       this.$store.state.defaultComp = 'userInfoSet'
     }
+  },
+  created () {
+    let that = this
+    this.$http.get('table_json.php?code=1')
+      .then(function (res) {
+        // console.log(res.data)
+        that.staffData = res.data
+      }).catch(function (err) {
+        console.log(err)
+      })
+    this.userName = this.$store.state.userName
+    // alert(this.$store.state.userName)
   }
 }
 </script>

@@ -3,7 +3,9 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
-    defaultComp: 'staffList'
+    defaultComp: 'staffList',
+    userAvatar: '',
+    userName: ''
   },
   mutations: {
     switchComp (state, cName) {

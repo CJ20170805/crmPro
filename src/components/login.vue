@@ -35,6 +35,7 @@ export default {
           let loginCode = res.data.loginCode
           if (loginCode === '10000') {
             sessionStorage.setItem('loginFlag', res.data.userName)
+            that.$store.state.userName = res.data.userName
             that.$router.push({path: '/index'})
           } else {
             that.loginStatus = 1
