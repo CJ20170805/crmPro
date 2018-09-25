@@ -21,7 +21,7 @@
                          <img src="../../assets/66b38614.jpg" alt="userLogo" width="40px" height="40px">
                     </template>
                     <li style="padding:10px;color:#ffffff">当前用户:<span style="margin-left:20px">Admin</span></li>
-                    <el-menu-item index="2-1">资料设置</el-menu-item>
+                    <el-menu-item index="2-1" @click="userInfoSet">资料设置</el-menu-item>
                     <el-submenu index="2-4">
                       <template slot="title">用户切换</template>
                         <el-menu-item index="2-4-1">user-1</el-menu-item>
@@ -45,6 +45,9 @@ export default {
     loginOut () {
       sessionStorage.removeItem('loginFlag')
       location.reload()
+    },
+    userInfoSet () {
+      this.$store.state.defaultComp = 'userInfoSet'
     }
   }
 }

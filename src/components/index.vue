@@ -50,6 +50,7 @@
 import headerC from './nav/header'
 import staffList from './staff/staff_list'
 import staffAdd from './staff/staff_add'
+import userInfoSet from './nav/userInfoSet'
 export default {
   data () {
     return {
@@ -63,7 +64,8 @@ export default {
   components: {
     headerC,
     staffList,
-    staffAdd
+    staffAdd,
+    userInfoSet
   },
   methods: {
     switchComp (aa) {

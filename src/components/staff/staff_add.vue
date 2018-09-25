@@ -128,7 +128,6 @@ export default {
     return {
       staffName: '',
       staffSex: '男',
-      birthDate: '',
       address: '',
       joinDate: '',
       cardNum: '',
@@ -298,6 +297,17 @@ export default {
               ? '继续添加员工信息'
               : '停留在当前页面'
           })
+          this.staffName = ''
+          this.staffSex = '男'
+          this.address = ''
+          // this.joinDate = '',
+          this.cardNum = ''
+          this.staffPhone = ''
+          this.staffPhone2 = ''
+          this.nowAddress = ''
+          this.departmentVal = []
+          // jobVal: ['运营'],
+          this.elseInfo = ''
         })
     }
   },

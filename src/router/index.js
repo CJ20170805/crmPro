@@ -20,7 +20,10 @@ export default new Router({
     {
       path: '/index',
       name: 'index',
-      component: index
+      component: index,
+      meta: {
+        title: 'admin'
+      }
     },
     {
       path: '/staffAdd',
