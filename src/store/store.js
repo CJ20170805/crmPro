@@ -5,7 +5,8 @@ const store = new Vuex.Store({
   state: {
     defaultComp: 'staffList',
     userAvatar: '',
-    userName: ''
+    userName: '',
+    userDepart: ''
   },
   mutations: {
     switchComp (state, cName) {

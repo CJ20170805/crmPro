@@ -3,15 +3,16 @@
     <el-row class="userInfoSet">
       <el-col :span="6">
           <div style="width:220px;padding-top:20px">
+
               <el-upload
                 class="avatar-uploader"
-                action="http://localhost:8080/api/test.php"
+                action="http://localhost:8080/api/user_avatar.php"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
                 <img v-if="imageUrl" :src="imageUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                <p>点击图片更换头像</p>
+                <p>点击更换头像</p>
               </el-upload>
 
           </div>
@@ -24,7 +25,7 @@
           <div class="passVerify">
             <el-card class="userBoxCard">
               <h2>{{ userName }}</h2>
-              <p>石一家一家二家三</p>
+              <p>{{ userDepart }}</p>
             </el-card>
             <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="passReset">
               <el-form-item label="新密码" prop="pass">
@@ -34,8 +35,8 @@
                 <el-input type="password" v-model="ruleForm2.checkPass" autocomplete="off"></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
-                <el-button @click="resetForm('ruleForm2')">重置</el-button>
+                <el-button type="primary" @click="submitForm('ruleForm2')">确认重置</el-button>
+                <el-button @click="resetForm('ruleForm2')">重新输入</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -67,7 +68,8 @@ export default {
     }
     return {
       userName: '',
-      imageUrl: 'http://localhost:8080/static/img/66b38614.949ceb9.jpg',
+      userDepart: '',
+      imageUrl: '',
       ruleForm2: {
         pass: '',
         checkPass: ''
@@ -83,8 +85,38 @@ export default {
     }
   },
   methods: {
+    updateSuc () {
+      this.$alert('密码重置成功！', '更新结果', {
+        confirmButtonText: '确定',
+        center: true
+      })
+    },
+    avatarSuc () {
+      this.$alert('头像设置成功！', '更新结果', {
+        confirmButtonText: '确定',
+        center: true
+      })
+    },
     handleAvatarSuccess (res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
+      let imgUrl = file.response
+      let that = this
+      let formdata = new FormData()
+      formdata.append('code', '300')
+      formdata.append('newImgUrl', imgUrl)
+      formdata.append('userId', this.$store.state.userId)
+      formdata.append('userName', this.$store.state.userName)
+      this.$http.post('user_info.php', formdata)
+        .then(function (res) {
+          console.log(res)
+          that.avatarSuc()
+          that.$store.state.defaultComp = 'staffList'
+          setTimeout(() => {
+            that.$store.state.defaultComp = 'userInfoSet'
+          }, 1)
+        }).catch(function (err) {
+          console.log(err)
+        })
     },
     beforeAvatarUpload (file) {
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
@@ -100,7 +132,24 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          let that = this
+          let formdata = new FormData()
+          formdata.append('code', '200')
+          formdata.append('newPass', this.ruleForm2.pass)
+          formdata.append('userId', this.$store.state.userId)
+          formdata.append('userName', this.$store.state.userName)
+          this.$http.post('user_info.php', formdata)
+            .then(function (res) {
+              console.log(res)
+              that.updateSuc()
+              that.$refs[formName].resetFields()
+              setTimeout(() => {
+                sessionStorage.removeItem('loginFlag')
+                location.reload()
+              }, 1000)
+            }).catch(function (err) {
+              console.log(err)
+            })
         } else {
           console.log('error submit!!')
           return false
@@ -113,6 +162,8 @@ export default {
   },
   created () {
     this.userName = this.$store.state.userName
+    this.userDepart = this.$store.state.userDepart
+    this.imageUrl = this.$store.state.userAvatar
   }
 }
 </script>

@@ -13,17 +13,19 @@
                 text-color="#fff"
                 active-text-color="#ffffff">
                 >
-                <li class="site-logo">后台系统</li>
+                <li class="site-logo">Admin</li>
 
                 <li class="site-btns">
                     <el-button type="primary" class="loginOutBtn" plain @click="loginOut">退出登录</el-button>
                 </li>
-                <el-menu-item index="1">首页</el-menu-item>
+                <el-menu-item index="1">
+                   首页
+                </el-menu-item>
                 <el-submenu index="2" style="float:right;" class="userInfo">
                     <template slot="title">
-                         <img :src="headerAvatar" alt="userLogo" width="40px" height="40px">
+                         <img :src="this.$store.state.userAvatar" alt="userLogo" width="40px" height="40px">
                     </template>
-                    <li style="padding:10px;color:#ffffff">当前用户:<span style="margin-left:20px">{{ userName }}</span></li>
+                    <li style="padding:10px;color:#ffffff">当前用户:<span style="margin-left:20px">{{ userLoginData.st_name }}</span></li>
                     <el-menu-item index="2-1" @click="userInfoSet">资料设置</el-menu-item>
                     <el-submenu index="2-4">
                       <template slot="title">用户切换</template>
@@ -34,6 +36,7 @@
                 </el-submenu>
                   <li style="float:right;line-height:60px;margin-right:30px;">
                       <el-badge :value="12" class="item">
+
                            <el-popover
                                 placement="bottom"
                                 title="标题"
@@ -54,8 +57,8 @@
 export default {
   data () {
     return {
-      headerAvatar: 'http://localhost:8080/static/img/66b38614.949ceb9.jpg',
-      userName: '3443'
+      userName: '3443',
+      userLoginData: ''
     }
   },
   methods: {
@@ -67,17 +70,25 @@ export default {
       this.$store.state.defaultComp = 'userInfoSet'
     }
   },
+  mounted () {
+  },
   created () {
+    let usern = sessionStorage.getItem('loginFlag')
     let that = this
-    this.$http.get('table_json.php?code=1')
+    let formdata = new FormData()
+    formdata.append('code', '100')
+    formdata.append('username', usern)
+    this.$http.post('user_info.php', formdata)
       .then(function (res) {
-        // console.log(res.data)
-        that.staffData = res.data
+        // console.log(res)
+        that.userLoginData = res.data[0]
+        that.$store.state.userName = that.userLoginData.st_name
+        that.$store.state.userId = that.userLoginData.id
+        that.$store.state.userDepart = that.userLoginData.st_departmentVal
+        that.$store.state.userAvatar = that.userLoginData.st_avatar
       }).catch(function (err) {
         console.log(err)
       })
-    this.userName = this.$store.state.userName
-    // alert(this.$store.state.userName)
   }
 }
 </script>
