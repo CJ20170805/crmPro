@@ -18,12 +18,12 @@
                 <li class="site-btns">
                     <el-button type="primary" class="loginOutBtn" plain @click="loginOut">退出登录</el-button>
                 </li>
-                <el-menu-item index="1">
+                <el-menu-item index='1' >
                    首页
                 </el-menu-item>
-                <el-submenu index="2" style="float:right;" class="userInfo">
+                <el-submenu style="float:right;" class="userInfo" index='2'>
                     <template slot="title">
-                         <img :src="this.$store.state.userAvatar" alt="userLogo" width="40px" height="40px">
+                         <img ref="usersImg" src="../../assets/hd.jpg" alt="userLogo" width="40px" height="40px">
                     </template>
                     <li style="padding:10px;color:#ffffff">当前用户:<span style="margin-left:20px">{{ userLoginData.st_name }}</span></li>
                     <el-menu-item index="2-1" @click="userInfoSet">资料设置</el-menu-item>
@@ -40,10 +40,17 @@
                            <el-popover
                                 placement="bottom"
                                 title="标题"
-                                width="220"
+                                width="320"
                                 trigger="click"
-                                content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-                                <el-button slot="reference">click 激活</el-button>
+                                >
+                                <div style="width:320px;height:200px;overflow-y:scroll;overflow-x:hidden;">
+                                  <h1>dfasfadfasdfasdgfsgsdfgsdfgsdfsd</h1>
+                                  <h1>dfasfadfasdfasdsd</h1>
+                                  <h1>dfasfadfasdfasdsd</h1>
+                                  <h1>dfasfadfasdfasdsd</h1>
+                                  <h1>dfasfadfasdfasdsd</h1>
+                                </div>
+                                <el-button slot="reference">消息</el-button>
                             </el-popover>
 
                       </el-badge>
@@ -58,7 +65,8 @@ export default {
   data () {
     return {
       userName: '3443',
-      userLoginData: ''
+      userLoginData: '',
+      activeIndex: '1'
     }
   },
   methods: {
@@ -68,6 +76,11 @@ export default {
     },
     userInfoSet () {
       this.$store.state.defaultComp = 'userInfoSet'
+    },
+    handleSelect (key, keyPath) {
+      if (key === '1') {
+        this.$store.state.defaultComp = 'homePage'
+      }
     }
   },
   mounted () {
@@ -80,12 +93,19 @@ export default {
     formdata.append('username', usern)
     this.$http.post('user_info.php', formdata)
       .then(function (res) {
-        // console.log(res)
+        console.log(res)
         that.userLoginData = res.data[0]
         that.$store.state.userName = that.userLoginData.st_name
         that.$store.state.userId = that.userLoginData.id
         that.$store.state.userDepart = that.userLoginData.st_departmentVal
-        that.$store.state.userAvatar = that.userLoginData.st_avatar
+        if (that.userLoginData.st_avatar !== '') {
+          // alert(that.userLoginData.st_avatar)
+          that.$store.state.userAvatar = that.userLoginData.st_avatar
+          that.$refs.usersImg.src = that.$store.state.userAvatar
+        }
+        // if (this.$store.state.userAvatar === '') {
+        //   this.$refs.usersImg.src = this.$store.state.userAvatar
+        // }
       }).catch(function (err) {
         console.log(err)
       })
@@ -93,6 +113,9 @@ export default {
 }
 </script>
 <style lang="less">
+.el-menu--horizontal>.el-submenu.is-active .el-submenu__title{
+  border: none!important;
+}
 .el-badge__content.is-fixed{
     top: 12px;
 }

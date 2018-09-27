@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Axios from 'axios'
 import vuex from 'vuex'
 import store from './store/store.js'
+import 'babel-polyfill'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)

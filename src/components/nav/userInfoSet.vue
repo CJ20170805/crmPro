@@ -110,10 +110,13 @@ export default {
         .then(function (res) {
           console.log(res)
           that.avatarSuc()
-          that.$store.state.defaultComp = 'staffList'
           setTimeout(() => {
-            that.$store.state.defaultComp = 'userInfoSet'
-          }, 1)
+            location.reload()
+          }, 2000)
+          // that.$store.state.defaultComp = 'staffList'
+          // setTimeout(() => {
+          //   that.$store.state.defaultComp = 'userInfoSet'
+          // }, 10)
         }).catch(function (err) {
           console.log(err)
         })

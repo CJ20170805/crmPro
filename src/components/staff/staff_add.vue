@@ -346,7 +346,9 @@ export default {
     color: #409EFF;
 }
 .el-main{
-    padding: 0;
+    padding-top: 14px;
+    height: 1000px;
+    overflow-y: scroll;
 }
 .el-row{
     margin: 20px 0;
