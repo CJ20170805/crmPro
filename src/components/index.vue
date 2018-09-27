@@ -2,29 +2,47 @@
     <div class="index-paper">
         <header-c></header-c>
         <el-container>
-            <el-aside width="200px">
+            <el-aside style="width:auto">
                 <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
                 <el-radio-button :label="false">展开</el-radio-button>
                 <el-radio-button :label="true">收起</el-radio-button>
                 </el-radio-group>
                 <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-                <el-submenu index="1">
+                <el-submenu v-if="true" index="1">
                     <template slot="title">
                     <i class="el-icon-location"></i>
                     <span slot="title">员工管理</span>
                     </template>
                     <el-menu-item-group>
-                    <span slot="title">---</span>
+                    <!-- <span slot="title">---</span> -->
                     <el-menu-item index="001" @click="switchComp('staffList')">员工列表</el-menu-item>
                     <el-menu-item index="002" @click="switchComp('staffAdd')">员工添加</el-menu-item>
                     </el-menu-item-group>
-                    <el-menu-item-group title="分组2">
+                    <!-- <el-menu-item-group title="分组2">
                     <el-menu-item index="1-3">选项3</el-menu-item>
                     </el-menu-item-group>
                     <el-submenu index="1-4">
                     <span slot="title">选项4</span>
                     <el-menu-item index="1-4-1">选项1</el-menu-item>
-                    </el-submenu>
+                    </el-submenu> -->
+                </el-submenu>
+                 <el-submenu v-if="true" index="7">
+                    <template slot="title">
+                    <i class="el-icon-document"></i>
+                    <span slot="title">下单管理</span>
+                    </template>
+                    <el-menu-item-group>
+                    <!-- <span slot="title">---</span> -->
+                    <el-menu-item index="001" @click="switchComp('orderList')">下单列表</el-menu-item>
+                    <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item>
+                    </el-menu-item-group>
+                    <!-- <el-menu-item-group title="分组2">
+                    <el-menu-item index="1-3">选项3</el-menu-item>
+                    </el-menu-item-group>
+                    <el-submenu index="1-4">
+                    <span slot="title">选项4</span>
+                    <el-menu-item index="1-4-1">选项1</el-menu-item>
+                    </el-submenu> -->
                 </el-submenu>
                 <el-menu-item index="2">
                     <i class="el-icon-menu"></i>
@@ -40,7 +58,7 @@
                 </el-menu-item>
                 </el-menu>
             </el-aside>
-            <el-main>
+            <el-main style="width">
                 <component :is="this.$store.state.defaultComp" class="compon-sc"></component>
             </el-main>
         </el-container>
@@ -50,6 +68,10 @@
 import headerC from './nav/header'
 import staffList from './staff/staff_list'
 import staffAdd from './staff/staff_add'
+import userInfoSet from './nav/userInfoSet'
+import homePage from './home/homePage'
+import orderList from './order/orderList'
+import orderAdd from './order/orderAdd'
 export default {
   data () {
     return {
@@ -63,7 +85,11 @@ export default {
   components: {
     headerC,
     staffList,
-    staffAdd
+    staffAdd,
+    userInfoSet,
+    homePage,
+    orderList,
+    orderAdd
   },
   methods: {
     switchComp (aa) {
@@ -87,6 +113,13 @@ export default {
 }
 </script>
 <style lang="less">
+  body{
+    overflow: hidden;
+  }
+  .el-main{
+    padding-top: 14px;
+    overflow: scroll;
+  }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;

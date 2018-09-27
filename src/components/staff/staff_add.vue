@@ -128,7 +128,6 @@ export default {
     return {
       staffName: '',
       staffSex: '男',
-      birthDate: '',
       address: '',
       joinDate: '',
       cardNum: '',
@@ -298,6 +297,17 @@ export default {
               ? '继续添加员工信息'
               : '停留在当前页面'
           })
+          this.staffName = ''
+          this.staffSex = '男'
+          this.address = ''
+          // this.joinDate = '',
+          this.cardNum = ''
+          this.staffPhone = ''
+          this.staffPhone2 = ''
+          this.nowAddress = ''
+          this.departmentVal = []
+          // jobVal: ['运营'],
+          this.elseInfo = ''
         })
     }
   },
@@ -309,6 +319,7 @@ export default {
 <style lang="less">
 .staff-add{
     padding: 60px;
+    height: 1200px;
     table{
         width: 600px;
         margin: 0 auto;
@@ -334,9 +345,6 @@ export default {
     font-size: 1.2em;
     font-weight: bold;
     color: #409EFF;
-}
-.el-main{
-    padding: 0;
 }
 .el-row{
     margin: 20px 0;

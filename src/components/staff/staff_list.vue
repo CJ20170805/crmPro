@@ -159,7 +159,7 @@
         <td></td>
         <td></td>
         <td>
-          <el-button type="primary">更新信息</el-button>
+          <el-button type="primary" @click="updateInfo">更新信息</el-button>
         </td>
       </tr>
     </table>
@@ -173,6 +173,7 @@ export default {
       staffData: [],
       itemData: {},
       dialogTableVisible: false,
+      m_id: '',
       m_name: '',
       m_sex: '',
       m_joinDate: '',
@@ -191,6 +192,7 @@ export default {
       console.log(index, row)
       this.itemData = row
       this.dialogTableVisible = true
+      this.m_id = row.id
       this.m_name = row.st_name
       this.m_sex = row.st_sex
       this.m_joinDate = row.st_joinDate
@@ -246,13 +248,42 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    updateInfo () {
+      let that = this
+      let formData = new FormData()
+      formData.append('st_flag', 'update')
+      formData.append('st_id', this.m_id)
+      formData.append('st_name', this.m_name)
+      formData.append('st_sex', this.m_sex)
+      formData.append('st_joinDate', this.m_joinDate)
+      formData.append('st_cardNum', this.m_cardNum)
+      formData.append('st_address', this.m_address)
+      formData.append('st_nowAddress', this.m_nowAddress)
+      formData.append('st_staffPhone', this.m_staffPhone)
+      formData.append('st_staffPhone2', this.m_staffPhone2)
+      formData.append('st_departmentVal', this.m_deparmentVal)
+      formData.append('st_jobVal', this.m_jobVal)
+      formData.append('st_elseInfo', this.m_elseInfo)
+
+      this.$http.post('staff_mng.php', formData)
+        .then(function (res) {
+          console.log(res.data)
+          that.dialogTableVisible = false
+          that.$store.state.defaultComp = 'staffAdd'
+          setTimeout(() => {
+            that.$store.state.defaultComp = 'staffList'
+          }, 10)
+        }).catch(function (err) {
+          console.log(err)
+        })
     }
   },
   created () {
     let that = this
     this.$http.get('table_json.php?code=1')
       .then(function (res) {
-        // console.log(res.data)
+      //  console.log(res.data)
         that.staffData = res.data
       }).catch(function (err) {
         console.log(err)

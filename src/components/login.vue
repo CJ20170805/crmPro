@@ -4,7 +4,7 @@
           <div class="login-logo">
               <img src="../assets/logo.png" alt="logo" height="180px">
           </div>
-          <form action="a.php" method="get">
+          <form>
                <el-input class="username" placeholder="请输入用户名" v-model="un" type="text" suffix-icon="el-icon-edit"> </el-input>
                <el-input class="password" placeholder="请输入密码" v-model="pw" type="password" suffix-icon="el-icon-setting"> </el-input>
                <el-button class="resetInput" type="info" plain @click="resetLogin">重置</el-button>
@@ -29,7 +29,7 @@ export default {
     //   this.$router.push({path: '/index'})
     //   alert(sessionStorage.getItem('aaac'))
       let that = this
-      this.$http.get('api_login.php?un=' + this.un + '&pw=' + this.pw)
+      this.$http.get('/api_login.php?un=' + this.un + '&pw=' + this.pw)
         .then(function (res) {
           console.log(res.data)
           let loginCode = res.data.loginCode

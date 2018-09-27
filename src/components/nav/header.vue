@@ -2,6 +2,9 @@
     <div class="header">
         <el-container>
            <el-header>
+
+ <!-- 先获取当前登陆用户名  然后通过此用户名 查询数据库 获取其他相关信息 -->
+
               <el-menu :default-active="activeIndex"
                class="el-menu-demo"
                mode="horizontal"
@@ -10,18 +13,20 @@
                 text-color="#fff"
                 active-text-color="#ffffff">
                 >
-                <li class="site-logo">后台系统</li>
+                <li class="site-logo">Admin</li>
 
                 <li class="site-btns">
                     <el-button type="primary" class="loginOutBtn" plain @click="loginOut">退出登录</el-button>
                 </li>
-                <el-menu-item index="1">首页</el-menu-item>
-                <el-submenu index="2" style="float:right;" class="userInfo">
+                <el-menu-item index='1' >
+                   首页
+                </el-menu-item>
+                <el-submenu style="float:right;" class="userInfo" index='2'>
                     <template slot="title">
-                         <img src="../../assets/66b38614.jpg" alt="userLogo" width="40px" height="40px">
+                         <img ref="usersImg" src="../../assets/hd.jpg" alt="userLogo" width="40px" height="40px">
                     </template>
-                    <li style="padding:10px;color:#ffffff">当前用户:<span style="margin-left:20px">Admin</span></li>
-                    <el-menu-item index="2-1">资料设置</el-menu-item>
+                    <li style="padding:10px;color:#ffffff">当前用户:<span style="margin-left:20px">{{ userLoginData.st_name }}</span></li>
+                    <el-menu-item index="2-1" @click="userInfoSet">资料设置</el-menu-item>
                     <el-submenu index="2-4">
                       <template slot="title">用户切换</template>
                         <el-menu-item index="2-4-1">user-1</el-menu-item>
@@ -31,7 +36,23 @@
                 </el-submenu>
                   <li style="float:right;line-height:60px;margin-right:30px;">
                       <el-badge :value="12" class="item">
-                         <el-button size="small">通知</el-button>
+
+                           <el-popover
+                                placement="bottom"
+                                title="标题"
+                                width="320"
+                                trigger="click"
+                                >
+                                <div style="width:320px;height:200px;overflow-y:scroll;overflow-x:hidden;">
+                                  <h1>dfasfadfasdfasdgfsgsdfgsdfgsdfsd</h1>
+                                  <h1>dfasfadfasdfasdsd</h1>
+                                  <h1>dfasfadfasdfasdsd</h1>
+                                  <h1>dfasfadfasdfasdsd</h1>
+                                  <h1>dfasfadfasdfasdsd</h1>
+                                </div>
+                                <el-button slot="reference">消息</el-button>
+                            </el-popover>
+
                       </el-badge>
                   </li>
                 </el-menu>
@@ -41,15 +62,60 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
+      userName: '3443',
+      userLoginData: '',
+      activeIndex: '1'
+    }
+  },
   methods: {
     loginOut () {
       sessionStorage.removeItem('loginFlag')
       location.reload()
+    },
+    userInfoSet () {
+      this.$store.state.defaultComp = 'userInfoSet'
+    },
+    handleSelect (key, keyPath) {
+      if (key === '1') {
+        this.$store.state.defaultComp = 'homePage'
+      }
     }
+  },
+  mounted () {
+  },
+  created () {
+    let usern = sessionStorage.getItem('loginFlag')
+    let that = this
+    let formdata = new FormData()
+    formdata.append('code', '100')
+    formdata.append('username', usern)
+    this.$http.post('user_info.php', formdata)
+      .then(function (res) {
+        console.log(res)
+        that.userLoginData = res.data[0]
+        that.$store.state.userName = that.userLoginData.st_name
+        that.$store.state.userId = that.userLoginData.id
+        that.$store.state.userDepart = that.userLoginData.st_departmentVal
+        if (that.userLoginData.st_avatar !== null) {
+          // alert(that.userLoginData.st_avatar)
+          that.$store.state.userAvatar = that.userLoginData.st_avatar
+          that.$refs.usersImg.src = that.$store.state.userAvatar
+        }
+        // if (this.$store.state.userAvatar === '') {
+        //   this.$refs.usersImg.src = this.$store.state.userAvatar
+        // }
+      }).catch(function (err) {
+        console.log(err)
+      })
   }
 }
 </script>
 <style lang="less">
+.el-menu--horizontal>.el-submenu.is-active .el-submenu__title{
+  border: none!important;
+}
 .el-badge__content.is-fixed{
     top: 12px;
 }
