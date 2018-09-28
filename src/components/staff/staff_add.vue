@@ -318,27 +318,26 @@ export default {
 </script>
 <style lang="less">
 .staff-add{
-    padding: 60px;
-    height: 1200px;
-    table{
-        width: 600px;
-        margin: 0 auto;
-        tr{
-            td{
-                padding: 10px;
-            }
-            .input-name{
-                float:right;
-                line-height:40px;
-            }
-            .input-fl{
-                float: left;
-            }
-            .input-size-100{
-                width: 100px;
-            }
-        }
-    }
+  padding: 60px;
+  table{
+      width: 600px;
+      margin: 0 auto;
+      tr{
+          td{
+              padding: 10px;
+          }
+          .input-name{
+              float:right;
+              line-height:40px;
+          }
+          .input-fl{
+              float: left;
+          }
+          .input-size-100{
+              width: 100px;
+          }
+      }
+  }
 }
 .staff-title{
     text-align: left;

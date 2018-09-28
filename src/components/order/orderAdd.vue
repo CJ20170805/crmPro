@@ -1,72 +1,109 @@
 <template>
   <div class="order-add">
     <div class="order-main">
-       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-  <el-form-item label="活动名称" prop="name">
-    <el-input v-model="ruleForm.name"></el-input>
-  </el-form-item>
-  <el-form-item label="活动区域" prop="region">
-    <el-col :span="10">
-        <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-        <el-option label="区域一" value="shanghai"></el-option>
-        <el-option label="区域二" value="beijing"></el-option>
-        </el-select>
-    </el-col>
-  </el-form-item>
-  <el-form-item label="活动时间" required>
-    <el-col :span="11">
-      <el-form-item prop="date1">
-        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
-      </el-form-item>
-    </el-col>
-    <el-col class="line" :span="2">-</el-col>
-    <el-col :span="11">
-      <el-form-item prop="date2">
-        <el-time-picker type="fixed-time" placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
-      </el-form-item>
-    </el-col>
-  </el-form-item>
-  <el-form-item label="即时配送" prop="delivery">
-    <el-col :span="3">
-        <el-switch v-model="ruleForm.delivery"></el-switch>
-    </el-col>
-  </el-form-item>
-  <el-form-item label="活动性质" prop="type">
-    <el-col :span="24">
-         <el-checkbox-group v-model="ruleForm.type">
-      <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-      <el-checkbox label="地推活动" name="type"></el-checkbox>
-      <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-      <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-    </el-checkbox-group>
-    </el-col>
-  </el-form-item>
-  <el-form-item label="特殊资源" prop="resource">
-    <el-radio-group v-model="ruleForm.resource">
-      <el-radio label="线上品牌商赞助"></el-radio>
-      <el-radio label="线下场地免费"></el-radio>
-    </el-radio-group>
-  </el-form-item>
-  <el-form-item label="活动形式" prop="desc">
-    <el-input type="textarea" v-model="ruleForm.desc"></el-input>
-  </el-form-item>
-  <el-form-item label="添加图片">
-    <el-upload
-      action="http://localhost:8080/api/order_img.php"
-      list-type="picture-card"
-      :on-preview="handlePictureCardPreview"
-      :on-remove="handleRemove">
-      <i class="el-icon-plus"></i>
-    </el-upload>
-    <el-dialog :visible.sync="dialogVisible">
-      <img width="100%" :src="dialogImageUrl" alt="">
-    </el-dialog>
-  </el-form-item>
-  <el-form-item>
-    <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-    <el-button @click="resetForm('ruleForm')">重置</el-button>
-  </el-form-item>
-</el-form>
+       <el-form :model="shop" :rules="rules" ref="shop" label-width="100px">
+        <div class="form-title">
+          <p>店铺信息</p>
+        </div>
+        <el-form-item label="店铺名称" prop="name">
+          <el-input v-model="shop.name"></el-input>
+        </el-form-item>
+        <el-form-item label="店铺链接" prop="url">
+          <el-input v-model="shop.url"></el-input>
+        </el-form-item>
+        <el-form-item label="店铺ID" prop="id">
+          <el-input v-model="shop.id"></el-input>
+        </el-form-item>
+        <el-form-item label="店铺类型">
+             <el-col :span="24">
+              <el-radio-group v-model="shop.type">
+                <el-radio label="天猫店铺"></el-radio>
+                <el-radio label="淘宝店铺"></el-radio>
+                <el-radio label="京东店铺"></el-radio>
+                <el-radio label="拼多多店铺"></el-radio>
+              </el-radio-group>
+            </el-col>
+        </el-form-item>
+
+        <el-form-item label="联系人" prop="linkMan">
+          <el-input v-model="shop.linkMan"></el-input>
+        </el-form-item>
+
+        <el-form-item label="联系方式" prop="linkMethods">
+          <!-- <el-input v-model="shop.linkMethods"></el-input> -->
+           <el-input placeholder="请输入内容" v-model="shop.linkMethods" class="input-with-select">
+            <el-select style="width:100px;" v-model="shop.linkMethodsSel" slot="prepend" placeholder="请选择">
+              <el-option label="手机" value="手机"></el-option>
+              <el-option label="微信" value="微信"></el-option>
+              <el-option label="QQ" value="QQ"></el-option>
+              <el-option label="旺旺" value="旺旺"></el-option>
+            </el-select>
+          </el-input>
+        </el-form-item>
+        <div class="form-title">
+          <p>订单信息</p>
+        </div>
+        <el-form-item label="订购套餐" prop="region">
+          <el-col :span="9">
+              <el-select v-model="comboInfo" placeholder="请选择已订购的套餐">
+                <el-option label="套餐一" value="shanghai"></el-option>
+                <el-option label="套餐二" value="beijing"></el-option>
+              </el-select>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="付款金额" prop="payPrice">
+          <el-col :span="9">
+            <el-input v-model="shop.payPrice" suffix-icon="el-icon-sold-out"></el-input>
+          </el-col>
+        </el-form-item>
+        <!-- <el-form-item label="联系人" prop="linkMan">
+          <el-input v-model="shop.linkMan"></el-input>
+        </el-form-item> -->
+        <el-form-item label="服务时间" required>
+          <el-col :span="11">
+            <el-date-picker
+              v-model="shop.timeLimit"
+              type="daterange"
+              align="right"
+              unlink-panels
+              range-separator="至"
+              start-placeholder="开始日期"
+              value-format="yyyy-MM-dd"
+              end-placeholder="结束日期"
+              :picker-options="servTimeLimit">
+            </el-date-picker>
+          </el-col>
+        </el-form-item>
+
+        <el-form-item label="备注信息">
+          <el-input type="textarea" v-model="descInfo"></el-input>
+        </el-form-item>
+
+        <el-form-item label="添加图片">
+          <el-upload
+            action="http://localhost:8080/api/order_img.php"
+            list-type="picture-card"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
+        </el-form-item>
+
+        <!-- <el-form-item label="即时配送" prop="delivery">
+          <el-col :span="3">
+              <el-switch v-model="shop.delivery"></el-switch>
+          </el-col>
+        </el-form-item> -->
+
+        <el-form-item>
+          <el-button type="primary" @click="alertVal">AAAA</el-button>
+          <el-button type="primary" @click="submitForm('shop')">立即创建</el-button>
+          <el-button @click="resetForm('shop')">重置</el-button>
+        </el-form-item>
+   </el-form>
     </div>
   </div>
 </template>
@@ -74,45 +111,105 @@
   export default {
     data () {
       return {
-        ruleForm: {
+        shop: {
           name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+          id: '',
+          url: '',
+          linkMan: '',
+          linkMethods: '',
+          linkMethodsSel: '',
+          payPrice: '',
+          timeLimit: ''
+          // delivery: false,
         },
         rules: {
           name: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { required: true, message: '请输入店铺名称', trigger: 'blur' },
+            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
           ],
-          region: [
-            { required: true, message: '请选择活动区域', trigger: 'change' }
+          url: [
+            { required: true, message: '请输入店铺链接', trigger: 'blur' },
+            { min: 1, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur' }
           ],
-          date1: [
-            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+          id: [
+            { required: true, message: '请输入店铺id', trigger: 'blur' },
+            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
           ],
-          date2: [
-            { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+          linkMan: [
+            { required: true, message: '请输入联系人姓名', trigger: 'blur' },
+            { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
           ],
-          type: [
-            { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+          linkMethods: [
+            { required: true, message: '请输入联系人的联系方式', trigger: 'blur' },
+            { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
           ],
-          resource: [
-            { required: true, message: '请选择活动资源', trigger: 'change' }
-          ],
-          desc: [
-            { required: true, message: '请填写活动形式', trigger: 'blur' }
+          payPrice: [
+            { required: true, message: '请输入店铺名称', trigger: 'blur' },
+            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+          ]
+          // region: [
+          //   { required: true, message: '请选择活动区域', trigger: 'change' }
+          // ],
+          // type: [
+          //   { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+          // ],
+          // resource: [
+          //   { required: true, message: '请选择活动资源', trigger: 'change' }
+          // ]
+        },
+        comboInfo: '',
+        descInfo: '',
+        servTimeLimit: {
+          shortcuts: [
+          {
+            text: '快捷可选'
+          },
+          {
+            text: '一周',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              end.setTime(end.getTime() + 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '一个月',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              end.setTime(end.getTime() + 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '三个月',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              end.setTime(end.getTime() + 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '六个月',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              end.setTime(end.getTime() + 3600 * 1000 * 24 * 180)
+              picker.$emit('pick', [start, end])
+            }
+            }
           ]
         },
-        dialogImageUrl: 'rtrewtrwr',
+        dialogImageUrl: '',
         dialogVisible: false
       }
     },
     methods: {
+      alertVal () {
+        // let linkStr = this.shop.linkMethodsSel + ":" + this.shop.linkMethods
+        // alert(linkStr)
+        alert(this.payPrice)
+      },
       handleRemove (file, fileList) {
         console.log(file, fileList)
       },
@@ -123,7 +220,27 @@
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!')
+            // alert('submit!')
+            // alert(this.shop.payPrice)
+            let linkStr = this.shop.linkMethodsSel + ':' + this.shop.linkMethods
+            // let that = this
+            let formData = new FormData()
+            formData.append('shop_name', this.shop.name)
+            formData.append('shop_url', this.shop.url)
+            formData.append('shop_id', this.shop.id)
+            formData.append('shop_type', this.shop.type)
+            formData.append('link_man', this.shop.linkMan)
+            formData.append('link_methods', linkStr)
+            formData.append('combo_info', this.comboInfo)
+            formData.append('pay_price', this.shop.payPrice)
+            formData.append('time_limit', this.shop.timeLimit)
+            formData.append('desc_info', this.descInfo)
+            this.$http.post('order_mng.php', formData)
+              .then(function (res) {
+                console.log(res)
+              }).catch(function (err) {
+                console.log(err)
+              })
           } else {
             console.log('error submit!!')
             return false
@@ -137,10 +254,23 @@
   }
 </script>
 <style lang="less">
+@blue: #409EFF;
+.input-with-select .el-input-group__prepend {
+  background-color: #fff;
+}
+.form-title{
+  p{
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: left;
+    color: @blue;
+    margin:20px 0 20px 20px;
+  }
+}
 .order-add{
     width: 100%;
     height: 100%;
-    padding: 60px 0 500px 0;
+    padding: 60px 0 100px 0;
 }
 .order-main{
     width: 600px;

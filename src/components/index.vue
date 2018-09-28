@@ -117,8 +117,10 @@ export default {
     overflow: hidden;
   }
   .el-main{
+    height: 700px;
     padding-top: 14px;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
