@@ -15,7 +15,7 @@
           <el-input v-model="shop.id"></el-input>
         </el-form-item>
         <el-form-item label="店铺类型">
-             <el-col :span="24">
+            <el-col :span="24">
               <el-radio-group v-model="shop.type">
                 <el-radio label="天猫店铺"></el-radio>
                 <el-radio label="淘宝店铺"></el-radio>
@@ -46,8 +46,8 @@
         <el-form-item label="订购套餐" prop="region">
           <el-col :span="9">
               <el-select v-model="comboInfo" placeholder="请选择已订购的套餐">
-                <el-option label="套餐一" value="shanghai"></el-option>
-                <el-option label="套餐二" value="beijing"></el-option>
+                <el-option label="套餐一" value="套餐1"></el-option>
+                <el-option label="套餐二" value="套餐2"></el-option>
               </el-select>
           </el-col>
         </el-form-item>
@@ -84,6 +84,7 @@
             action="http://localhost:8080/api/order_img.php"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
+            :on-success="orderUploadSuc"
             :on-remove="handleRemove">
             <i class="el-icon-plus"></i>
           </el-upload>
@@ -100,7 +101,8 @@
 
         <el-form-item>
           <el-button type="primary" @click="alertVal">AAAA</el-button>
-          <el-button type="primary" @click="submitForm('shop')">立即创建</el-button>
+          <!-- <el-button type="primary" @click="submitForm('shop')">立即创建</el-button> -->
+          <el-button type="primary" @click="submitNewOrder">立即创建</el-button>
           <el-button @click="resetForm('shop')">重置</el-button>
         </el-form-item>
    </el-form>
@@ -159,6 +161,9 @@
         },
         comboInfo: '',
         descInfo: '',
+        submitFlag: false,
+        orderImgs: [],
+        orderImgsNew: [],
         servTimeLimit: {
           shortcuts: [
           {
@@ -210,12 +215,51 @@
         // alert(linkStr)
         alert(this.payPrice)
       },
+      orderUploadSuc (response, file, fileList) {
+        let imgUrl = file.response
+        this.orderImgs.push(imgUrl)
+        console.log(this.orderImgs)
+      },
       handleRemove (file, fileList) {
-        console.log(file, fileList)
+        let fileName = file.name
+        this.orderImgs.forEach((v, k) => {
+          if (v.indexOf(fileName) === -1) {
+            this.orderImgsNew.push(v)
+          }
+        })
+        console.log(this.orderImgsNew)
       },
       handlePictureCardPreview (file) {
         this.dialogImageUrl = file.url
         this.dialogVisible = true
+      },
+      submitNewOrder () {
+        this.$confirm('即将开始下单, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.submitForm('shop')
+          setTimeout(() => {
+            if (this.submitFlag) {
+              this.$message({
+                type: 'success',
+                message: '下单成功!'
+              })
+            this.$store.state.defaultComp = 'orderList'
+            } else {
+            this.$message({
+              type: 'info',
+              message: '请检查表单是否正确填写!'
+            })
+          }
+          }, 1000)
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消下单'
+          })
+        })
       },
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
@@ -223,8 +267,9 @@
             // alert('submit!')
             // alert(this.shop.payPrice)
             let linkStr = this.shop.linkMethodsSel + ':' + this.shop.linkMethods
-            // let that = this
+            let that = this
             let formData = new FormData()
+            formData.append('flag', 'add')
             formData.append('shop_name', this.shop.name)
             formData.append('shop_url', this.shop.url)
             formData.append('shop_id', this.shop.id)
@@ -235,9 +280,12 @@
             formData.append('pay_price', this.shop.payPrice)
             formData.append('time_limit', this.shop.timeLimit)
             formData.append('desc_info', this.descInfo)
+            formData.append('some_img', this.orderImgsNew)
             this.$http.post('order_mng.php', formData)
               .then(function (res) {
                 console.log(res)
+                that.submitFlag = true
+              // alert(that.submitFlag)
               }).catch(function (err) {
                 console.log(err)
               })
