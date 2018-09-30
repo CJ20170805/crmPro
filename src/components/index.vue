@@ -29,11 +29,11 @@
                  <el-submenu v-if="true" index="7">
                     <template slot="title">
                     <i class="el-icon-document"></i>
-                    <span slot="title">下单管理</span>
+                    <span slot="title">订单管理</span>
                     </template>
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
-                    <el-menu-item index="001" @click="switchComp('orderList')">下单列表</el-menu-item>
+                    <el-menu-item index="001" @click="switchComp('orderList')">订单列表</el-menu-item>
                     <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item>
                     </el-menu-item-group>
                     <!-- <el-menu-item-group title="分组2">

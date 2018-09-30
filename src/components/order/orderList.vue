@@ -5,21 +5,22 @@
       style="width: 100%">
        <el-table-column
         label="id"
-        width="50">
+        width="60">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.id }}</span>
         </template>
       </el-table-column>
       <el-table-column
         label="销售人员"
-        width="100">
+        width="140">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.shop_name }}</span>
         </template>
       </el-table-column>
       <el-table-column
         label="店铺名称"
-        width="180">
+        width="200px"
+      >
         <template slot-scope="scope">
           <el-popover trigger="hover" placement="top">
             <p><span class="shop-bar-title">店铺ID: </span> {{ scope.row.shop_id }}</p>
@@ -33,35 +34,38 @@
       </el-table-column>
       <el-table-column
         label="订购套餐"
-        width="180">
+        width="100">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.combo_info }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="服务时间"
-        width="240">
+        label="下单时间"
+        >
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ scope.row.time_limit }}</span>
+          <span style="margin-left: 10px">{{ scope.row.reg_date }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            @click="viewDetail(scope.$index, scope.row)">查看详情</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="dispenseOrder(scope.$index, scope.row)">分发此单</el-button>
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            @click="handleDelete(scope.$index, scope.row)">删除订单</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <p>{{orderData}}</p>
 
-    <!-- dialog -->
-    <el-dialog title="订单信息" :visible.sync="shopInfoVisible">
+    <!--Order Detail dialog -->
+    <el-dialog title="" :visible.sync="shopInfoVisible">
       <table class="shopInfoTable">
         <thead>
           <tr>
@@ -83,32 +87,49 @@
             <td>服务时间：<span class="shopInfoValue">{{ shopInfo.s_timeLimit }} </span></td>
           </tr>
           <tr>
-            <td>店铺URL：<span class="shopInfoValue">{{ shopInfo.s_url}} </span></td>
-            <td>其他信息：<span class="shopInfoValue">{{ shopInfo.s_descInfo }} </span></td>
+            <td>店铺URL：<span class="shopInfoValue"><a :href="shopInfo.s_url" target="_blank">{{ shopInfo.s_url}}</a></span></td>
+            <td>销售人员：<span class="shopInfoValue">{{ shopInfo.s_salesMan }} </span></td>
           </tr>
            <tr>
             <td>联系人：<span class="shopInfoValue">{{ shopInfo.s_linkMan }} </span></td>
+            <td>其他信息：<span class="shopInfoValue">{{ shopInfo.s_descInfo }} </span></td>
           </tr>
           <tr>
             <td>联系方式:<span class="shopInfoValue">{{ shopInfo.s_linkMethods }} </span></td>
           </tr>
         </tbody>
       </table>
+      <div class="order-step">
+          <p class="order-status-title">订单状态</p>
+          <el-steps :active="1" align-center>
+            <el-step title="完成下单" ></el-step>
+            <el-step title="完成分单" ></el-step>
+            <el-step title="服务运营" ></el-step>
+            <el-step title="服务结束" ></el-step>
+          </el-steps>
+      </div>
        <ul class="imgList">
             <li v-for="(item, index) in shopInfo.s_someImg" :key="index">
-              <img :src="item" alt="" width="160px" height="260px">
+              <img :src="item" alt="" width="160px" height="220px">
             </li>
        </ul>
+    </el-dialog>
+
+       <!--Order Detail dialog -->
+    <el-dialog title="" :visible.sync="dispenceOrderVisible">
+      <dispense-order></dispense-order>
     </el-dialog>
   </div>
 </template>
 <script>
+import dispenseOrder from './dispenseOrder'
 export default {
   data () {
     return {
       tableData: [],
       orderData: '',
       shopInfoVisible: false,
+      dispenceOrderVisible: true,
       shopInfo: {
         s_name: '',
         s_id: '',
@@ -120,15 +141,22 @@ export default {
         s_payPrice: '',
         s_descInfo: '',
         s_timeLimit: '',
-        s_someImg: ''
+        s_someImg: '',
+        s_salesMan: ''
       }
     }
+  },
+  components: {
+    dispenseOrder
   },
   created () {
     this.fetchOrderData()
   },
   methods: {
-    handleEdit (index, row) {
+    dispenseOrder (index, row) {
+      this.dispenceOrderVisible = true
+    },
+    viewDetail (index, row) {
       this.shopInfoVisible = true
       console.log(index, row)
       this.shopInfo.s_name = row.shop_name
@@ -141,6 +169,7 @@ export default {
       this.shopInfo.s_payPrice = row.pay_price
       this.shopInfo.s_descInfo = row.desc_info
       this.shopInfo.s_timeLimit = row.time_limit
+      this.shopInfo.s_salesMan = row.sales_man
       // split string for array
       let someImgArr = []
       let someImg = row.some_img
@@ -172,6 +201,16 @@ export default {
 }
 </script>
 <style lang="less">
+.order-step{
+  width: 100%;
+  padding:20px 0 30px 0;
+}
+.order-status-title{
+  color: #409EFF;
+  font-weight: bold;
+  font-size: 1.3em;
+  padding-bottom: 10px;
+}
 .order-list .imgList{
   width: 100%;
   padding: 0;
@@ -181,6 +220,7 @@ export default {
   }
 }
 .shopInfoTable{
+  width: 100%;
   td{
     text-align: left;
     padding: 8px;
@@ -189,6 +229,7 @@ export default {
     font-weight: 600;
   }
   th{
+    padding: 0 0 20px 0;
     text-align: left;
     width: 50%;
     color: #409EFF;

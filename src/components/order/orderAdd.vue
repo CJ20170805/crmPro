@@ -75,6 +75,12 @@
           </el-col>
         </el-form-item>
 
+        <el-form-item label="销售人员" prop="salesMan">
+          <el-col :span="17">
+            <el-input v-model="shop.salesMan" suffix-icon="el-icon-service"></el-input>
+          </el-col>
+        </el-form-item>
+
         <el-form-item label="备注信息">
           <el-input type="textarea" v-model="descInfo"></el-input>
         </el-form-item>
@@ -99,8 +105,8 @@
           </el-col>
         </el-form-item> -->
 
-        <el-form-item>
-          <el-button type="primary" @click="alertVal">AAAA</el-button>
+        <el-form-item class="submitBtn">
+          <!-- <el-button type="primary" @click="alertVal">AAAA</el-button> -->
           <!-- <el-button type="primary" @click="submitForm('shop')">立即创建</el-button> -->
           <el-button type="primary" @click="submitNewOrder">立即创建</el-button>
           <el-button @click="resetForm('shop')">重置</el-button>
@@ -121,7 +127,8 @@
           linkMethods: '',
           linkMethodsSel: '',
           payPrice: '',
-          timeLimit: ''
+          timeLimit: '',
+          salesMan: ''
           // delivery: false,
         },
         rules: {
@@ -146,8 +153,12 @@
             { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
           ],
           payPrice: [
-            { required: true, message: '请输入店铺名称', trigger: 'blur' },
+            { required: true, message: '请输入付款金额', trigger: 'blur' },
             { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+          ],
+          salesMan: [
+            { required: true, message: '请输入销售人员姓名', trigger: 'blur' },
+            { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
           ]
           // region: [
           //   { required: true, message: '请选择活动区域', trigger: 'change' }
@@ -210,15 +221,10 @@
       }
     },
     methods: {
-      alertVal () {
-        // let linkStr = this.shop.linkMethodsSel + ":" + this.shop.linkMethods
-        // alert(linkStr)
-        alert(this.payPrice)
-      },
       orderUploadSuc (response, file, fileList) {
         let imgUrl = file.response
         this.orderImgs.push(imgUrl)
-        console.log(this.orderImgs)
+        // console.log("Onsuc",this.orderImgs)
       },
       handleRemove (file, fileList) {
         let fileName = file.name
@@ -226,8 +232,9 @@
           if (v.indexOf(fileName) === -1) {
             this.orderImgsNew.push(v)
           }
+          this.orderImgs = this.orderImgsNew
         })
-        console.log(this.orderImgsNew)
+        // console.log("OnErr",this.orderImgs)
       },
       handlePictureCardPreview (file) {
         this.dialogImageUrl = file.url
@@ -280,7 +287,8 @@
             formData.append('pay_price', this.shop.payPrice)
             formData.append('time_limit', this.shop.timeLimit)
             formData.append('desc_info', this.descInfo)
-            formData.append('some_img', this.orderImgsNew)
+            formData.append('some_img', this.orderImgs)
+            formData.append('sales_man', this.shop.salesMan)
             this.$http.post('order_mng.php', formData)
               .then(function (res) {
                 console.log(res)
@@ -303,6 +311,9 @@
 </script>
 <style lang="less">
 @blue: #409EFF;
+.submitBtn{
+  padding:80px 0 100px 300px;
+}
 .input-with-select .el-input-group__prepend {
   background-color: #fff;
 }
