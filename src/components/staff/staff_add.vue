@@ -143,27 +143,27 @@ export default {
           label: '石一',
           children: [
             {
-              value: '石一家一',
+              value: '家一',
               label: '石一家一'
             },
             {
-              value: '石一家二',
+              value: '家二',
               label: '石一家二'
             },
             {
-              value: '石一家三',
+              value: '家三',
               label: '石一家三'
             },
             {
-              value: '石一销一',
+              value: '销一',
               label: '石一销一'
             },
             {
-              value: '石一销二',
+              value: '销二',
               label: '石一销二'
             },
             {
-              value: '石一销三',
+              value: '销三',
               label: '石一销三'
             }
           ]
@@ -173,27 +173,27 @@ export default {
           label: '石二',
           children: [
             {
-              value: '石二家一',
+              value: '家一',
               label: '石二家一'
             },
             {
-              value: '石二家二',
+              value: '家二',
               label: '石二家二'
             },
             {
-              value: '石二家三',
+              value: '家三',
               label: '石二家三'
             },
             {
-              value: '石二销一',
+              value: '销一',
               label: '石二销一'
             },
             {
-              value: '石二销二',
+              value: '销二',
               label: '石二销二'
             },
             {
-              value: '石二销三',
+              value: '销三',
               label: '石二销三'
             }
           ]

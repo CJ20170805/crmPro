@@ -4,8 +4,8 @@
       :data="orderData"
       style="width: 100%">
        <el-table-column
-        label="id"
-        width="60">
+        label="订单编号"
+        width="80">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.id }}</span>
         </template>
@@ -117,7 +117,7 @@
 
        <!--Order Detail dialog -->
     <el-dialog title="" :visible.sync="dispenceOrderVisible">
-      <dispense-order></dispense-order>
+      <dispense-order :orderDispenseInfo = "this.orderDispenseInfo"></dispense-order>
     </el-dialog>
   </div>
 </template>
@@ -130,6 +130,7 @@ export default {
       orderData: '',
       shopInfoVisible: false,
       dispenceOrderVisible: true,
+      orderDispenseInfo: '',
       shopInfo: {
         s_name: '',
         s_id: '',
@@ -155,6 +156,7 @@ export default {
   methods: {
     dispenseOrder (index, row) {
       this.dispenceOrderVisible = true
+      this.orderDispenseInfo = row
     },
     viewDetail (index, row) {
       this.shopInfoVisible = true

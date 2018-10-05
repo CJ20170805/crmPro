@@ -36,13 +36,17 @@
                     <el-menu-item index="001" @click="switchComp('orderList')">订单列表</el-menu-item>
                     <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item>
                     </el-menu-item-group>
-                    <!-- <el-menu-item-group title="分组2">
-                    <el-menu-item index="1-3">选项3</el-menu-item>
+                </el-submenu>
+                <el-submenu v-if="true" index="8">
+                    <template slot="title">
+                    <i class="el-icon-menu"></i>
+                    <span slot="title">个人中心</span>
+                    </template>
+                    <el-menu-item-group>
+                    <!-- <span slot="title">---</span> -->
+                    <el-menu-item @click="switchComp('myOrder')">我的订单</el-menu-item>
+                    <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
-                    <el-submenu index="1-4">
-                    <span slot="title">选项4</span>
-                    <el-menu-item index="1-4-1">选项1</el-menu-item>
-                    </el-submenu> -->
                 </el-submenu>
                 <el-menu-item index="2">
                     <i class="el-icon-menu"></i>
@@ -72,6 +76,7 @@ import userInfoSet from './nav/userInfoSet'
 import homePage from './home/homePage'
 import orderList from './order/orderList'
 import orderAdd from './order/orderAdd'
+import myOrder from './my/myOrder'
 export default {
   data () {
     return {
@@ -89,7 +94,8 @@ export default {
     userInfoSet,
     homePage,
     orderList,
-    orderAdd
+    orderAdd,
+    myOrder
   },
   methods: {
     switchComp (aa) {

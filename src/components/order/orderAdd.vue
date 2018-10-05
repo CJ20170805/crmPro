@@ -247,20 +247,7 @@
           type: 'warning'
         }).then(() => {
           this.submitForm('shop')
-          setTimeout(() => {
-            if (this.submitFlag) {
-              this.$message({
-                type: 'success',
-                message: '下单成功!'
-              })
-            this.$store.state.defaultComp = 'orderList'
-            } else {
-            this.$message({
-              type: 'info',
-              message: '请检查表单是否正确填写!'
-            })
-          }
-          }, 1000)
+          // this.submitFlag = true
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -292,7 +279,18 @@
             this.$http.post('order_mng.php', formData)
               .then(function (res) {
                 console.log(res)
-                that.submitFlag = true
+            if (res.data === 'AddSUC') {
+              that.$message({
+                type: 'success',
+                message: '下单成功!'
+              })
+              that.$store.state.defaultComp = 'orderList'
+            } else {
+              that.$message({
+                type: 'info',
+                message: '请检查表单是否正确填写!'
+              })
+            }
               // alert(that.submitFlag)
               }).catch(function (err) {
                 console.log(err)
