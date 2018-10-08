@@ -11,15 +11,13 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="销售人员"
-        width="140">
+        label="销售人员">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.shop_name }}</span>
+          <span style="margin-left: 10px">{{ scope.row.sales_man }}</span>
         </template>
       </el-table-column>
       <el-table-column
         label="店铺名称"
-        width="200px"
       >
         <template slot-scope="scope">
           <el-popover trigger="hover" placement="top">
@@ -34,7 +32,7 @@
       </el-table-column>
       <el-table-column
         label="订购套餐"
-        width="100">
+        width="150">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.combo_info }}</span>
         </template>
@@ -47,7 +45,7 @@
           <span style="margin-left: 10px">{{ scope.row.reg_date }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="290">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -101,10 +99,10 @@
       </table>
       <div class="order-step">
           <p class="order-status-title">订单状态</p>
-          <el-steps :active="1" align-center>
+          <el-steps :active="orderActive" align-center>
             <el-step title="完成下单" ></el-step>
             <el-step title="完成分单" ></el-step>
-            <el-step title="服务运营" ></el-step>
+            <el-step title="服务运营中" ></el-step>
             <el-step title="服务结束" ></el-step>
           </el-steps>
       </div>
@@ -129,8 +127,9 @@ export default {
       tableData: [],
       orderData: '',
       shopInfoVisible: false,
-      dispenceOrderVisible: true,
+      dispenceOrderVisible: false,
       orderDispenseInfo: '',
+      orderActive: 3,
       shopInfo: {
         s_name: '',
         s_id: '',
@@ -183,7 +182,37 @@ export default {
       this.shopInfo.s_someImg = someImgArr
     },
     handleDelete (index, row) {
-      console.log(index, row)
+      // console.log(index, row.id)
+      this.$confirm('此操作将永久删除该订单, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let that = this
+        let formData = new FormData()
+        formData.append('flag', 'delOrder')
+        formData.append('delId', row.id)
+        this.$http.post('order_mng.php', formData)
+          .then(function (res) {
+            if (res.data === 'DelOrderSuc') {
+              that.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+            that.$store.state.defaultComp = 'orderAdd'
+            setTimeout(() => {
+              that.$store.state.defaultComp = 'orderList'
+            }, 10)
+            }
+          }).catch(function (err) {
+            console.log(err)
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
     fetchOrderData () {
       let that = this

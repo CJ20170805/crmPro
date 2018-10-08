@@ -15,9 +15,9 @@
                 >
                 <li class="site-logo">Admin</li>
 
-                <li class="site-btns">
+                <!-- <li class="site-btns">
                     <el-button type="primary" class="loginOutBtn" plain @click="loginOut">退出登录</el-button>
-                </li>
+                </li> -->
                 <el-menu-item index='1' >
                    首页
                 </el-menu-item>
@@ -27,19 +27,20 @@
                     </template>
                     <li style="padding:10px;color:#ffffff">当前用户:<span style="margin-left:20px">{{ userLoginData.st_name }}</span></li>
                     <el-menu-item index="2-1" @click="userInfoSet">资料设置</el-menu-item>
-                    <el-submenu index="2-4">
+                    <el-menu-item index="2-6" @click="loginOut">退出登录</el-menu-item>
+                    <!-- <el-submenu index="2-4">
                       <template slot="title">用户切换</template>
                         <el-menu-item index="2-4-1">user-1</el-menu-item>
                         <el-menu-item index="2-4-2">user-2</el-menu-item>
                         <el-menu-item index="2-4-3">user-3</el-menu-item>
-                    </el-submenu>
+                    </el-submenu> -->
                 </el-submenu>
                   <li style="float:right;line-height:60px;margin-right:30px;">
                       <el-badge :value="12" class="item">
 
                            <el-popover
                                 placement="bottom"
-                                title="标题"
+                                title=""
                                 width="320"
                                 trigger="click"
                                 >
@@ -50,7 +51,9 @@
                                   <h1>dfasfadfasdfasdsd</h1>
                                   <h1>dfasfadfasdfasdsd</h1>
                                 </div>
-                                <el-button slot="reference">消息</el-button>
+                                <el-button slot="reference" size="small">
+                                  <i class="el-icon-bell"></i>
+                                </el-button>
                             </el-popover>
 
                       </el-badge>

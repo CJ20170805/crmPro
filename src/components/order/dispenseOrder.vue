@@ -1,6 +1,6 @@
 <template>
     <div class="dispense-order">
-        <p style="text-align: center; margin: 0 0 30px;">订单分发</p>
+        <p style="text-align: center; margin: 0 0 26px;font-size:1.2em;font-weight:bold;color:#409EFF;">订单分发</p>
         <div style="text-align: center">
             <el-transfer
             style="text-align: left; display: inline-block"
@@ -17,7 +17,8 @@
             }"
             @change="handleChange"
             :data="staffNames">
-            <!-- <el-button class="transfer-footer" slot="left-footer" size="small">操作</el-button> -->
+            <!-- <el-button class="transfer-footer" slot="left-footer" size="small"></el-button> -->
+            <p slot="left-footer"></p>
             <el-button @click="whetherDispense" type="primary" size="small"  class="transfer-footer" slot="right-footer">立即分发</el-button>
             </el-transfer>
         </div>
@@ -31,6 +32,7 @@ export default {
         // data: [],
         value3: [],
         hadRemove: [],
+        hadRemoves: [],
         renderFunc (h, option) {
           return <span>{ option.apart } ☞ { option.label }</span>
         }
@@ -52,6 +54,7 @@ export default {
           for (let i = 0; i < data.length; i++) {
             that.staffNames.push({
               key: i,
+              id: data[i].id,
               apart: data[i].st_departmentVal,
               label: data[i].st_name
             })
@@ -63,14 +66,21 @@ export default {
     },
     methods: {
       handleChange (value, direction, movedKeys) {
-        // console.log(value, direction, movedKeys)
-        // this.hadRemove = value
+        console.log(value, direction, movedKeys)
+        this.hadRemove = value
         let names = []
+        let nameId = []
         value.forEach((index) => {
-        //   console.log(item, '====', index)
+          // console.log('item====', index)
           names.push(this.staffNames[index].label)
+          nameId.push({
+            name: this.staffNames[index].label,
+            id : this.staffNames[index].id
+          })
         })
         this.hadRemove = names
+        this.hadRemoves = nameId
+        console.log('NameID', nameId)
       },
       whetherDispense () {
         this.$confirm('<p>即将分发订单给<span style="color:red; font-weight:600; margin:0 4px;">' + this.hadRemove + '</span>是否继续?</p>', '提示', {
@@ -93,14 +103,34 @@ export default {
     },
     beginDispense () {
       // 存订单id 到数据库   根据id反查订单
-      console.log(this.orderDispenseInfo.id)
+      let orderId = this.orderDispenseInfo.id
+      // let userName = this.$store.state.userName
+      this.hadRemoves.forEach((item, index) => {
+        let id = item.id
+        let formData = new FormData()
+        formData.append('flag', 'dispense')
+        formData.append('orderId', orderId)
+        formData.append('id', id)
+        this.$http.post('order_mng.php', formData)
+          .then(function (res) {
+            console.log('OrderRes', res)
+          }).catch(function (err) {
+            console.log(err)
+          })
+        })
     }
   }
 }
 </script>
 <style lang="less">
  .transfer-footer {
-    margin-left: 20px;
+    margin-left: 10px;
     padding: 6px 5px;
+  }
+  .el-checkbox + .el-checkbox{
+    margin: 0;
+  }
+  .el-dialog__body{
+    padding: 20px;
   }
 </style>
