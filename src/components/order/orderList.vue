@@ -248,6 +248,7 @@ export default {
   li{
     display: inline-block;
     padding: 10px;
+    list-style: none;
   }
 }
 .shopInfoTable{

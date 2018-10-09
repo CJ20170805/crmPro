@@ -36,7 +36,7 @@
                     </el-submenu> -->
                 </el-submenu>
                   <li style="float:right;line-height:60px;margin-right:30px;">
-                      <el-badge :value="12" class="item">
+                      <el-badge :value="0" class="item">
 
                            <el-popover
                                 placement="bottom"
