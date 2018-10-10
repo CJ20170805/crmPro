@@ -125,7 +125,7 @@ export default {
   data () {
     return {
       tableData: [],
-      orderData: '',
+      orderData: [],
       shopInfoVisible: false,
       dispenceOrderVisible: false,
       orderDispenseInfo: '',

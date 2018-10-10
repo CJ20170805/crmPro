@@ -33,8 +33,8 @@
                     </template>
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
-                    <el-menu-item index="001" @click="switchComp('orderList')">订单列表</el-menu-item>
-                    <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item>
+                    <el-menu-item index="701" @click="switchComp('orderList')">订单列表</el-menu-item>
+                    <el-menu-item index="702" @click="switchComp('orderAdd')">开始下单</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
                 <el-submenu v-if="true" index="8">
@@ -44,7 +44,7 @@
                     </template>
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
-                    <el-menu-item @click="switchComp('myOrder')">我的订单</el-menu-item>
+                    <el-menu-item index="801" @click="switchComp('myOrder')">我的订单</el-menu-item>
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
                 </el-submenu>

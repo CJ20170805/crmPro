@@ -228,12 +228,13 @@
       },
       handleRemove (file, fileList) {
         let fileName = file.name
+        this.orderImgsNew = []
         this.orderImgs.forEach((v, k) => {
           if (v.indexOf(fileName) === -1) {
             this.orderImgsNew.push(v)
           }
-          this.orderImgs = this.orderImgsNew
         })
+        this.orderImgs = this.orderImgsNew
         // console.log("OnErr",this.orderImgs)
       },
       handlePictureCardPreview (file) {
