@@ -8,7 +8,7 @@
                 <el-radio-button :label="true">收起</el-radio-button>
                 </el-radio-group>
                 <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-                <el-submenu v-if="true" index="1">
+                <el-submenu v-if="this.$store.state.userPower === '80001' || this.$store.state.userPower === '80004'" index="1">
                     <template slot="title">
                     <i class="el-icon-location"></i>
                     <span slot="title">员工管理</span>
@@ -26,7 +26,7 @@
                     <el-menu-item index="1-4-1">选项1</el-menu-item>
                     </el-submenu> -->
                 </el-submenu>
-                 <el-submenu v-if="true" index="7">
+                 <el-submenu v-if="this.$store.state.userPower === '80001' || this.$store.state.userPower === '80002'" index="7">
                     <template slot="title">
                     <i class="el-icon-document"></i>
                     <span slot="title">订单管理</span>
@@ -37,7 +37,7 @@
                     <el-menu-item index="702" @click="switchComp('orderAdd')">开始下单</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
-                <el-submenu v-if="true" index="8">
+                <el-submenu v-if="this.$store.state.userPower === '80001' || this.$store.state.userPower === '80002'" index="8">
                     <template slot="title">
                     <i class="el-icon-menu"></i>
                     <span slot="title">个人中心</span>
@@ -48,18 +48,10 @@
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
                 </el-submenu>
-                <el-menu-item index="2">
+                <!-- <el-menu-item index="2">
                     <i class="el-icon-menu"></i>
                     <span slot="title">导航二二</span>
-                </el-menu-item>
-                <el-menu-item index="3" disabled>
-                    <i class="el-icon-document"></i>
-                    <span slot="title">导航三</span>
-                </el-menu-item>
-                <el-menu-item index="4">
-                    <i class="el-icon-setting"></i>
-                    <span slot="title">导航四</span>
-                </el-menu-item>
+                </el-menu-item> -->
                 </el-menu>
             </el-aside>
             <el-main style="width">

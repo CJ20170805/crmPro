@@ -45,7 +45,7 @@
           <span style="margin-left: 10px">{{ scope.row.reg_date }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="290">
+      <el-table-column label="操作" width="420">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -54,6 +54,10 @@
             size="mini"
             type="primary"
             @click="dispenseOrder(scope.$index, scope.row)">分发此单</el-button>
+          <el-button
+            size="mini"
+            type="success"
+            @click="viewAcord(scope.$index, scope.row)">日志记录</el-button>
           <el-button
             size="mini"
             type="danger"
@@ -97,7 +101,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="order-step">
+      <!-- <div class="order-step">
           <p class="order-status-title">订单状态</p>
           <el-steps :active="orderActive" align-center>
             <el-step title="完成下单" ></el-step>
@@ -105,7 +109,7 @@
             <el-step title="服务运营中" ></el-step>
             <el-step title="服务结束" ></el-step>
           </el-steps>
-      </div>
+      </div> -->
        <ul class="imgList">
             <li v-for="(item, index) in shopInfo.s_someImg" :key="index">
               <img :src="item" alt="" width="160px" height="220px">
@@ -113,9 +117,23 @@
        </ul>
     </el-dialog>
 
-       <!--Order Detail dialog -->
+    <!--Order Detail dialog -->
     <el-dialog title="" :visible.sync="dispenceOrderVisible">
       <dispense-order :orderDispenseInfo = "this.orderDispenseInfo"></dispense-order>
+    </el-dialog>
+
+    <!-- order acord dialog -->
+    <el-dialog title="" :visible.sync="orderAcordVisible">
+        <el-collapse accordion class="acord-block">
+              <el-collapse-item v-for="(item,index) in acordFetchData" :key="index" :title="item.acord_title + '【'+ item.acord_man +'】' +'【'+ item.reg_date +'】'">
+                <div class="collapse-item-style">{{item.acord_content}}</div>
+                <div>
+                  <ul>
+                    <li v-for="imgs in item.acord_img.split(',')" :key="imgs"><a :href="imgs" target="_blank"><img :src="imgs" alt=""></a></li>
+                  </ul>
+                </div>
+              </el-collapse-item>
+        </el-collapse>
     </el-dialog>
   </div>
 </template>
@@ -128,7 +146,9 @@ export default {
       orderData: [],
       shopInfoVisible: false,
       dispenceOrderVisible: false,
+      orderAcordVisible: false,
       orderDispenseInfo: '',
+      acordFetchData: [],
       orderActive: 3,
       shopInfo: {
         s_name: '',
@@ -227,11 +247,47 @@ export default {
         }).catch(function (err) {
           console.log(err)
         })
+    },
+    viewAcord (index, row) {
+      this.orderAcordVisible = true
+      let that = this
+      let formData = new FormData()
+      formData.append('flag', 'fetchAcord')
+      formData.append('order_id', row.id)
+      this.$http.post('order_acord.php', formData)
+        .then(function (res) {
+          if (res.data.length !== 0) {
+            that.acordFetchData = res.data
+          } else {
+            that.acordFetchData = [{'acord_title':'【暂】【无】', 'acord_content':'', 'acord_man':'记', 'acord_img':'', 'reg_date':'录'}]
+          }
+          console.log('res', res.data.length)
+          // console.log('fetchData', that.acordFetchData)
+        }).catch(function (err) {
+          console.log(err)
+        })
     }
   }
 }
 </script>
 <style lang="less">
+.acord-block{
+  text-align: left;
+  .collapse-item-style{
+    color: red;
+  }
+  ul{
+    li{
+      list-style-type: none;
+      display: inline-block;
+      img{
+        width: 120px;
+        height: 160px;
+        margin: 3px;
+      }
+    }
+  }
+}
 .order-step{
   width: 100%;
   padding:20px 0 30px 0;

@@ -96,7 +96,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="order-step">
+      <!-- <div class="order-step">
           <p class="order-status-title">订单状态</p>
           <el-steps :active="orderActive" align-center>
             <el-step title="完成下单" ></el-step>
@@ -104,7 +104,7 @@
             <el-step title="服务运营中" ></el-step>
             <el-step title="服务结束" ></el-step>
           </el-steps>
-      </div>
+      </div> -->
        <ul class="imgList">
             <li v-for="(item, index) in shopInfo.s_someImg" :key="index">
               <img :src="item" alt="" width="160px" height="220px">
@@ -115,22 +115,19 @@
     <!--Order operating acord  -->
     <el-dialog title="" :visible.sync="acordVisible">
         <el-tabs tab-position="left">
-          <el-tab-pane label="操作日志">
+          <el-tab-pane label="历史日志">
               <el-collapse accordion>
-                    <el-collapse-item v-for="(item,index) in abc" :key="index" :title="item.aa+item.bb+'发的说法是的'">
-                      <div class="collapse-item-style">结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+                    <el-collapse-item v-for="(item,index) in acordFetchData" :key="index" :title="item.acord_title + '【'+ item.acord_man +'】' +'【'+ item.reg_date +'】'">
+                      <div class="collapse-item-style">{{item.acord_content}}</div>
                       <div>
                         <ul>
-                          <li><a href="../../assets/logo.png" target="_blank"><img src="../../assets/logo.png" alt=""></a></li>
-                          <li><img src="../../assets/logo.png" alt=""></li>
-                          <li><img src="../../assets/logo.png" alt=""></li>
-                          <li><img src="../../assets/logo.png" alt=""></li>
+                          <li v-for="imgs in item.acord_img.split(',')" :key="imgs"><a :href="imgs" target="_blank"><img :src="imgs" alt=""></a></li>
                         </ul>
                       </div>
                     </el-collapse-item>
               </el-collapse>
           </el-tab-pane>
-          <el-tab-pane label="增加日志">
+          <el-tab-pane label="添加日志">
               <el-form ref="form" :model="form" label-width="80px">
               <el-form-item label="日志标题">
                 <el-input v-model="submitAcordTitle"></el-input>
@@ -157,12 +154,10 @@
                 </el-upload>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="submitAcord">提交日志</el-button>
+                <el-button type="primary" @click="whetherSubmit">提交日志</el-button>
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane label="角色管理">角色管理</el-tab-pane>
-          <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
         </el-tabs>
     </el-dialog>
   </div>
@@ -185,6 +180,7 @@ export default {
       submitAcordTitle: '',
       submitAcordContent: '',
       submitAcordId: '',
+      acordFetchData: [],
       abc: [
         {aa: '2018-09-29 10:46:22', bb: 23456},
         {aa: 123, bb: 23456},
@@ -250,8 +246,23 @@ export default {
       // console.log('orderNum', that.myOrderData)
   },
   methods: {
+    whetherSubmit () {
+      this.$confirm('将要添加一条新的日志, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.submitAcord()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消添加！'
+        })
+      })
+    },
     submitAcord () {
       // console.log('id:',this.submitAcordId,'title:', this.submitAcordTitle, 'content', this.submitAcordContent, 'userName:', this.userName, 'uploadImg:', this.acordImgs)
+      let that = this
       let formData = new FormData()
       formData.append('flag', 'addAcord')
       formData.append('order_id', this.submitAcordId)
@@ -261,7 +272,15 @@ export default {
       formData.append('acord_img', this.acordImgs)
       this.$http.post('order_acord.php', formData)
         .then(function (res) {
-          console.log('res', res)
+          if (res.data === 'addAcordSuc') {
+            that.$message({
+              type: 'success',
+              message: '成功添加!'
+            })
+            that.acordVisible = false
+          } else {
+            that.$message.error('添加失败！')
+          }
         }).catch(function (err) {
           console.log(err)
         })
@@ -323,12 +342,15 @@ export default {
       this.acordVisible = true
       this.submitAcordId = row.id
       //  acord fetch
+      let that = this
       let formData = new FormData()
       formData.append('flag', 'fetchAcord')
       formData.append('order_id', this.submitAcordId)
       this.$http.post('order_acord.php', formData)
         .then(function (res) {
+          that.acordFetchData = res.data
           console.log('res', res)
+          console.log('fetchData', that.acordFetchData)
         }).catch(function (err) {
           console.log(err)
         })
@@ -365,6 +387,7 @@ export default {
      img{
        width: 120px;
        height: 160px;
+       margin: 3px;
      }
    }
  }

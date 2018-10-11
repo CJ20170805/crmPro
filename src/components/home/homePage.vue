@@ -1,7 +1,21 @@
 <template>
   <div class="home-wrap">
-      <h1>HOME!</h1>
-      <div id="ech"></div>
+    <el-row :gutter="20">
+        <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10">
+             <el-card class="cards-style">
+                    <div>afdsfadsfasd</div>
+            </el-card>
+            </el-col>
+        <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10">
+              <el-card class="cards-style">
+                    <div>afdsfadsfasd</div>
+                </el-card>
+        </el-col>
+        <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+            <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=55" style="border:solid 1px #7ec8ea" width="255" height="294" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+        </el-col>
+    </el-row>
+    <div id="ech"></div>
   </div>
 </template>
 <script>
@@ -13,7 +27,7 @@ export default {
     // 绘制图表
     myChart.setOption({
         title: {
-        text: '堆叠区域图'
+        text: '堆叠XXX图'
     },
     tooltip : {
         trigger: 'axis',
@@ -25,7 +39,7 @@ export default {
         }
     },
     legend: {
-        data:['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+        data:['aaaaa', 'bbbbb', 'ccccc', 'ddddd', 'eeeee']
     },
     toolbox: {
         feature: {
@@ -52,35 +66,35 @@ export default {
     ],
     series : [
         {
-            name:'邮件营销',
+            name:'aaaaa',
             type:'line',
             stack: '总量',
             areaStyle: {},
             data:[120, 132, 101, 134, 90, 230, 210]
         },
         {
-            name:'联盟广告',
+            name:'bbbbb',
             type:'line',
             stack: '总量',
             areaStyle: {},
             data:[220, 182, 191, 234, 290, 330, 310]
         },
         {
-            name:'视频广告',
+            name:'ccccc',
             type:'line',
             stack: '总量',
             areaStyle: {},
             data:[150, 232, 201, 154, 190, 330, 410]
         },
         {
-            name:'直接访问',
+            name:'ddddd',
             type:'line',
             stack: '总量',
             areaStyle: {normal: {}},
             data:[320, 332, 301, 334, 390, 330, 320]
         },
           {
-            name:'搜索引擎',
+            name:'eeeee',
             type:'line',
             stack: '总量',
             label: {
@@ -99,8 +113,14 @@ export default {
 </script>
 <style lang="less">
 #ech{
-    width: 800px;
-    height: 500px;
+    width: 100%;
+    height: 600px;
+    padding: 20px;
     margin: 0 auto;
+}
+.home-wrap{
+    .cards-style{
+        height: 290px;
+    }
 }
 </style>

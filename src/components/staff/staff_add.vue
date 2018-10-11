@@ -165,6 +165,26 @@ export default {
             {
               value: '销三',
               label: '石一销三'
+            },
+            {
+              value: '视觉部',
+              label: '视觉部'
+            },
+            {
+              value: '管理层',
+              label: '管理层'
+            },
+            {
+              value: '人事',
+              label: '人事行政'
+            },
+            {
+              value: '技术总监',
+              label: '技术总监'
+            },
+            {
+              value: '销售总监',
+              label: '销售总监'
             }
           ]
         },
@@ -195,14 +215,42 @@ export default {
             {
               value: '销三',
               label: '石二销三'
+            },
+            {
+              value: '管理层',
+              label: '管理层'
+            },
+            {
+              value: '销售总监',
+              label: '销售总监'
+            },
+            {
+              value: '技术总监',
+              label: '技术总监'
+            },
+            {
+              value: '人事',
+              label: '人事行政'
             }
           ]
         }
       ],
       jobOptions: [
         {
-          value: '运营',
-          label: '运营'
+          value: 'AM',
+          label: 'AM'
+        },
+        {
+          value: 'AE',
+          label: 'AE'
+        },
+        {
+          value: 'BD',
+          label: 'BD'
+        },
+        {
+          value: 'BD经理',
+          label: 'BD经理'
         },
         {
           value: '销售',
@@ -211,6 +259,30 @@ export default {
         {
           value: '美工',
           label: '美工'
+        },
+        {
+          value: '客服',
+          label: '客服'
+        },
+        {
+          value: '质检主管',
+          label: '质检主管'
+        },
+        {
+          value: '销售总监',
+          label: '销售总监'
+        },
+        {
+          value: '技术总监',
+          label: '技术总监'
+        },
+        {
+          value: '人事行政专员',
+          label: '人事行政专员'
+        },
+        {
+          value: '分公司总经理',
+          label: '分公司总经理'
         }
       ],
       pickerOptions1: {
@@ -288,7 +360,8 @@ export default {
             message: '员工信息列表'
           })
           // this.$store.getters.toSfList
-          this.$store.state.defaultComp = 'staffList'
+          // this.$store.state.defaultComp = 'staffAdd'
+           this.$store.state.defaultComp = 'staffList'
         })
         .catch(action => {
           this.$message({

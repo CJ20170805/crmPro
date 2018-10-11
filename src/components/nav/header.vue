@@ -44,12 +44,8 @@
                                 width="320"
                                 trigger="click"
                                 >
-                                <div style="width:320px;height:200px;overflow-y:scroll;overflow-x:hidden;">
-                                  <h1>dfasfadfasdfasdgfsgsdfgsdfgsdfsd</h1>
-                                  <h1>dfasfadfasdfasdsd</h1>
-                                  <h1>dfasfadfasdfasdsd</h1>
-                                  <h1>dfasfadfasdfasdsd</h1>
-                                  <h1>dfasfadfasdfasdsd</h1>
+                                <div style="width:320px;height:100px;overflow-x:hidden;">
+                                  <h3>暂无消息</h3>
                                 </div>
                                 <el-button slot="reference" size="small">
                                   <i class="el-icon-bell"></i>
@@ -96,19 +92,22 @@ export default {
     formdata.append('username', usern)
     this.$http.post('user_info.php', formdata)
       .then(function (res) {
-        console.log(res)
-        that.userLoginData = res.data[0]
-        that.$store.state.userName = that.userLoginData.st_name
-        that.$store.state.userId = that.userLoginData.id
-        that.$store.state.userDepart = that.userLoginData.st_departmentVal
-        if (that.userLoginData.st_avatar !== null) {
+        console.log('RRRRRRR', res)
+        let data = res.data[0]
+        that.userLoginData = data
+        that.$store.state.userName = data.st_name
+        that.$store.state.userId = data.id
+        that.$store.state.userPower = data.st_power
+        that.$store.state.userDepart = data.st_departmentVal
+        if (data.st_avatar !== null) {
           // alert(that.userLoginData.st_avatar)
-          that.$store.state.userAvatar = that.userLoginData.st_avatar
+          that.$store.state.userAvatar = data.st_avatar
           that.$refs.usersImg.src = that.$store.state.userAvatar
         }
         // if (this.$store.state.userAvatar === '') {
         //   this.$refs.usersImg.src = this.$store.state.userAvatar
         // }
+        alert(that.$store.state.userPower)
       }).catch(function (err) {
         console.log(err)
       })
