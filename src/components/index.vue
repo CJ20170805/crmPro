@@ -8,10 +8,10 @@
                 <el-radio-button :label="true">收起</el-radio-button>
                 </el-radio-group>
                 <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-                <el-submenu v-if="this.$store.state.userPower === '80001' || this.$store.state.userPower === '80004'" index="1">
+                <el-submenu v-if="$store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80004'" index="1">
                     <template slot="title">
-                    <i class="el-icon-location"></i>
-                    <span slot="title">员工管理</span>
+                      <i class="el-icon-location"></i>
+                      <span slot="title">员工管理</span>
                     </template>
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
@@ -26,7 +26,7 @@
                     <el-menu-item index="1-4-1">选项1</el-menu-item>
                     </el-submenu> -->
                 </el-submenu>
-                 <el-submenu v-if="this.$store.state.userPower === '80001' || this.$store.state.userPower === '80002'" index="7">
+                 <el-submenu index="7">
                     <template slot="title">
                     <i class="el-icon-document"></i>
                     <span slot="title">订单管理</span>
@@ -34,10 +34,12 @@
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
                     <el-menu-item index="701" @click="switchComp('orderList')">订单列表</el-menu-item>
-                    <el-menu-item index="702" @click="switchComp('orderAdd')">开始下单</el-menu-item>
+                    <el-menu-item index="702" @click="switchComp('orderAdd')" v-if="$store.getters.userAuthority === '' || $store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80003' || $store.getters.userAuthority === '80005'">
+                      开始下单
+                    </el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
-                <el-submenu v-if="this.$store.state.userPower === '80001' || this.$store.state.userPower === '80002'" index="8">
+                <el-submenu index="8">
                     <template slot="title">
                     <i class="el-icon-menu"></i>
                     <span slot="title">个人中心</span>

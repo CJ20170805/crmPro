@@ -6,7 +6,7 @@
 
               <el-upload
                 class="avatar-uploader"
-                action="http://localhost:8080/api/user_avatar.php"
+                action="http://www.huibohehe.com/crmApi/user_avatar.php"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
@@ -173,7 +173,7 @@ export default {
 <style lang="less">
   .userBoxCard{
     margin-bottom:40px;
-    background-color: #409EFF;
+    background-color: #409EFF!important;
     border-radius: 8px;
     color: #ffffff;
   }

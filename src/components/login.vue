@@ -6,10 +6,10 @@
           </div>
           <form>
                <el-input class="username" placeholder="请输入用户名" v-model="un" type="text" suffix-icon="el-icon-edit"> </el-input>
-               <el-input class="password" placeholder="请输入密码" v-model="pw" type="password" suffix-icon="el-icon-setting"> </el-input>
-               <el-button class="resetInput" type="info" plain @click="resetLogin">重置</el-button>
+               <el-input class="password" @keyup.native.enter="submitLogin"  placeholder="请输入密码" v-model="pw" type="password" suffix-icon="el-icon-setting"> </el-input>
+               <!-- <el-button class="resetInput" type="info" plain @click="resetLogin">重置</el-button> -->
                <el-button class="loginIn" type="info" plain @click="submitLogin">登陆</el-button>
-               <el-button type="danger" disabled v-show="loginStatus">密码错误</el-button>
+               <el-button type="danger" disabled v-show="loginStatus">账号或密码错误</el-button>
           </form>
       </div>
     </div>
@@ -31,11 +31,11 @@ export default {
       let that = this
       this.$http.get('/api_login.php?un=' + this.un + '&pw=' + this.pw)
         .then(function (res) {
-          console.log(res.data)
-          let loginCode = res.data.loginCode
-          if (loginCode === '10000') {
+          console.log('LoginCodedede', res)
+          if (res.data.loginCode === '10000') {
             sessionStorage.setItem('loginFlag', res.data.userName)
             that.$router.push({path: '/index'})
+            // console.log('Had set!!!!')
           } else {
             that.loginStatus = 1
           }

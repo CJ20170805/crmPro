@@ -23,7 +23,7 @@
                 </el-menu-item>
                 <el-submenu style="float:right;" class="userInfo" index='2'>
                     <template slot="title">
-                         <img ref="usersImg" src="../../assets/hd.jpg" alt="userLogo" width="40px" height="40px">
+                         <img ref="usersImg" src="https://img.alicdn.com/imgextra/i2/662134481/O1CN011iyLEiL6rjYda9O-662134481.jpg" alt="userLogo" width="40px" height="40px">
                     </template>
                     <li style="padding:10px;color:#ffffff">当前用户:<span style="margin-left:20px">{{ userLoginData.st_name }}</span></li>
                     <el-menu-item index="2-1" @click="userInfoSet">资料设置</el-menu-item>
@@ -92,7 +92,8 @@ export default {
     formdata.append('username', usern)
     this.$http.post('user_info.php', formdata)
       .then(function (res) {
-        console.log('RRRRRRR', res)
+        console.log('user_info', res)
+        console.log('storge', usern)
         let data = res.data[0]
         that.userLoginData = data
         that.$store.state.userName = data.st_name
@@ -107,7 +108,7 @@ export default {
         // if (this.$store.state.userAvatar === '') {
         //   this.$refs.usersImg.src = this.$store.state.userAvatar
         // }
-        alert(that.$store.state.userPower)
+        // alert(that.$store.state.userPower)
       }).catch(function (err) {
         console.log(err)
       })

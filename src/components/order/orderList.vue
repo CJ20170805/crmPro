@@ -45,12 +45,14 @@
           <span style="margin-left: 10px">{{ scope.row.reg_date }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="420">
+      <el-table-column label="操作" width="400">
+        <!-- width="420" -->
         <template slot-scope="scope">
           <el-button
             size="mini"
             @click="viewDetail(scope.$index, scope.row)">查看详情</el-button>
           <el-button
+            v-if="$store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80005'"
             size="mini"
             type="primary"
             @click="dispenseOrder(scope.$index, scope.row)">分发此单</el-button>
@@ -59,6 +61,7 @@
             type="success"
             @click="viewAcord(scope.$index, scope.row)">日志记录</el-button>
           <el-button
+            v-if="$store.getters.userAuthority === '80001' ||  $store.getters.userAuthority === '80005'"
             size="mini"
             type="danger"
             @click="handleDelete(scope.$index, scope.row)">删除订单</el-button>

@@ -6,7 +6,8 @@ import staffAdd from '../components/staff/staff_add'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
+  base: '/crm/',
   routes: [
     {
       path: '/',
