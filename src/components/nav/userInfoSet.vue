@@ -98,6 +98,7 @@ export default {
       })
     },
     handleAvatarSuccess (res, file) {
+      console.log(res, file)
       this.imageUrl = URL.createObjectURL(file.raw)
       let imgUrl = file.response
       let that = this
@@ -113,6 +114,7 @@ export default {
           setTimeout(() => {
             location.reload()
           }, 2000)
+
           // that.$store.state.defaultComp = 'staffList'
           // setTimeout(() => {
           //   that.$store.state.defaultComp = 'userInfoSet'
@@ -177,6 +179,12 @@ export default {
     border-radius: 8px;
     color: #ffffff;
   }
+  .el-card__body{
+    color: #ffffff!important;
+  }
+  [class*=" el-icon-"], [class^=el-icon-]{
+    line-height: none;
+  }
   .passReset{
     padding: 10px 40px 10px 0;
   }
@@ -210,5 +218,9 @@ export default {
     width: 220px;
     height: 220px;
     display: block;
+  }
+  .el-icon-plus:before{
+    position: relative!important;
+    top: 50%!important;
   }
 </style>

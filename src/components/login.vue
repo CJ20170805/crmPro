@@ -29,7 +29,7 @@ export default {
     //   this.$router.push({path: '/index'})
     //   alert(sessionStorage.getItem('aaac'))
       let that = this
-      this.$http.get('/api_login.php?un=' + this.un + '&pw=' + this.pw)
+      this.$http.get('api_login.php?un=' + this.un + '&pw=' + this.pw)
         .then(function (res) {
           console.log('LoginCodedede', res)
           if (res.data.loginCode === '10000') {

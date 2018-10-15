@@ -87,7 +87,7 @@
 
         <el-form-item label="添加图片">
           <el-upload
-            action="http://localhost:8080/api/order_img.php"
+            action="http://www.huibohehe.com/crmApi/order_img.php"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-success="orderUploadSuc"

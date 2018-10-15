@@ -9,11 +9,12 @@ import Axios from 'axios'
 import vuex from 'vuex'
 import store from './store/store.js'
 import 'babel-polyfill'
+import apiConfig from '../config/api.config.js'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.prototype.$http = Axios
-Axios.defaults.baseURL = '/crmApi'
+Axios.defaults.baseURL = apiConfig.baseUrl
 Vue.use(vuex)
 
 router.beforeEach((to, from, next) => {

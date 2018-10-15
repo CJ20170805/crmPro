@@ -23,7 +23,7 @@
                 </el-menu-item>
                 <el-submenu style="float:right;" class="userInfo" index='2'>
                     <template slot="title">
-                         <img ref="usersImg" src="https://img.alicdn.com/imgextra/i2/662134481/O1CN011iyLEiL6rjYda9O-662134481.jpg" alt="userLogo" width="40px" height="40px">
+                         <img class='header-img' ref="usersImg" src="https://img.alicdn.com/imgextra/i3/662134481/O1CN011iyLEkOqL2AVhlE-662134481.png" alt="userLogo">
                     </template>
                     <li style="padding:10px;color:#ffffff">当前用户:<span style="margin-left:20px">{{ userLoginData.st_name }}</span></li>
                     <el-menu-item index="2-1" @click="userInfoSet">资料设置</el-menu-item>
@@ -120,7 +120,7 @@ export default {
   border: none!important;
 }
 .el-badge__content.is-fixed{
-    top: 12px;
+    top: 12px!important;
 }
 .site-logo{
     float: left;
@@ -131,7 +131,7 @@ export default {
     margin-left: 34px;
 }
 .el-header{
-   padding: 0;
+   padding: 0 !important;
 }
 .site-btns{
     float: right;
@@ -141,5 +141,10 @@ export default {
         margin-right: 40px;
         margin-top: 10px;
     }
+}
+.header .header-img{
+  width:40px;
+  height: 40px;
+  border-radius: 2px;
 }
 </style>

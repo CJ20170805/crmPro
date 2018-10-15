@@ -133,4 +133,7 @@ export default {
   .el-dialog__body{
     padding: 20px;
   }
+  .el-transfer-panel .el-transfer-panel__footer{
+    margin-left: 6px!important;
+  }
 </style>

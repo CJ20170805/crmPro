@@ -144,7 +144,7 @@
               <el-form-item>
                 <el-upload
                   class="upload-demo"
-                  action="http://localhost:8080/api/order_acord_img.php"
+                  action="http://www.huibohehe.com/crmApi/order_acord_img.php"
                   :on-success="handlePreview"
                   :on-remove="handleRemove"
                   :before-upload="beforeImgUpload"

@@ -11,13 +11,13 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/crmApi': {
-        target: "http://www.huibohehe.com/",
-        // target: "http://localhost/crmproApi",
+      '/api': {
+        target: 'http://www.huibohehe.com',
+        // target: "http://localhost/crmApi",
         //  上下两个 crmAPi 加上main.js 里的  是绝对路径！  
         changeOrigin: true,
         pathRewrite: {
-          '^/crmApi': ''
+          '^/api': '/'
         }
       }
     },
