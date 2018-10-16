@@ -44,16 +44,46 @@
           <p>订单信息</p>
         </div>
         <el-form-item label="订购套餐" prop="region">
-          <el-col :span="9">
+          <el-col :span="10">
               <el-select v-model="comboInfo" placeholder="请选择已订购的套餐">
-                <el-option label="套餐一" value="套餐1"></el-option>
-                <el-option label="套餐二" value="套餐2"></el-option>
+                <el-option label="店铺运营流量白金版/7000/2个月" value="店铺运营流量白金版"></el-option>
+                <el-option label="店铺运营白银版/6000/5款产品/2个月" value="店铺运营白银版"></el-option>
+                <el-option label="店铺运营黄金版/8000/5款产品/2个月" value="店铺运营黄金版"></el-option>
+                 <el-option label="店铺运营铂金版/12000/5款产品/2个月" value="店铺运营铂金版"></el-option>
+                  <el-option label="店铺运营钻石版/22000/10款产品/2个月" value="店铺运营钻石版"></el-option>
               </el-select>
           </el-col>
         </el-form-item>
         <el-form-item label="付款金额" prop="payPrice">
           <el-col :span="9">
             <el-input v-model="shop.payPrice" suffix-icon="el-icon-sold-out"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="付款日期">
+          <el-col :span="9">
+            <!-- <el-input v-model="shop.payPrice" suffix-icon="el-icon-sold-out"></el-input> -->
+             <el-date-picker
+                v-model="shop.payDate"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期">
+            </el-date-picker>
+          </el-col>
+        </el-form-item>
+         <el-form-item label="付款方式">
+          <el-col :span="9">
+               <el-select v-model="shop.payMethods" placeholder="请选择付款方式">
+                <el-option label="支付宝" value="支付宝"></el-option>
+                <el-option label="微信支付" value="微信支付"></el-option>
+                <el-option label="银行转账" value="银行转账"></el-option>
+                <el-option label="网银支付" value="网银支付"></el-option>
+                <el-option label="现金支付" value="现金支付"></el-option>
+              </el-select>
+          </el-col>
+        </el-form-item>
+         <el-form-item label="付款账号" prop="payId">
+          <el-col :span="17">
+            <el-input v-model="shop.payId" suffix-icon="el-icon-sold-out"></el-input>
           </el-col>
         </el-form-item>
         <!-- <el-form-item label="联系人" prop="linkMan">
@@ -75,7 +105,7 @@
           </el-col>
         </el-form-item>
 
-        <el-form-item label="销售人员" prop="salesMan">
+        <el-form-item label="签单人员" prop="salesMan">
           <el-col :span="17">
             <el-input v-model="shop.salesMan" suffix-icon="el-icon-service"></el-input>
           </el-col>
@@ -86,8 +116,11 @@
         </el-form-item>
 
         <el-form-item label="添加图片">
+
+              <!-- action="http://www.huibohehe.com/crmApi/order_img.php" -->
+
           <el-upload
-            action="http://www.huibohehe.com/crmApi/order_img.php"
+            action="http://localhost:8080/api/crmApi/order_img.php"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-success="orderUploadSuc"
@@ -128,6 +161,9 @@
           linkMethodsSel: '',
           payPrice: '',
           timeLimit: '',
+          payId: '',
+          payMethods: '',
+          payDate: '',
           salesMan: ''
           // delivery: false,
         },
@@ -156,8 +192,12 @@
             { required: true, message: '请输入付款金额', trigger: 'blur' },
             { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
           ],
+          payId: [
+            { required: true, message: '请输入付款账号', trigger: 'blur' },
+            { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
+          ],
           salesMan: [
-            { required: true, message: '请输入销售人员姓名', trigger: 'blur' },
+            { required: true, message: '请输入签单人员姓名', trigger: 'blur' },
             { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
           ]
           // region: [
@@ -273,6 +313,9 @@
             formData.append('link_methods', linkStr)
             formData.append('combo_info', this.comboInfo)
             formData.append('pay_price', this.shop.payPrice)
+            formData.append('pay_id', this.shop.payId)
+            formData.append('pay_methods', this.shop.payMethods)
+            formData.append('pay_date', this.shop.payDate)
             formData.append('time_limit', this.shop.timeLimit)
             formData.append('desc_info', this.descInfo)
             formData.append('some_img', this.orderImgs)

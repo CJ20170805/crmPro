@@ -26,6 +26,20 @@
                     <el-menu-item index="1-4-1">选项1</el-menu-item>
                     </el-submenu> -->
                 </el-submenu>
+
+                <el-submenu index="10">
+                    <template slot="title">
+                    <i class="el-icon-phone-outline"></i>
+                    <span slot="title">客户管理</span>
+                    </template>
+                    <el-menu-item-group>
+                    <!-- <span slot="title">---</span> -->
+                    <el-menu-item index="801" @click="switchComp('myOrder')">客户列表</el-menu-item>
+                    <el-menu-item index="801" @click="switchComp('myOrder')">客户添加</el-menu-item>
+                    <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
+                    </el-menu-item-group>
+                </el-submenu>
+
                  <el-submenu index="7">
                     <template slot="title">
                     <i class="el-icon-document"></i>
@@ -47,6 +61,19 @@
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
                     <el-menu-item index="801" @click="switchComp('myOrder')">我的订单</el-menu-item>
+                    <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
+                    </el-menu-item-group>
+                </el-submenu>
+                <el-submenu index="9">
+                    <template slot="title">
+                    <i class="el-icon-news"></i>
+                    <span slot="title">业绩管理</span>
+                    </template>
+                    <el-menu-item-group>
+                    <!-- <span slot="title">---</span> -->
+                    <el-menu-item index="801" @click="switchComp('myOrder')">业绩报表</el-menu-item>
+                    <el-menu-item index="801" @click="switchComp('myOrder')">业绩录入</el-menu-item>
+                    <el-menu-item index="801" @click="switchComp('myOrder')">业绩导出</el-menu-item>
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
                 </el-submenu>
@@ -117,7 +144,7 @@ export default {
     overflow: hidden;
   }
   .el-main{
-    height: 700px;
+    height: 800px;
     padding-top: 14px;
     overflow-y: scroll;
     overflow-x: hidden;

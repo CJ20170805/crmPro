@@ -71,8 +71,8 @@
 
     <!--Order Detail dialog -->
     <el-dialog title="" :visible.sync="shopInfoVisible">
-      <table class="shopInfoTable">
-        <thead>
+      <div class="shopInfoTable">
+        <!-- <thead>
           <tr>
             <th>店铺信息</th>
             <th>订购信息</th>
@@ -102,8 +102,140 @@
           <tr>
             <td>联系方式:<span class="shopInfoValue">{{ shopInfo.s_linkMethods }} </span></td>
           </tr>
-        </tbody>
-      </table>
+        </tbody> -->
+        <el-row>
+          <el-col :span="24">
+            <div class="table-title">店铺信息</div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="16">
+            <div class="table-item">
+              <span class="table-item-tit">店铺名称：</span>
+              <span class="table-item-con">{{ shopInfo.s_name }}</span>
+            </div>
+          </el-col>
+           <el-col :span="8">
+            <div class="table-item">
+              <span class="table-item-tit">店铺类型：</span>
+              <span class="table-item-con">{{ shopInfo.s_type }}</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="16">
+            <div class="table-item">
+              <span class="table-item-tit">店铺链接：</span>
+              <span class="table-item-con"><a :href="shopInfo.s_url" target="_blank">{{ shopInfo.s_url}}</a></span>
+            </div>
+          </el-col>
+           <el-col :span="8">
+             <div class="table-item">
+              <span class="table-item-tit">店铺ID：</span>
+              <span class="table-item-con">{{ shopInfo.s_id }}</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <div class="table-item">
+              <span class="table-item-tit">店铺联系人：</span>
+              <span class="table-item-con">{{ shopInfo.s_linkMan }}</span>
+            </div>
+          </el-col>
+           <el-col :span="14">
+             <div class="table-item">
+              <span class="table-item-tit">联系方式：</span>
+              <span class="table-item-con">{{ shopInfo.s_linkMethods }}</span>
+            </div>
+          </el-col>
+        </el-row>
+      <el-row>
+        <el-col :span="24">
+          <div class="table-title">订单信息</div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="10">
+          <div class="table-item">
+            <span class="table-item-tit">订购套餐：</span>
+            <span class="table-item-con">{{ shopInfo.s_comboInfo }}</span>
+          </div>
+        </el-col>
+          <el-col :span="14">
+            <div class="table-item">
+            <span class="table-item-tit">付款金额：</span>
+            <span class="table-item-con">{{ shopInfo.s_payPrice }}</span>
+          </div>
+        </el-col>
+      </el-row>
+
+       <el-row>
+        <el-col :span="10">
+          <div class="table-item">
+            <span class="table-item-tit">付款账号：</span>
+            <span class="table-item-con">{{ shopInfo.s_payId }}</span>
+          </div>
+        </el-col>
+          <el-col :span="7">
+            <div class="table-item">
+            <span class="table-item-tit">付款方式：</span>
+            <span class="table-item-con">{{ shopInfo.s_payMethods }}</span>
+          </div>
+        </el-col>
+          <el-col :span="7">
+            <div class="table-item">
+            <span class="table-item-tit">付款时间：</span>
+            <span class="table-item-con">{{ shopInfo.s_payDate }}</span>
+          </div>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="16">
+          <div class="table-item">
+            <span class="table-item-tit">服务时间：</span>
+            <span class="table-item-con">{{ shopInfo.s_timeLimit }}</span>
+          </div>
+        </el-col>
+          <el-col :span="8">
+            <div class="table-item">
+            <span class="table-item-tit">签单人员：</span>
+            <span class="table-item-con">{{ shopInfo.s_salesMan }}</span>
+          </div>
+        </el-col>
+      </el-row>
+
+       <el-row>
+        <el-col :span="24">
+          <div class="table-item">
+            <span class="table-item-tit else-info-tit">备注信息：</span>
+            <span class="table-item-con else-info-con">{{ shopInfo.s_descInfo }}</span>
+          </div>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="24">
+          <div class="table-title">附件</div>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="24">
+            <div v-if="item !== ''" class="imgList"  v-for="(item, index) in shopInfo.s_someImg" :key="index">
+              <span class="down-left">{{item}}</span>
+              <span class="down-right">
+                 <a :href="item">
+                 点击下载
+                 </a>
+              </span>
+            </div>
+        </el-col>
+      </el-row>
+
+    </div>
+
       <!-- <div class="order-step">
           <p class="order-status-title">订单状态</p>
           <el-steps :active="orderActive" align-center>
@@ -113,11 +245,6 @@
             <el-step title="服务结束" ></el-step>
           </el-steps>
       </div> -->
-       <ul class="imgList">
-            <li v-for="(item, index) in shopInfo.s_someImg" :key="index">
-              <img :src="item" alt="" width="160px" height="220px">
-            </li>
-       </ul>
     </el-dialog>
 
     <!--Order Detail dialog -->
@@ -147,7 +274,7 @@ export default {
     return {
       tableData: [],
       orderData: [],
-      shopInfoVisible: false,
+      shopInfoVisible: true,
       dispenceOrderVisible: false,
       orderAcordVisible: false,
       orderDispenseInfo: '',
@@ -191,6 +318,9 @@ export default {
       this.shopInfo.s_linkMethods = row.link_methods
       this.shopInfo.s_comboInfo = row.combo_info
       this.shopInfo.s_payPrice = row.pay_price
+      this.shopInfo.s_payId = row.pay_id
+      this.shopInfo.s_payMethods = row.pay_methods
+      this.shopInfo.s_payDate = row.pay_date
       this.shopInfo.s_descInfo = row.desc_info
       this.shopInfo.s_timeLimit = row.time_limit
       this.shopInfo.s_salesMan = row.sales_man
@@ -274,6 +404,7 @@ export default {
 }
 </script>
 <style lang="less">
+@blue: #409EFF;
 .acord-block{
   text-align: left;
   .collapse-item-style{
@@ -312,24 +443,70 @@ export default {
 }
 .shopInfoTable{
   width: 100%;
-  td{
-    text-align: left;
-    padding: 8px;
-    width: 50%;
-    font-size: 1.1em;
-    font-weight: 600;
+  .imgList{
+    width: 100%;
+      border: 1px solid @blue;
+      span{
+        display: inline-block;
+        text-align: center;
+        a{
+          display: block;
+          width: 100%;
+        }
+      }
+      .down-left{
+        border-right:1px solid @blue;
+        width: 80%;
+      }
+      .down-right{
+        width: 19%;
+        text-align: center;
+      }
   }
-  th{
-    padding: 0 0 20px 0;
-    text-align: left;
-    width: 50%;
-    color: #409EFF;
+  .table-title{
+    margin: 8px 0;
+    border-radius: 2px;
+    height: 42px;
+    width: 100%;
+    line-height: 42px;
+    color: #ffffff;
     font-size: 1.2em;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 8px;
+    box-sizing: border-box;
+    background-color: @blue;
   }
-  .shopInfoValue{
-    color: red;
-    font-size: 1em;
+  .table-item{
+    border-radius: 2px;
+    height: 28px;
+    margin: 12px 2px;
+    border: 1px solid @blue;
+    span{
+      float: left;
+      height: 28px;
+      line-height: 28px;
+      color: #ffffff;
+      font-size: 1em;
+      }
+    .table-item-tit{
+      width: 40%;
+      background-color: @blue;
+    }
+    .else-info-tit{
+      width: 16%;
+    }
+    .else-info-con{
+      text-align: left;
+    }
+    .table-item-con{
+      width: 60%;
+      color: red;
+      font-size: 1.13em;
+      font-weight: bold;
+    }
   }
+
 }
 .order-list .el-table th>.cell{
   text-align: center;
