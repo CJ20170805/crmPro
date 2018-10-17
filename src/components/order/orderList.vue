@@ -72,37 +72,6 @@
     <!--Order Detail dialog -->
     <el-dialog title="" :visible.sync="shopInfoVisible">
       <div class="shopInfoTable">
-        <!-- <thead>
-          <tr>
-            <th>店铺信息</th>
-            <th>订购信息</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>店铺名称：<span class="shopInfoValue">{{ shopInfo.s_name }} </span></td>
-            <td>订购套餐：<span class="shopInfoValue">{{ shopInfo.s_comboInfo }} </span></td>
-          </tr>
-          <tr>
-            <td>店铺类型：<span class="shopInfoValue">{{ shopInfo.s_type }} </span></td>
-            <td>付款金额：<span class="shopInfoValue">{{ shopInfo.s_payPrice }} </span></td>
-          </tr>
-           <tr>
-            <td>店铺ID：<span class="shopInfoValue">{{ shopInfo.s_id }} </span></td>
-            <td>服务时间：<span class="shopInfoValue">{{ shopInfo.s_timeLimit }} </span></td>
-          </tr>
-          <tr>
-            <td>店铺URL：<span class="shopInfoValue"><a :href="shopInfo.s_url" target="_blank">{{ shopInfo.s_url}}</a></span></td>
-            <td>销售人员：<span class="shopInfoValue">{{ shopInfo.s_salesMan }} </span></td>
-          </tr>
-           <tr>
-            <td>联系人：<span class="shopInfoValue">{{ shopInfo.s_linkMan }} </span></td>
-            <td>其他信息：<span class="shopInfoValue">{{ shopInfo.s_descInfo }} </span></td>
-          </tr>
-          <tr>
-            <td>联系方式:<span class="shopInfoValue">{{ shopInfo.s_linkMethods }} </span></td>
-          </tr>
-        </tbody> -->
         <el-row>
           <el-col :span="24">
             <div class="table-title">店铺信息</div>
@@ -224,7 +193,7 @@
       <el-row>
         <el-col :span="24">
             <div v-if="item !== ''" class="imgList"  v-for="(item, index) in shopInfo.s_someImg" :key="index">
-              <span class="down-left">{{item}}</span>
+              <span class="down-left">{{ item }}</span>
               <span class="down-right">
                  <a :href="item">
                  点击下载
@@ -234,17 +203,8 @@
         </el-col>
       </el-row>
 
-    </div>
+      </div>
 
-      <!-- <div class="order-step">
-          <p class="order-status-title">订单状态</p>
-          <el-steps :active="orderActive" align-center>
-            <el-step title="完成下单" ></el-step>
-            <el-step title="完成分单" ></el-step>
-            <el-step title="服务运营中" ></el-step>
-            <el-step title="服务结束" ></el-step>
-          </el-steps>
-      </div> -->
     </el-dialog>
 
     <!--Order Detail dialog -->
@@ -274,7 +234,7 @@ export default {
     return {
       tableData: [],
       orderData: [],
-      shopInfoVisible: true,
+      shopInfoVisible: false,
       dispenceOrderVisible: false,
       orderAcordVisible: false,
       orderDispenseInfo: '',
@@ -498,6 +458,7 @@ export default {
     }
     .else-info-con{
       text-align: left;
+      padding-left: 4px;
     }
     .table-item-con{
       width: 60%;

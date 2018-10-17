@@ -112,10 +112,10 @@
         </el-form-item>
 
         <el-form-item label="备注信息">
-          <el-input type="textarea" v-model="descInfo"></el-input>
+          <el-input type="textarea" rows="6" v-model="descInfo"></el-input>
         </el-form-item>
 
-        <el-form-item label="添加图片">
+        <el-form-item label="添加附件">
 
               <!-- action="http://www.huibohehe.com/crmApi/order_img.php" -->
 
@@ -144,7 +144,7 @@
           <el-button type="primary" @click="submitNewOrder">立即创建</el-button>
           <el-button @click="resetForm('shop')">重置</el-button>
         </el-form-item>
-   </el-form>
+     </el-form>
     </div>
   </div>
 </template>

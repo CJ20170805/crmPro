@@ -34,8 +34,8 @@
                     </template>
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
-                    <el-menu-item index="801" @click="switchComp('myOrder')">客户列表</el-menu-item>
-                    <el-menu-item index="801" @click="switchComp('myOrder')">客户添加</el-menu-item>
+                    <el-menu-item index="801" @click="switchComp('clientList')">客户列表</el-menu-item>
+                    <el-menu-item index="801" @click="switchComp('clientAdd')">客户添加</el-menu-item>
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
                 </el-submenu>
@@ -98,6 +98,8 @@ import homePage from './home/homePage'
 import orderList from './order/orderList'
 import orderAdd from './order/orderAdd'
 import myOrder from './my/myOrder'
+import clientAdd from './client/clientAdd'
+import clientList from './client/clientList'
 export default {
   data () {
     return {
@@ -116,7 +118,9 @@ export default {
     homePage,
     orderList,
     orderAdd,
-    myOrder
+    myOrder,
+    clientAdd,
+    clientList
   },
   methods: {
     switchComp (aa) {
