@@ -269,7 +269,7 @@ export default {
     },
     viewDetail (index, row) {
       this.shopInfoVisible = true
-      console.log(index, row)
+      // console.log(index, row)
       this.shopInfo.s_name = row.shop_name
       this.shopInfo.s_id = row.shop_id
       this.shopInfo.s_url = row.shop_url
@@ -285,14 +285,16 @@ export default {
       this.shopInfo.s_timeLimit = row.time_limit
       this.shopInfo.s_salesMan = row.sales_man
       // split string for array
-      let someImgArr = []
-      let someImg = row.some_img
-      let someStr = someImg.split(',')
-      for (let i = 0; i < someStr.length; i++) {
-        someImgArr.push(someStr[i])
+      if (row.s_someImg !== '') {
+        let someImgArr = []
+        let someImg = row.some_img
+        let someStr = someImg.split(',')
+        for (let i = 0; i < someStr.length; i++) {
+          someImgArr.push(someStr[i])
+        }
+        // console.log('AAAA',someImgArr)
+        this.shopInfo.s_someImg = someImgArr
       }
-      // console.log('AAAA',someImgArr)
-      this.shopInfo.s_someImg = someImgArr
     },
     handleDelete (index, row) {
       // console.log(index, row.id)

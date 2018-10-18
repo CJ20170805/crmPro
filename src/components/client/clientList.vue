@@ -62,7 +62,7 @@
 
     <!--Order Detail dialog -->
     <el-dialog title="" :visible.sync="clientInfoVisible">
-      <div class="clientInfoTable">
+        <div class="clientInfoTable">
         <el-row>
           <el-col :span="24">
             <div class="table-title">客户信息</div>
@@ -70,40 +70,49 @@
         </el-row>
 
         <el-row>
-            <el-col :span="10">
+            <el-col :span="12">
             <div class="table-item">
                 <span class="table-item-tit">客户名称：</span>
-                <span class="table-item-con">{ shopInfo.s_timeLimit }}</span>
+                <span class="table-item-con">{{ clientName }}</span>
             </div>
             </el-col>
-            <el-col :span="7">
-                <div class="table-item">
-                <span class="table-item-tit">客户类型：</span>
-                <span class="table-item-con">{ shopInfo.s_salesMan }}</span>
-            </div>
-            </el-col>
-            <el-col :span="7">
+            <el-col :span="12">
                 <div class="table-item">
                 <span class="table-item-tit">所在地区：</span>
-                <span class="table-item-con">{ shopInfo.s_salesMan }}</span>
+                <span class="table-item-con">{{ clientAddress }}</span>
             </div>
             </el-col>
+      </el-row>
+
+      <el-row>
+            <el-col :span="12">
+              <div class="table-item">
+                <span class="table-item-tit">客户类型：</span>
+                <span class="table-item-con">{{ clientType }}</span>
+              </div>
+            </el-col>
+        <el-col :span="12">
+            <div class="table-item">
+                <span class="table-item-tit">客户编号：</span>
+                <span class="table-item-con">{{ clientId }}</span>
+            </div>
+        </el-col>
       </el-row>
 
      <el-row>
         <el-col :span="24">
             <div class="table-item">
                 <span class="table-item-tit">联系方式：</span>
-                <span class="table-item-con">{ shopInfo.s_timeLimit }}</span>
+                <span class="table-item-con">{{ clientLink }}</span>
             </div>
         </el-col>
       </el-row>
 
        <el-row>
         <el-col :span="24">
-            <div class="table-item">
-                <span class="table-item-tit">客户意向：</span>
-                <span class="table-item-con">{ shopInfo.s_timeLimit }}</span>
+            <div class="table-item table-textarea">
+                <span class="table-item-tit table-textarea-tit">客户意向：</span>
+                <span class="table-item-con table-textarea-con">{{ clientIntent }}</span>
             </div>
         </el-col>
       </el-row>
@@ -113,6 +122,72 @@
             <div class="table-title">其他信息</div>
           </el-col>
         </el-row>
+       <el-row>
+        <el-col :span="24">
+            <div class="table-item">
+                <span class="table-item-tit">录入人员：</span>
+                <span class="table-item-con">{{ writeMan }}</span>
+            </div>
+        </el-col>
+      </el-row>
+
+      <el-row>
+          <el-col :span="24">
+              <div class="table-item">
+                  <span class="table-item-tit">录入日期：</span>
+                  <span class="table-item-con">{{ regDate }}</span>
+              </div>
+          </el-col>
+        </el-row>
+
+       <el-row>
+        <el-col :span="24">
+            <div class="table-item">
+                <span class="table-item-tit">销售人员：</span>
+                <span class="table-item-con">{{ salesMan }}</span>
+            </div>
+        </el-col>
+      </el-row>
+       <el-row>
+        <el-col :span="12">
+            <div class="table-item">
+                <span class="table-item-tit">联系日期：</span>
+                <span class="table-item-con">{{ linkDate }}</span>
+            </div>
+        </el-col>
+        <el-col :span="12">
+            <div class="table-item">
+                <span class="table-item-tit">联系渠道：</span>
+                <span class="table-item-con">{{ linkChannel }}</span>
+            </div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+            <div class="table-item table-textarea">
+                <span class="table-item-tit table-textarea-tit">备注信息：</span>
+                <span class="table-item-con table-textarea-con">{{ descInfo }}</span>
+            </div>
+        </el-col>
+      </el-row>
+
+       <el-row>
+          <el-col :span="24">
+            <div class="table-title">附件</div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+              <div v-if="clientFiles !== ''" class="imgList"  v-for="(item, index) in clientFiles" :key="index">
+                <span class="down-left">{{ item }}</span>
+                <span class="down-right">
+                  <a :href="item">
+                  点击下载
+                  </a>
+                </span>
+              </div>
+          </el-col>
+      </el-row>
 
       </div>
     </el-dialog>
@@ -123,8 +198,21 @@
 export default {
   data () {
     return {
-      clientData: '',
-      clientInfoVisible: false
+      clientData: [],
+      clientInfoVisible: false,
+      clientName: '',
+      clientType: '',
+      clientLink: '',
+      clientAddress: '',
+      clientIntent: '',
+      writeMan: '',
+      salesMan: '',
+      linkDate: '',
+      linkChannel: '',
+      regDate: '',
+      clientId: '',
+      descInfo: '',
+      clientFiles: ''
     }
   },
   created () {
@@ -142,10 +230,61 @@ export default {
   methods: {
     handleDetail (index, row) {
       this.clientInfoVisible = true
-      console.log(index, row)
+      // console.log(index, row)
+      this.clientId = row.id
+      this.clientName = row.client_name
+      this.clientType = row.client_type
+      this.clientLink = row.client_link
+      this.clientIntent = row.client_intent
+      this.clientAddress = row.client_address
+      this.writeMan = row.write_man
+      this.salesMan = row.sales_man
+      this.linkDate = row.link_date
+      this.linkChannel = row.link_channel
+      this.regDate = row.reg_date
+      this.descInfo = row.desc_info
+      if (row.files !== '') {
+        let file = row.files.split(',')
+        let fileArr = []
+        for (let i = 0; i < file.length; i++) {
+          fileArr.push(file[i])
+        }
+        this.clientFiles = fileArr
+        }
     },
     handleDelete (index, row) {
-    console.log(index, row)
+     console.log(index, row)
+     this.$confirm('此操作将永久删除该客户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let that = this
+        let formData = new FormData()
+        formData.append('flag', 'delClient')
+        formData.append('delId', row.id)
+        this.$http.post('client_mng.php', formData)
+          .then(function (res) {
+            // console.log(res)
+            if (res.data === 'delClientSuc') {
+              that.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+            that.$store.state.defaultComp = 'clientAdd'
+            setTimeout(() => {
+              that.$store.state.defaultComp = 'clientList'
+            }, 10)
+            }
+          }).catch(function (err) {
+            console.log(err)
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }
@@ -191,6 +330,16 @@ export default {
     padding-left: 8px;
     box-sizing: border-box;
     background-color: @blue;
+  }
+  .table-textarea{
+    height: 80px!important;
+  }
+  .table-textarea-tit{
+    height: 80px!important;
+    line-height: 80px!important;
+  }
+  .table-textarea-con{
+    height: 80px!important;
   }
   .table-item{
     border-radius: 2px;

@@ -70,7 +70,7 @@
        <el-form-item label="联系渠道">
             <el-col :span="9">
               <el-radio-group v-model="client.linkChannel">
-                <el-radio label="电话"></el-radio>
+                <el-radio label="电话沟通"></el-radio>
                 <el-radio label="其他"></el-radio>
               </el-radio-group>
             </el-col>

@@ -72,7 +72,7 @@
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
                     <el-menu-item index="801" @click="switchComp('myOrder')">业绩报表</el-menu-item>
-                    <el-menu-item index="801" @click="switchComp('myOrder')">业绩录入</el-menu-item>
+                    <el-menu-item index="801" @click="switchComp('pmAdd')">业绩录入</el-menu-item>
                     <el-menu-item index="801" @click="switchComp('myOrder')">业绩导出</el-menu-item>
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
@@ -100,6 +100,7 @@ import orderAdd from './order/orderAdd'
 import myOrder from './my/myOrder'
 import clientAdd from './client/clientAdd'
 import clientList from './client/clientList'
+import pmAdd from './pm/pmAdd'
 export default {
   data () {
     return {
@@ -120,7 +121,8 @@ export default {
     orderAdd,
     myOrder,
     clientAdd,
-    clientList
+    clientList,
+    pmAdd
   },
   methods: {
     switchComp (aa) {
