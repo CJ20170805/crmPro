@@ -186,18 +186,17 @@
 
       <el-row>
         <el-col :span="24">
-          <div class="table-title">附件</div>
+          <div class="table-title">附件 (点击图标下载)</div>
         </el-col>
       </el-row>
 
       <el-row>
         <el-col :span="24">
-            <div v-if="item !== ''" class="imgList"  v-for="(item, index) in shopInfo.s_someImg" :key="index">
-              <span class="down-left">{{ item }}</span>
-              <span class="down-right">
-                 <a :href="item">
-                 点击下载
-                 </a>
+            <div class="imgList">
+              <span class="down-left"  v-for="(item, index) in shopInfo.s_someImg" :key="index">
+                   <a :href="item" target="_blank">
+                       <img :src="item.substring(item.length-3) === 'zip' ? 'https://img.alicdn.com/imgextra/i2/662134481/O1CN011iyLEr3kJJ6YdeJ-662134481.jpg' : item" width="120" height="120">
+                   </a>
               </span>
             </div>
         </el-col>
@@ -251,7 +250,7 @@ export default {
         s_payPrice: '',
         s_descInfo: '',
         s_timeLimit: '',
-        s_someImg: '',
+        s_someImg: [],
         s_salesMan: ''
       }
     }
@@ -285,9 +284,9 @@ export default {
       this.shopInfo.s_timeLimit = row.time_limit
       this.shopInfo.s_salesMan = row.sales_man
       // split string for array
-      if (row.s_someImg !== '') {
-        let someImgArr = []
-        let someImg = row.some_img
+      let someImgArr = []
+      let someImg = row.some_img
+      if (someImg !== '') {
         let someStr = someImg.split(',')
         for (let i = 0; i < someStr.length; i++) {
           someImgArr.push(someStr[i])
@@ -407,22 +406,20 @@ export default {
   width: 100%;
   .imgList{
     width: 100%;
+    height: 130px;
       border: 1px solid @blue;
       span{
         display: inline-block;
-        text-align: center;
         a{
           display: block;
-          width: 100%;
         }
       }
       .down-left{
         border-right:1px solid @blue;
         width: 80%;
-      }
-      .down-right{
-        width: 19%;
-        text-align: center;
+        width: 120px;
+        float: left;
+        margin: 6px;
       }
   }
   .table-title{

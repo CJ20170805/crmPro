@@ -173,17 +173,17 @@
 
        <el-row>
           <el-col :span="24">
-            <div class="table-title">附件</div>
+            <div class="table-title">附件（点击图标下载）</div>
           </el-col>
         </el-row>
-        <el-row>
+         <el-row>
           <el-col :span="24">
-              <div v-if="clientFiles !== ''" class="imgList"  v-for="(item, index) in clientFiles" :key="index">
-                <span class="down-left">{{ item }}</span>
-                <span class="down-right">
-                  <a :href="item">
-                  点击下载
-                  </a>
+              <div class="imgList">
+                  <!-- <img :src="item" alt="item" width="100" height="120"> -->
+                <span class="down-left"  v-for="(item, index) in clientFiles" :key="index">
+                   <a :href="item" target="_blank">
+                       <img :src="item.substring(item.length-3) === 'zip' ? 'https://img.alicdn.com/imgextra/i2/662134481/O1CN011iyLEr3kJJ6YdeJ-662134481.jpg' : item" width="120" height="120">
+                   </a>
                 </span>
               </div>
           </el-col>
@@ -295,27 +295,25 @@ export default {
   text-align: center;
 }
 .client-list{
-  .clientInfoTable{
+.clientInfoTable{
   width: 100%;
   .imgList{
-    width: 100%;
-      border: 1px solid @blue;
-      span{
-        display: inline-block;
-        text-align: center;
-        a{
-          display: block;
-          width: 100%;
-        }
+  width: 100%;
+  height: 130px;
+    border: 1px solid @blue;
+    span{
+      display: inline-block;
+      a{
+        display: block;
       }
-      .down-left{
-        border-right:1px solid @blue;
-        width: 80%;
-      }
-      .down-right{
-        width: 19%;
-        text-align: center;
-      }
+    }
+    .down-left{
+      border-right:1px solid @blue;
+      width: 80%;
+      width: 120px;
+      float: left;
+      margin: 6px;
+    }
   }
   .table-title{
     margin: 8px 0;
