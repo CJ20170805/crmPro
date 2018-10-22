@@ -73,7 +73,7 @@
                     <!-- <span slot="title">---</span> -->
                     <el-menu-item index="1101" @click="switchComp('pmList')">业绩列表</el-menu-item>
                     <el-menu-item index="1102" @click="switchComp('pmAdd')">业绩录入</el-menu-item>
-                    <el-menu-item index="1103" @click="switchComp('myOrder')">业绩导出</el-menu-item>
+                    <el-menu-item index="1103" @click="switchComp('pmExport')">业绩导出</el-menu-item>
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
                 </el-submenu>
@@ -102,6 +102,7 @@ import clientAdd from './client/clientAdd'
 import clientList from './client/clientList'
 import pmAdd from './pm/pmAdd'
 import pmList from './pm/pmList'
+import pmExport from './pm/pmExport'
 export default {
   data () {
     return {
@@ -124,7 +125,8 @@ export default {
     clientAdd,
     clientList,
     pmAdd,
-    pmList
+    pmList,
+    pmExport
   },
   methods: {
     switchComp (aa) {
