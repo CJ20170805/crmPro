@@ -3,17 +3,35 @@
      <el-row :gutter="20" class="home-header">
         <el-col :xs="8" :sm="10" :md="8" :lg="8" :xl="8">
              <el-card class="cards-style cards-1">
-                    <div>afdsfadsfasd</div>
+                <div class="cards-left">
+                    <img src="../../assets/client.png" alt="" width="120" height="120">
+                </div>
+                <div class="cards-right">
+                    <p class="cards-main">+6个</p>
+                    <p class="cards-tit">昨日新增客户数量</p>
+                </div>
             </el-card>
             </el-col>
         <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
               <el-card class="cards-style cards-2">
-                    <div>afdsfadsfasd</div>
+                <div class="cards-left">
+                    <img src="../../assets/order.png" alt="" width="120" height="120">
+                </div>
+                <div class="cards-right">
+                    <p class="cards-main">+8个</p>
+                    <p class="cards-tit">昨日订单数量</p>
+                </div>
                 </el-card>
         </el-col>
         <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                <el-card class="cards-style cards-3">
-                    <div>afdsfadsfasd</div>
+                    <div class="cards-left">
+                    <img src="../../assets/money.png" alt="" width="120" height="120">
+                    </div>
+                    <div class="cards-right">
+                        <p class="cards-main">￥15446</p>
+                        <p class="cards-tit">昨日订单到账总额</p>
+                    </div>
                 </el-card>
         </el-col>
     </el-row>
@@ -22,11 +40,11 @@
         <el-col :xs="8" :sm="10" :md="8" :lg="8" :xl="8">
              <el-card class="hh-2">
                 <h1>Swift</h1>
-                <p>月度最佳员工</p>
+                <p class="best-tit">月度最佳员工</p>
                 <div>
                     <img src="../../assets/hd.jpg" alt="">
                 </div>
-                <p>的沙发发送到发送到开了房间的上课了房间大收费电商连咖啡</p>
+                <p class="best-reason">的沙发发送到发送到开了房间的上课了房间大收费电商连咖啡</p>
             </el-card>
             </el-col>
         <el-col :xs="16" :sm="16" :md="16" :lg="16" :xl="16">
@@ -54,13 +72,42 @@
 <script>
 let echarts = require('echarts')
 export default {
+  data () {
+    return {
+      pmData: [820, 932, 901, 934, 1290, 1330, 1320]
+    }
+  },
+  created () {
+    let date = new Date()
+    let nowDate = this.formatDate(date)
+    // let that = this
+      let formData = new FormData()
+    //   formData.append('flag', 'conditionFetch')
+      formData.append('now_date', nowDate)
+      this.$http.post('computed_home.php', formData)
+        .then(function (res) {
+          console.log(res.data.length)
+        }).catch(function (err) {
+          console.log(err)
+        })
+  },
+  methods: {
+    formatDate (date) {
+    var y = date.getFullYear()
+    var m = date.getMonth() + 1
+    m = m < 10 ? '0' + m : m
+    var d = date.getDate()
+    d = d < 10 ? ('0' + d) : d
+    return y + '-' + m + '-' + d
+    }
+  },
   mounted () {
 // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('ech'))
     // 绘制图表
     myChart.setOption({
         title: {
-        text: '堆叠XXX图'
+        text: '业绩统计图'
     },
     tooltip : {
         trigger: 'axis',
@@ -71,14 +118,16 @@ export default {
             }
         }
     },
-    legend: {
-        data:['aaaaa', 'bbbbb', 'ccccc', 'ddddd', 'eeeee']
-    },
     toolbox: {
         feature: {
             saveAsImage: {}
         }
     },
+    series: [{
+        data: this.pmData,
+        type: 'line',
+        areaStyle: {}
+    }],
     grid: {
         left: '3%',
         right: '4%',
@@ -96,50 +145,7 @@ export default {
         {
             type : 'value'
         }
-    ],
-    series : [
-        {
-            name:'aaaaa',
-            type:'line',
-            stack: '总量',
-            areaStyle: {},
-            data:[120, 132, 101, 134, 90, 230, 210]
-        },
-        {
-            name:'bbbbb',
-            type:'line',
-            stack: '总量',
-            areaStyle: {},
-            data:[220, 182, 191, 234, 290, 330, 310]
-        },
-        {
-            name:'ccccc',
-            type:'line',
-            stack: '总量',
-            areaStyle: {},
-            data:[150, 232, 201, 154, 190, 330, 410]
-        },
-        {
-            name:'ddddd',
-            type:'line',
-            stack: '总量',
-            areaStyle: {normal: {}},
-            data:[320, 332, 301, 334, 390, 330, 320]
-        },
-          {
-            name:'eeeee',
-            type:'line',
-            stack: '总量',
-            label: {
-              normal: {
-                show: true,
-                position: 'top'
-            }
-          },
-          areaStyle: {normal: {}},
-          data: [820, 932, 901, 934, 1290, 1330, 1320]
-        }
-      ]
+    ]
     })
   }
 }
@@ -153,9 +159,28 @@ export default {
 }
 .home-wrap{
     .cards-style{
+        text-align: left;
         height: 180px;
         color: #ffffff;
-        font-size: 1.4em;
+        padding-left: 10%;
+        .cards-tit{
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        .cards-main{
+          font-size: 1.8em;
+          font-weight: bold;
+        }
+        .cards-left{
+            width: 140px;
+            padding-top: 12px;
+            float: right;
+            padding-right: 10%;
+        }
+        .cards-right{
+            width:100%;
+            font-size: 1em;
+        }
     }
     .home-header{
         padding: 10px 0;
@@ -180,6 +205,12 @@ export default {
               width: 100px;
               height: 100px;
               border-radius: 6px;
+          }
+          .best-tit{
+              padding: 16px;
+          }
+          .best-reason{
+              padding: 20px;
           }
         }
     }

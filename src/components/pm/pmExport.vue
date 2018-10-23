@@ -2,9 +2,8 @@
     <div class="pm-export">
         <p class="title">数据导出</p>
         <div class="query-data">
-          <el-row>
-              <el-col :span="8">
-                    <el-date-picker
+          <div class="query-main">
+              <el-date-picker
                     v-model="queryDate"
                     type="daterange"
                     align="right"
@@ -15,13 +14,8 @@
                     end-placeholder="结束日期"
                     :picker-options="pickerOptions2">
                     </el-date-picker>
-              </el-col>
-              <el-col :span="5">
                 <el-button type="primary" icon="el-icon-search" @click="queryData">查询数据</el-button>
-              </el-col>
-              <el-col :span="6">
-              </el-col>
-          </el-row>
+          </div>
         </div>
         <div class="query-res">
              <el-table
@@ -53,7 +47,7 @@
                 </el-table-column>
                 <el-table-column
                 prop="address"
-                label="服务产品"
+                label="订购产品"
                 show-overflow-tooltip>
                   <template slot-scope="scope">{{ scope.row.buy_serv }}</template>
                 </el-table-column>
@@ -72,8 +66,10 @@
             </el-table>
         </div>
          <div style="margin-top: 20px">
-                <el-button @click="toggleSelection([tableData3[1], tableData3[2]])">切换第二、第三行的选中状态</el-button>
-                <el-button @click="toggleSelection()">取消选择</el-button>
+            <div style="width:400px;heght:60px;float:right">
+               <el-button @click="exportSome" :disabled="btnStu2" type="primary">仅导出已选择的数据</el-button>
+                <el-button @click="exportAll" :disabled="btnStu" type="primary">导出全部数据</el-button>
+            </div>
          </div>
     </div>
 </template>
@@ -110,14 +106,32 @@ export default {
         },
        queryDate: '',
        tableData3: [],
-        multipleSelection: []
+       multipleSelection: [],
+       selectId: [],
+       btnStu: true,
+       btnStu2: true
     }
   },
   methods: {
-    queryData () {
+    exportAll () {
       let begin = this.queryDate[0]
       let end = this.queryDate[1]
-    //   console.log(begin,'TTT',end)
+      window.location.href = 'http://localhost:8080/api/crmApi/exportExcel.php?bn=' + begin + '&ed=' + end
+    },
+    exportSome () {
+      console.log(this.selectId)
+      window.location.href = 'http://localhost:8080/api/crmApi/exportExcel.php?sid=' + this.selectId
+    },
+    open1 () {
+      this.$alert('请选择查询日期', '查询错误', {
+        confirmButtonText: '确定'
+      })
+    },
+    queryData () {
+      if (this.queryDate !== '') {
+        let begin = this.queryDate[0]
+      let end = this.queryDate[1]
+      //   console.log(begin,'TTT',end)
       let that = this
       let formData = new FormData()
       formData.append('flag', 'conditionFetch')
@@ -125,29 +139,42 @@ export default {
       formData.append('end', end)
       this.$http.post('pm_mng.php', formData)
         .then(function (res) {
-          console.log(res)
+          // console.log(res)
           that.tableData3 = res.data
+          if (res.data.length !== 0) {
+            that.btnStu = false
+          } else {
+            that.btnStu = true
+          }
         }).catch(function (err) {
           console.log(err)
         })
-    },
-    toggleSelection (rows) {
-        if (rows) {
-            rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row)
-            })
-        } else {
-            this.$refs.multipleTable.clearSelection()
-        }
+      } else {
+        this.open1()
+      }
     },
     handleSelectionChange (val) {
-      this.multipleSelection = val
+      // this.multipleSelection = val.id
+      if (val.length !== 0) {
+        this.btnStu2 = false
+      } else {
+        this.btnStu2 = true
+      }
+      let arr = []
+      val.forEach((v, k) => {
+        arr.push(v.id)
+      })
+      this.selectId = arr
+      // console.log(arr)
     }
   }
 }
 </script>
 <style lang="less">
 @blue: #409EFF;
+.el-table th>.cell{
+  text-align: center;
+}
 .pm-export{
     overflow: hidden;
    .title{
@@ -163,6 +190,14 @@ export default {
        height: 60px;
        line-height: 60px;
        padding: 12px 0;
+       .query-main{
+         height: 50px;
+         width: 610px;
+         float: right;
+       }
+       .el-button--primary{
+         margin-left: 20px;
+       }
    }
    .query-res{
     //    border-top: 2px solid @blue;

@@ -44,8 +44,16 @@
                                 width="320"
                                 trigger="click"
                                 >
-                                <div style="width:320px;height:100px;overflow-x:hidden;">
-                                  <h3>暂无消息</h3>
+                                <div class="notified">
+                                  <dl>
+                                    <dd>
+                                      <i class="el-icon-news"></i>
+                                      <span>暂无消息</span>
+                                    </dd>
+                                    <dt>
+                                      <span>清除消息</span>
+                                    </dt>
+                                  </dl>
                                 </div>
                                 <el-button slot="reference" size="small">
                                   <i class="el-icon-bell"></i>
@@ -121,6 +129,31 @@ export default {
 }
 .el-badge__content.is-fixed{
     top: 12px!important;
+}
+.notified{
+  width:320px;
+  min-height: 40px;
+  overflow-x:hidden;
+  dl{
+    dd{
+      margin-left: 0;
+      height: 30px;
+      border-bottom: 1px solid #cccccc;
+      color: #b3adad;
+    }
+    dt{
+      padding-top: 8px;
+      span{
+        display: inline-block;
+        line-height: 24px;
+        text-align: center;
+        width: 100%;
+        color: #ffffff;
+        background-color: #409EFF;
+        border: 1px solid #cccccc;
+      }
+    }
+  }
 }
 .site-logo{
     float: left;
