@@ -37,7 +37,7 @@
     </el-row>
 
     <el-row :gutter="20" class="home-header2">
-        <el-col :xs="8" :sm="10" :md="8" :lg="8" :xl="8">
+        <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
              <el-card class="hh-2">
                 <h1>Swift</h1>
                 <p class="best-tit">月度最佳员工</p>
@@ -51,22 +51,6 @@
              <div id="ech"></div>
         </el-col>
     </el-row>
-
-    <!-- <el-row :gutter="20">
-        <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10">
-             <el-card class="cards-style">
-                    <div>afdsfadsfasd</div>
-            </el-card>
-            </el-col>
-        <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10">
-              <el-card class="cards-style">
-                    <div>afdsfadsfasd</div>
-                </el-card>
-        </el-col>
-        <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
-            <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=55" style="border:solid 1px #7ec8ea" width="255" height="294" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
-        </el-col>
-    </el-row> -->
   </div>
 </template>
 <script>
@@ -81,7 +65,7 @@ export default {
     let date = new Date()
     let nowDate = this.formatDate(date)
     // let that = this
-      let formData = new FormData()
+    let formData = new FormData()
     //   formData.append('flag', 'conditionFetch')
       formData.append('now_date', nowDate)
       this.$http.post('computed_home.php', formData)
@@ -151,10 +135,12 @@ export default {
 }
 </script>
 <style lang="less">
+
 #ech{
     width: 100%;
     height: 440px;
-    padding: 20px;
+    overflow-x: hidden;
+    padding-top: 18px;
     margin: 0 auto;
 }
 .home-wrap{

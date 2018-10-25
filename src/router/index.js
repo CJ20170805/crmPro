@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '../components/login'
 import index from '../components/index'
-import staffAdd from '../components/staff/staff_add'
 Vue.use(Router)
 
 export default new Router({
@@ -16,20 +15,18 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: login
+      component: login,
+      meta: {
+        title: '信息管理系统登陆'
+      }
     },
     {
       path: '/index',
       name: 'index',
       component: index,
       meta: {
-        title: 'admin'
+        title: '信息管理系统'
       }
-    },
-    {
-      path: '/staffAdd',
-      name: 'staffAdd',
-      component: staffAdd
     }
   ]
 })

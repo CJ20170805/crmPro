@@ -82,10 +82,11 @@
                 </el-col>
             </el-form-item>
             <el-form-item label="交易凭证">
+                  <!-- action="http://localhost:8080/api/crmApi/pm_img.php" -->
                 <el-col :span="9">
                     <el-upload
                         class="upload-demo"
-                        action="http://localhost:8080/api/crmApi/pm_img.php"
+                        action="http://www.huibohehe.com/crmApi/pm_img.php"
                         :on-preview="handlePreview"
                         :on-remove="handleRemove"
                         :on-success="handleSuc"

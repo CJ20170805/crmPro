@@ -55,6 +55,7 @@
         <el-button
           size="mini"
           type="danger"
+          v-if="$store.getters.userAuthority !== '80002' && $store.getters.userAuthority !== '80004'"
           @click="handleDelete(scope.$index, scope.row)">删除</el-button>
       </template>
     </el-table-column>
@@ -180,7 +181,7 @@
           <el-col :span="24">
               <div class="imgList">
                   <!-- <img :src="item" alt="item" width="100" height="120"> -->
-                <span class="down-left"  v-for="(item, index) in clientFiles" :key="index">
+                <span class="down-left" v-for="(item, index) in clientFiles" :key="index">
                    <a :href="item" target="_blank">
                        <img :src="item.substring(item.length-3) === 'zip' ? 'https://img.alicdn.com/imgextra/i2/662134481/O1CN011iyLEr3kJJ6YdeJ-662134481.jpg' : item" width="120" height="120">
                    </a>
@@ -212,7 +213,7 @@ export default {
       regDate: '',
       clientId: '',
       descInfo: '',
-      clientFiles: ''
+      clientFiles: []
     }
   },
   created () {
@@ -243,6 +244,7 @@ export default {
       this.linkChannel = row.link_channel
       this.regDate = row.reg_date
       this.descInfo = row.desc_info
+      // this.clientFiles = row.files
       if (row.files !== '') {
         let file = row.files.split(',')
         let fileArr = []

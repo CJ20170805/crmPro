@@ -116,11 +116,12 @@ export default {
     exportAll () {
       let begin = this.queryDate[0]
       let end = this.queryDate[1]
-      window.location.href = 'http://localhost:8080/api/crmApi/exportExcel.php?bn=' + begin + '&ed=' + end
+      // http://www.huibohehe.com/crmApi/pm_img.php
+      window.location.href = 'http://www.huibohehe.com/crmApi/exportExcel.php?bn=' + begin + '&ed=' + end
     },
     exportSome () {
       console.log(this.selectId)
-      window.location.href = 'http://localhost:8080/api/crmApi/exportExcel.php?sid=' + this.selectId
+      window.location.href = 'http://www.huibohehe.com/crmApi/exportExcel.php?sid=' + this.selectId
     },
     open1 () {
       this.$alert('请选择查询日期', '查询错误', {

@@ -13,7 +13,7 @@
                 text-color="#fff"
                 active-text-color="#ffffff">
                 >
-                <li class="site-logo">Admin</li>
+                <li class="site-logo" style="font-weight:bold;">信息管理系统</li>
 
                 <!-- <li class="site-btns">
                     <el-button type="primary" class="loginOutBtn" plain @click="loginOut">退出登录</el-button>
@@ -21,6 +21,7 @@
                 <el-menu-item index='1' >
                    首页
                 </el-menu-item>
+
                 <el-submenu style="float:right;" class="userInfo" index='2'>
                     <template slot="title">
                          <img class='header-img' ref="usersImg" src="https://img.alicdn.com/imgextra/i3/662134481/O1CN011iyLEkOqL2AVhlE-662134481.png" alt="userLogo">

@@ -21,7 +21,7 @@ const store = new Vuex.Store({
         return '80001'
       } else if (up === '销售总监' || up === '技术总监') {
         return '80005'
-      } else if (up === 'BD经理') {
+      } else if (up === 'BD经理' || up === 'AM') {
         return '80003'
       } else {
         return '80002'

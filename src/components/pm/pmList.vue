@@ -1,7 +1,7 @@
 <template>
     <div class="pm-list">
          <el-table
-            :data="pmListData"
+            :data="pmListData.slice(pageSize * (curPage - 1),pageSize * curPage)"
             style="width: 100%;">
              <el-table-column
             prop="id"
@@ -56,10 +56,22 @@
                     <el-button
                     size="mini"
                     type="danger"
+                    v-if="$store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80005'"
                     @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
+
+          <div class="block" style="margin-top:20px;">
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page.sync="currentPage3"
+              :page-size="pageSize"
+              layout="prev, pager, next, jumper"
+              :total="totalList">
+            </el-pagination>
+          </div>
 
         <!--Order Detail dialog -->
     <el-dialog title="" :visible.sync="pmInfoVisible">
@@ -199,8 +211,13 @@
   export default {
     data () {
       return {
+        currentPage3: 1,
+        totalList: 1,
+        pageSize: 7,
+        curPage: 1,
         pmInfoVisible: false,
         pmListData: [],
+        pmListData2: [],
         apartData: [
             { text: '石一家1', value: '石一,家一' },
             { text: '石一家2', value: '石一,家二' },
@@ -231,6 +248,13 @@
       }
     },
     methods: {
+      handleSizeChange (val) {
+        console.log(`每页 ${val} 条`)
+      },
+      handleCurrentChange (val) {
+        this.curPage = val
+        console.log(`当前页: ${val}`)
+      },
       formatter (row, column) {
         return row.reach_apart
       },
@@ -308,7 +332,9 @@
       formData.append('flag', 'fetch')
       this.$http.post('pm_mng.php', formData)
       .then(function (res) {
+        console.log('Page', res.data)
         that.pmListData = res.data
+        that.totalList = res.data.length
         console.log(res)
         console.log('Client', res)
       }).catch(function (err) {

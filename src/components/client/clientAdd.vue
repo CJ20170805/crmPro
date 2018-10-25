@@ -82,10 +82,10 @@
 
         <el-form-item label="添加附件">
 
-              <!-- action="http://www.huibohehe.com/crmApi/client_img.php" -->
+              <!--action="http://localhost:8080/api/crmApi/client_img.php" -->
 
           <el-upload
-            action="http://localhost:8080/api/crmApi/client_img.php"
+            action="http://www.huibohehe.com/crmApi/client_img.php"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-success="orderUploadSuc"

@@ -120,7 +120,7 @@
               <!-- action="http://www.huibohehe.com/crmApi/order_img.php" -->
 
           <el-upload
-            action="http://localhost:8080/api/crmApi/order_img.php"
+            action="http://www.huibohehe.com/crmApi/order_img.php"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-success="orderUploadSuc"
