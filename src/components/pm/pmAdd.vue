@@ -61,6 +61,18 @@
            <div class="form-title">
               <p>到账信息</p>
             </div>
+             <el-form-item label="到账类型" prop="region">
+              <el-col :span="10">
+                  <el-select v-model="pmForm.buyType" placeholder="请选择到账类型">
+                    <el-option label="钻展类" value="钻展类"></el-option>
+                    <el-option label="直通车类" value="直通车类"></el-option>
+                    <el-option label="托管类" value="托管类"></el-option>
+                    <el-option label="装修类" value="装修类"></el-option>
+                      <el-option label="佣金" value="佣金"></el-option>
+                        <el-option label="其他" value="其他"></el-option>
+                  </el-select>
+              </el-col>
+            </el-form-item>
             <el-form-item label="到账金额" >
                 <el-col :span="12">
                     <el-input v-model="pmForm.payPrice" suffix-icon="el-icon-star-off"></el-input>
@@ -123,6 +135,7 @@
         recId: '',
         dealId: '',
         elseDesc: '',
+        buyType: '',
         uploadImgs: [],
         uploadImgsNew: []
         },
@@ -195,6 +208,7 @@
             formData.append('serv_price', this.pmForm.servPrice)
             formData.append('time_limit', this.pmForm.timeLimit)
             // pay info
+            formData.append('buy_type', this.pmForm.buyType)
             formData.append('pay_price', this.pmForm.payPrice)
             formData.append('pay_id', this.pmForm.payId)
             formData.append('rec_id', this.pmForm.recId)

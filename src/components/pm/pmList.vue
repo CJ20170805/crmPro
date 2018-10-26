@@ -142,7 +142,15 @@
           </el-col>
         </el-row>
        <el-row>
-        <el-col :span="24">
+      <el-col :span="24">
+            <div class="table-item">
+                <span class="table-item-tit">到账类型：</span>
+                <span class="table-item-con">{{ buyType }}</span>
+            </div>
+        </el-col>
+      </el-row>
+      <el-row>
+      <el-col :span="24">
             <div class="table-item">
                 <span class="table-item-tit">到账金额：</span>
                 <span class="table-item-con">{{ payPrice }}</span>
@@ -181,7 +189,7 @@
         <el-col :span="24">
             <div class="table-item table-textarea">
                 <span class="table-item-tit table-textarea-tit">备注信息：</span>
-                <span class="table-item-con table-textarea-con">{{ descInfo }}</span>
+                <span class="table-item-con table-textarea-con" style="word-wrap:break-word">{{ descInfo }}</span>
             </div>
         </el-col>
       </el-row>
@@ -244,6 +252,7 @@
         recId: '',
         dealId: '',
         descInfo: '',
+        buyType: '',
         imgs: []
       }
     },
@@ -281,6 +290,7 @@
         this.reachDate = row.reach_date
         this.buyServ = row.buy_serv
         this.timeLimit = row.time_limit
+        this.buyType = row.buy_type
         let imgs = row.upload_imgs
         if (imgs !== '') {
           let imgsItem = imgs.split(',')

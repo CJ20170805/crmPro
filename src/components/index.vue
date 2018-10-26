@@ -5,7 +5,7 @@
             <el-aside style="width:auto">
                 <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
                 <el-radio-button :label="false">展开</el-radio-button>
-                <el-radio-button :label="true">收起</el-radio-button>
+                <el-radio-button :label="true" v-if="isCollapse !== true">收起</el-radio-button>
                 </el-radio-group>
                 <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
                 <el-submenu v-if="$store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80004'" index="1">
@@ -49,7 +49,7 @@
                     <!-- <span slot="title">---</span> -->
                     <el-menu-item index="701" @click="switchComp('orderList')">订单列表</el-menu-item>
                     <el-menu-item index="702" @click="switchComp('orderAdd')" v-if="$store.getters.userAuthority === '' || $store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80003' || $store.getters.userAuthority === '80005'">
-                      开始下单
+                      新单录入
                     </el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
@@ -177,5 +177,8 @@ export default {
   }
   .el-submenu .el-menu-item{
     padding-left: 80px!important;
+  }
+  .el-popover, .el-radio-button:first-child:last-child .el-radio-button__inner{
+    width: 64px;
   }
 </style>
