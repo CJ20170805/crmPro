@@ -64,12 +64,12 @@
              <el-form-item label="到账类型" prop="region">
               <el-col :span="10">
                   <el-select v-model="pmForm.buyType" placeholder="请选择到账类型">
-                    <el-option label="钻展类" value="钻展类"></el-option>
-                    <el-option label="直通车类" value="直通车类"></el-option>
-                    <el-option label="托管类" value="托管类"></el-option>
-                    <el-option label="装修类" value="装修类"></el-option>
-                      <el-option label="佣金" value="佣金"></el-option>
-                        <el-option label="其他" value="其他"></el-option>
+                    <el-option label="钻展类" value="zuanzhan"></el-option>
+                    <el-option label="直通车类" value="zhitongche"></el-option>
+                    <el-option label="托管类" value="tuoguan"></el-option>
+                    <el-option label="装修类" value="zhuangxiu"></el-option>
+                      <el-option label="佣金" value="yongjin"></el-option>
+                        <el-option label="其他" value="qita"></el-option>
                   </el-select>
               </el-col>
             </el-form-item>

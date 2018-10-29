@@ -9,19 +9,19 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                          <el-card shadow="always">
-                            <p class="collect-price">￥29999</p>
+                            <p class="collect-price">￥{{tSeller}}</p>
                             <p>销售今日业绩</p>
                         </el-card>
                     </el-col>
                     <el-col :span="8">
                          <el-card shadow="always">
-                            <p class="collect-price">￥49999</p>
+                            <p class="collect-price">￥{{tSkill}}</p>
                             <p>技术今日业绩</p>
                         </el-card>
                     </el-col>
                     <el-col :span="8">
                          <el-card shadow="always">
-                            <p class="collect-price">￥69999</p>
+                            <p class="collect-price">￥{{tAll}}</p>
                             <p>今日总业绩</p>
                         </el-card>
                     </el-col>
@@ -62,41 +62,41 @@
                     label="分公司">
                     </el-table-column>
                     <el-table-column
-                    prop="amount1"
+                    prop="zuanzhan"
                     label="钻展类">
                     </el-table-column>
                     <el-table-column
-                    prop="amount2"
+                    prop="zhitongche"
                     label="直通车类">
                     </el-table-column>
                     <el-table-column
-                    prop="id"
+                    prop="tuoguan"
                     label="托管类">
                     </el-table-column>
                     <el-table-column
-                    prop="amount1"
+                    prop="zhuangxiu"
                     label="装修">
                     </el-table-column>
                     <el-table-column
-                    prop="amount2"
+                    prop="yongjin"
                     label="佣金">
                     </el-table-column>
                     <el-table-column
-                    prop="id"
+                    prop="qita"
                     label="其他">
                     </el-table-column>
-                    <el-table-column
+                    <!-- <el-table-column
                     prop="amount3"
                     label="销售">
                     </el-table-column>
                     <el-table-column
                     prop="amount3"
                     label="技术">
-                    </el-table-column>
+                    </el-table-column> -->
                 </el-table>
-                <div class="totalAll">
+                <div class="totalAll" style="display:none">
                     <div class="total-main">
-                        <span>合计：{{ totalNums2 }}</span>
+                        <span>总计：{{ totalNums2 }}</span>
                     </div>
                 </div>
             </el-tab-pane>
@@ -105,11 +105,17 @@
 </template>
 <script>
 let echarts = require('echarts')
+let moment = require('moment')
   export default {
     data () {
       return {
         activeName: 'first',
         queryDate: '',
+        tAll: '',
+        tSeller: '',
+        tSkill: '',
+        ss1:[],
+        ss2:[],
         pickerOptions2: {
           shortcuts: [{
             text: '最近一周',
@@ -149,16 +155,73 @@ let echarts = require('echarts')
       this.$http.post('pm_mng.php', formData)
       .then(function (res) {
         that.tableData6 = res.data
-        console.log(res)
-        console.log('Client', res)
+        // console.log(res)
+        // console.log('Client', res)
+      }).catch(function (err) {
+        console.log(err)
+      })
+      // total price
+      let today = moment().format('YYYY-MM-DD')
+      let formData2 = new FormData()
+      formData2.append('flag', 'conditionFetchToday')
+      formData2.append('begin', today)
+      this.$http.post('pm_mng.php', formData2)
+      .then(function (res) {
+        // that.tableData6 = res.data
+        // console.log('2222222', res)
+        let tAll = 0
+        let tSeller = 0
+        let tSkill = 0
+        res.data.forEach(v => {
+          tAll += parseInt(v.pay_price)
+          if (v.reach_apart.indexOf('销') !== -1) {
+              tSeller += parseInt(v.pay_price)
+          } else {
+              tSkill += parseInt(v.pay_price)
+          }
+        // console.log(v.reach_apart.indexOf('销'))
+        })
+        that.tAll = tAll
+        that.tSeller = tSeller
+        that.tSkill = tSkill
+      }).catch(function (err) {
+        console.log(err)
+      })
+    },
+    beforeMount () {
+      // collect imgTable
+      let that = this
+      let formData3 = new FormData()
+      formData3.append('flag', 'conditionFetchLastWeek')
+      this.$http.post('pm_mng.php', formData3)
+      .then(function (res) {
+        // that.tableData6 = res.data
+        // console.log(res)
+        let s1 = [0, 0, 0, 0, 0, 0, 0]
+        let s2 = [0, 0, 0, 0, 0, 0, 0]
+        res.data.forEach(v => {
+          let week = new Date(v.reg_date).getDay()
+          console.log(week)
+          if (v.reach_apart.indexOf('石一') !== -1) {
+            s1[week] += parseInt(v.pay_price)
+          } else {
+            s2[week] += parseInt(v.pay_price)
+          }
+        })
+        that.ss1 = s1
+        that.ss2 = s2
+        console.log('Lasttttt', res)
+        console.log('LLLLLLLL1', s1)
+        console.log('LLLLLLLL2', s2)
       }).catch(function (err) {
         console.log(err)
       })
     },
     mounted () {
       // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(document.getElementById('ech2'), 'light')
-      myChart.setOption({
+      setTimeout(() => {
+        var myChart = echarts.init(document.getElementById('ech2'), 'light')
+                myChart.setOption({
         title: {
             text: '业绩统计图'
         },
@@ -172,7 +235,7 @@ let echarts = require('echarts')
             }
         },
         legend: {
-            data:['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+            data:['石一分公司', '石二分公司']
         },
         toolbox: {
             feature: {
@@ -189,7 +252,7 @@ let echarts = require('echarts')
             {
                 type : 'category',
                 boundaryGap : false,
-                data : ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                data : ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
             }
         ],
         yAxis : [
@@ -199,35 +262,7 @@ let echarts = require('echarts')
         ],
         series : [
             {
-                name:'邮件营销',
-                type:'line',
-                stack: '总量',
-                areaStyle: {},
-                data:[120, 132, 101, 134, 90, 230, 210]
-            },
-            {
-                name:'联盟广告',
-                type:'line',
-                stack: '总量',
-                areaStyle: {},
-                data:[220, 182, 191, 234, 290, 330, 310]
-            },
-            {
-                name:'视频广告',
-                type:'line',
-                stack: '总量',
-                areaStyle: {},
-                data:[150, 232, 201, 154, 190, 330, 410]
-            },
-            {
-                name:'直接访问',
-                type:'line',
-                stack: '总量',
-                areaStyle: {normal: {}},
-                data:[320, 332, 301, 334, 390, 330, 320]
-            },
-            {
-                name:'搜索引擎',
+                name:'石一分公司',
                 type:'line',
                 stack: '总量',
                 label: {
@@ -237,14 +272,28 @@ let echarts = require('echarts')
                     }
                 },
                 areaStyle: {normal: {}},
-                data:[820, 932, 901, 934, 1290, 1330, 1320]
+                data: this.ss1
+            },
+            {
+                name:'石二分公司',
+                type:'line',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'top'
+                    }
+                },
+                areaStyle: {normal: {}},
+                data: this.ss2
             }
         ]
         })
+      }, 1000)
     },
     methods: {
       handleClick (tab, event) {
-        console.log(tab.index)
+        // console.log(tab.index)
         if (tab.index === '1') {
             // console.log('@@@@@@@@@@@@@@@@@@')
          let s = 0
@@ -256,7 +305,7 @@ let echarts = require('echarts')
         //    arr.forEach(element => {
         //       alert(typeof(element))
         //    });
-         console.log('EEEEE', arr2)
+        //  console.log('EEEEE', arr2)
 
         for (let i = 0; i < arr2.length; i++) {
             s += arr2[i]
@@ -264,15 +313,38 @@ let echarts = require('echarts')
         this.totalNums2 = s
         }
       },
+     open1 () {
+        this.$alert('请选择查询日期', '查询错误', {
+            confirmButtonText: '确定'
+        })
+        },
       queryData () {
-        alert('NO data in the database!')
+        if (this.queryDate !== '') {
+        let begin = this.queryDate[0]
+        let end = this.queryDate[1]
+        //   console.log(begin,'TTT',end)
+        let that = this
+        let formData = new FormData()
+        formData.append('flag', 'conditionFetch')
+        formData.append('begin', begin)
+        formData.append('end', end)
+        this.$http.post('pm_mng.php', formData)
+            .then(function (res) {
+            // console.log(res)
+             that.tableData6 = res.data
+            }).catch(function (err) {
+            console.log(err)
+            })
+        } else {
+            this.open1()
+        }
       },
       getSummaries (param) {
         const { columns, data } = param
         const sums = []
         columns.forEach((column, index) => {
           if (index === 0) {
-            sums[index] = '总计'
+            sums[index] = '小计'
             return
           }
           const values = data.map(item => Number(item[column.property]))

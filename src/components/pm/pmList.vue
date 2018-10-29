@@ -1,7 +1,8 @@
 <template>
     <div class="pm-list">
+      <!-- pmListData.slice(pageSize * (curPage - 1),pageSize * curPage) -->
          <el-table
-            :data="pmListData.slice(pageSize * (curPage - 1),pageSize * curPage)"
+            :data="pmListData"
             style="width: 100%;">
              <el-table-column
             prop="id"
@@ -62,7 +63,7 @@
             </el-table-column>
         </el-table>
 
-          <div class="block" style="margin-top:20px;">
+          <!-- <div class="block" style="margin-top:20px;">
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
@@ -71,7 +72,7 @@
               layout="prev, pager, next, jumper"
               :total="totalList">
             </el-pagination>
-          </div>
+          </div> -->
 
         <!--Order Detail dialog -->
     <el-dialog title="" :visible.sync="pmInfoVisible">
@@ -345,8 +346,8 @@
         console.log('Page', res.data)
         that.pmListData = res.data
         that.totalList = res.data.length
-        console.log(res)
-        console.log('Client', res)
+        // console.log(res)
+        // console.log('Client', res)
       }).catch(function (err) {
         console.log(err)
       })
