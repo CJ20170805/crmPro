@@ -92,19 +92,19 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="16">
-            <div class="table-item">
-              <span class="table-item-tit">店铺链接：</span>
-              <span class="table-item-con"><a :href="shopInfo.s_url" target="_blank">{{ shopInfo.s_url}}</a></span>
-            </div>
-          </el-col>
-           <el-col :span="8">
+        <el-col :span="16">
+          <div class="table-item">
+            <span class="table-item-tit else-info-tit">店铺链接：</span>
+            <span class="table-item-con else-info-con"><a style="font-size:.8em;" :href="shopInfo.s_url" target="_blank">{{ shopInfo.s_url}}</a></span>
+          </div>
+        </el-col>
+         <el-col :span="8">
              <div class="table-item">
               <span class="table-item-tit">店铺ID：</span>
               <span class="table-item-con">{{ shopInfo.s_id }}</span>
             </div>
           </el-col>
-        </el-row>
+      </el-row>
         <el-row>
           <el-col :span="10">
             <div class="table-item">

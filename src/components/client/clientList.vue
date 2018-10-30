@@ -24,6 +24,27 @@
       </template>
     </el-table-column>
     <el-table-column
+      label="订购套餐"
+      >
+      <template slot-scope="scope">
+        <span style="margin-left: 10px">{{ scope.row.combo_type }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="店铺名称"
+      >
+      <template slot-scope="scope">
+        <span style="margin-left: 10px">{{ scope.row.shop_name }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="店铺类型"
+      >
+      <template slot-scope="scope">
+        <span style="margin-left: 10px">{{ scope.row.shop_type }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column
       label="销售人员"
       >
       <template slot-scope="scope">
@@ -71,26 +92,20 @@
         </el-row>
 
         <el-row>
-            <el-col :span="12">
+            <el-col :span="24">
             <div class="table-item">
                 <span class="table-item-tit">客户名称：</span>
                 <span class="table-item-con">{{ clientName }}</span>
             </div>
             </el-col>
-            <el-col :span="12">
+      </el-row>
+
+      <el-row>
+           <el-col :span="12">
                 <div class="table-item">
                 <span class="table-item-tit">所在地区：</span>
                 <span class="table-item-con">{{ clientAddress }}</span>
             </div>
-            </el-col>
-      </el-row>
-
-      <el-row>
-            <el-col :span="12">
-              <div class="table-item">
-                <span class="table-item-tit">客户类型：</span>
-                <span class="table-item-con">{{ clientType }}</span>
-              </div>
             </el-col>
         <el-col :span="12">
             <div class="table-item">
@@ -108,21 +123,79 @@
             </div>
         </el-col>
       </el-row>
-
-       <el-row>
+    <el-row>
         <el-col :span="24">
-            <div class="table-item table-textarea">
-                <span class="table-item-tit table-textarea-tit">客户意向：</span>
-                <span class="table-item-con table-textarea-con">{{ clientIntent }}</span>
+            <div class="table-item">
+                <span class="table-item-tit">订购套餐：</span>
+                <span class="table-item-con">{{ comboType }}</span>
+            </div>
+        </el-col>
+      </el-row>
+       <el-row>
+          <el-col :span="24">
+            <div class="table-title">店铺信息</div>
+          </el-col>
+        </el-row>
+
+      <el-row>
+        <el-col :span="24">
+            <div class="table-item">
+                <span class="table-item-tit">店铺名称：</span>
+                <span class="table-item-con">{{ shopName }}</span>
             </div>
         </el-col>
       </el-row>
 
+      <el-row>
+        <el-col :span="12">
+            <div class="table-item">
+                <span class="table-item-tit">店铺ID：</span>
+                <span class="table-item-con">{{ shopId }}</span>
+            </div>
+        </el-col>
+        <el-col :span="12">
+            <div class="table-item">
+                <span class="table-item-tit">店铺等级：</span>
+                <span class="table-item-con">{{ shopGrade }}</span>
+            </div>
+        </el-col>
+      </el-row>
+
+     <el-row>
+        <el-col :span="24">
+            <div class="table-item">
+                <span class="table-item-tit">店铺链接：</span>
+                <span class="table-item-con">{{ shopUrl}}</span>
+            </div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+            <div class="table-item">
+                <span class="table-item-tit">店铺类型：</span>
+                <span class="table-item-con">{{ shopType }}</span>
+            </div>
+        </el-col>
+        <el-col :span="12">
+            <div class="table-item">
+                <span class="table-item-tit">所属行业：</span>
+                <span class="table-item-con">{{ shopIndustry }}</span>
+            </div>
+        </el-col>
+      </el-row>
        <el-row>
           <el-col :span="24">
             <div class="table-title">其他信息</div>
           </el-col>
         </el-row>
+      <el-row>
+        <el-col :span="24">
+            <div class="table-item">
+                <span class="table-item-tit">销售人员：</span>
+                <span class="table-item-con">{{ salesMan }}</span>
+            </div>
+        </el-col>
+      </el-row>
        <el-row>
         <el-col :span="24">
             <div class="table-item">
@@ -140,37 +213,6 @@
               </div>
           </el-col>
         </el-row>
-
-       <el-row>
-        <el-col :span="24">
-            <div class="table-item">
-                <span class="table-item-tit">销售人员：</span>
-                <span class="table-item-con">{{ salesMan }}</span>
-            </div>
-        </el-col>
-      </el-row>
-       <el-row>
-        <el-col :span="12">
-            <div class="table-item">
-                <span class="table-item-tit">联系日期：</span>
-                <span class="table-item-con">{{ linkDate }}</span>
-            </div>
-        </el-col>
-        <el-col :span="12">
-            <div class="table-item">
-                <span class="table-item-tit">联系渠道：</span>
-                <span class="table-item-con">{{ linkChannel }}</span>
-            </div>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="24">
-            <div class="table-item table-textarea">
-                <span class="table-item-tit table-textarea-tit">备注信息：</span>
-                <span class="table-item-con table-textarea-con">{{ descInfo }}</span>
-            </div>
-        </el-col>
-      </el-row>
 
        <el-row>
           <el-col :span="24">
@@ -201,18 +243,20 @@ export default {
     return {
       clientData: [],
       clientInfoVisible: false,
+      clientId: '',
       clientName: '',
-      clientType: '',
       clientLink: '',
       clientAddress: '',
-      clientIntent: '',
       writeMan: '',
       salesMan: '',
-      linkDate: '',
-      linkChannel: '',
+      shopName: '',
+      shopUrl: '',
+      shopId: '',
+      shopGrade: '',
+      shopIndustry: '',
+      shopType: '',
+      comboType: '',
       regDate: '',
-      clientId: '',
-      descInfo: '',
       clientFiles: []
     }
   },
@@ -234,16 +278,18 @@ export default {
       // console.log(index, row)
       this.clientId = row.id
       this.clientName = row.client_name
-      this.clientType = row.client_type
       this.clientLink = row.client_link
-      this.clientIntent = row.client_intent
       this.clientAddress = row.client_address
       this.writeMan = row.write_man
       this.salesMan = row.sales_man
-      this.linkDate = row.link_date
-      this.linkChannel = row.link_channel
+      this.shopName = row.shop_name
+      this.shopUrl = row.shop_url
+      this.shopId = row.shop_id
+      this.shopGrade = row.shop_grade
+      this.shopIndustry = row.shop_industry
+      this.shopType = row.shop_type
+      this.comboType = row.combo_type
       this.regDate = row.reg_date
-      this.descInfo = row.desc_info
       // this.clientFiles = row.files
       if (row.files !== '') {
         let file = row.files.split(',')

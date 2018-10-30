@@ -7,8 +7,8 @@
                     <img src="../../assets/client.png" alt="" width="120" height="120">
                 </div>
                 <div class="cards-right">
-                    <p class="cards-main">+6个</p>
-                    <p class="cards-tit">昨日新增客户数量</p>
+                    <p class="cards-main">{{ myClient }}</p>
+                    <p class="cards-tit">我的客户数量</p>
                 </div>
             </el-card>
             </el-col>
@@ -18,8 +18,8 @@
                     <img src="../../assets/order.png" alt="" width="120" height="120">
                 </div>
                 <div class="cards-right">
-                    <p class="cards-main">+8个</p>
-                    <p class="cards-tit">昨日订单数量</p>
+                    <p class="cards-main">+8</p>
+                    <p class="cards-tit">我的订单数量</p>
                 </div>
                 </el-card>
         </el-col>
@@ -30,7 +30,7 @@
                     </div>
                     <div class="cards-right">
                         <p class="cards-main">￥15446</p>
-                        <p class="cards-tit">昨日订单到账总额</p>
+                        <p class="cards-tit">我的业绩总额</p>
                     </div>
                 </el-card>
         </el-col>
@@ -58,7 +58,8 @@ let echarts = require('echarts')
 export default {
   data () {
     return {
-      pmData: [820, 932, 901, 934, 1290, 1330, 1320]
+      pmData: [820, 932, 901, 934, 1290, 1330, 1320],
+      myClient: 0
     }
   },
   created () {
@@ -86,7 +87,7 @@ export default {
     }
   },
   mounted () {
-// 基于准备好的dom，初始化echarts实例
+     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('ech'), 'light')
     // 绘制图表
     myChart.setOption({

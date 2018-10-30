@@ -35,7 +35,7 @@
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
                     <el-menu-item index="1001" @click="switchComp('clientList')">客户列表</el-menu-item>
-                    <el-menu-item index="1002" @click="switchComp('clientAdd')">客户添加</el-menu-item>
+                    <el-menu-item index="1002" @click="switchComp('clientAdd')" v-if="false">客户添加</el-menu-item>
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
                 </el-submenu>

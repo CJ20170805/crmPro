@@ -14,6 +14,12 @@
         <el-form-item label="店铺ID" prop="id">
           <el-input v-model="shop.id"></el-input>
         </el-form-item>
+         <el-form-item label="店铺等级">
+          <el-input v-model="shop.grade"></el-input>
+        </el-form-item>
+         <el-form-item label="所属行业">
+          <el-input v-model="shop.industry"></el-input>
+        </el-form-item>
         <el-form-item label="店铺类型">
             <el-col :span="24">
               <el-radio-group v-model="shop.type">
@@ -24,11 +30,12 @@
               </el-radio-group>
             </el-col>
         </el-form-item>
-
         <el-form-item label="联系人" prop="linkMan">
           <el-input v-model="shop.linkMan"></el-input>
         </el-form-item>
-
+        <el-form-item label="所在地区">
+          <el-input v-model="shop.address"></el-input>
+        </el-form-item>
         <el-form-item label="联系方式" prop="linkMethods">
           <!-- <el-input v-model="shop.linkMethods"></el-input> -->
            <el-input placeholder="请输入内容" v-model="shop.linkMethods" class="input-with-select">
@@ -43,6 +50,33 @@
         <div class="form-title">
           <p>订单信息</p>
         </div>
+         <el-form-item label="签单人员"  required>
+                <el-col :span="9">
+                    <!-- <el-input v-model="ruleForm.name"></el-input> -->
+                     <el-select v-model="shop.salesMan" filterable placeholder="请选择(可搜索)">
+                        <el-option
+                        v-for="item in options222"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-col>
+        </el-form-item>
+
+       <el-form-item label="到账类型">
+              <el-col :span="10">
+                  <el-select v-model="shop.buyType" placeholder="请选择到账类型">
+                    <el-option label="钻展类" value="zuanzhan"></el-option>
+                    <el-option label="直通车类" value="zhitongche"></el-option>
+                    <el-option label="托管类" value="tuoguan"></el-option>
+                    <el-option label="装修类" value="zhuangxiu"></el-option>
+                      <el-option label="佣金" value="yongjin"></el-option>
+                        <el-option label="其他" value="qita"></el-option>
+                  </el-select>
+              </el-col>
+        </el-form-item>
+
         <el-form-item label="订购套餐" prop="region">
           <el-col :span="10">
               <el-select v-model="comboInfo" placeholder="请选择已订购的套餐">
@@ -55,12 +89,13 @@
           </el-col>
         </el-form-item>
         <el-form-item label="付款金额" prop="payPrice">
-          <el-col :span="9">
-            <el-input v-model="shop.payPrice" suffix-icon="el-icon-sold-out"></el-input>
+          <el-col :span="10">
+            <el-input type="number" v-model="shop.payPrice" suffix-icon="el-icon-sold-out"></el-input>
           </el-col>
         </el-form-item>
+
         <el-form-item label="付款日期">
-          <el-col :span="9">
+          <el-col :span="10">
             <!-- <el-input v-model="shop.payPrice" suffix-icon="el-icon-sold-out"></el-input> -->
              <el-date-picker
                 v-model="shop.payDate"
@@ -71,7 +106,7 @@
           </el-col>
         </el-form-item>
          <el-form-item label="付款方式">
-          <el-col :span="9">
+          <el-col :span="10">
                <el-select v-model="shop.payMethods" placeholder="请选择付款方式">
                 <el-option label="支付宝" value="支付宝"></el-option>
                 <el-option label="微信支付" value="微信支付"></el-option>
@@ -81,9 +116,19 @@
               </el-select>
           </el-col>
         </el-form-item>
-         <el-form-item label="付款账号" prop="payId">
+         <el-form-item label="付款账户" prop="payId">
           <el-col :span="17">
             <el-input v-model="shop.payId" suffix-icon="el-icon-sold-out"></el-input>
+          </el-col>
+        </el-form-item>
+           <el-form-item label="收款账户">
+          <el-col :span="17">
+            <el-input v-model="shop.recId" suffix-icon="el-icon-sold-out"></el-input>
+          </el-col>
+        </el-form-item>
+          <el-form-item label="交易订单号">
+          <el-col :span="17">
+            <el-input v-model="shop.priceId" suffix-icon="el-icon-sold-out"></el-input>
           </el-col>
         </el-form-item>
         <!-- <el-form-item label="联系人" prop="linkMan">
@@ -102,12 +147,6 @@
               end-placeholder="结束日期"
               :picker-options="servTimeLimit">
             </el-date-picker>
-          </el-col>
-        </el-form-item>
-
-        <el-form-item label="签单人员" prop="salesMan">
-          <el-col :span="17">
-            <el-input v-model="shop.salesMan" suffix-icon="el-icon-service"></el-input>
           </el-col>
         </el-form-item>
 
@@ -164,9 +203,16 @@
           payId: '',
           payMethods: '',
           payDate: '',
-          salesMan: ''
+          salesMan: '',
+          buyType: '',
+          recId: '',
+          priceId: '',
+          grade: '',
+          industry: '',
+          address: ''
           // delivery: false,
         },
+        options222: [],
         rules: {
           name: [
             { required: true, message: '请输入店铺名称', trigger: 'blur' },
@@ -193,7 +239,7 @@
             { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
           ],
           payId: [
-            { required: true, message: '请输入付款账号', trigger: 'blur' },
+            { required: true, message: '请输入付款账户', trigger: 'blur' },
             { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
           ],
           salesMan: [
@@ -302,6 +348,7 @@
             // alert('submit!')
             // alert(this.shop.payPrice)
             let linkStr = this.shop.linkMethodsSel + ':' + this.shop.linkMethods
+            let sales = this.shop.salesMan.split(';')
             let that = this
             let formData = new FormData()
             formData.append('flag', 'add')
@@ -319,7 +366,16 @@
             formData.append('time_limit', this.shop.timeLimit)
             formData.append('desc_info', this.descInfo)
             formData.append('some_img', this.orderImgs)
-            formData.append('sales_man', this.shop.salesMan)
+            formData.append('sales_man', sales[2])
+            formData.append('sales_id', sales[0])
+            formData.append('sales_apart', sales[1])
+            formData.append('buy_type', this.shop.buyType)
+            formData.append('rec_id', this.shop.recId)
+            formData.append('price_id', this.shop.priceId)
+            formData.append('shop_grade', this.shop.grade)
+            formData.append('shop_industry', this.shop.industry)
+            formData.append('shop_address', this.shop.address)
+            formData.append('write_man', this.$store.state.userName)
             this.$http.post('order_mng.php', formData)
               .then(function (res) {
                 console.log(res)
@@ -348,6 +404,25 @@
       resetForm (formName) {
         this.$refs[formName].resetFields()
       }
+    },
+    created () {
+      let that = this
+      let formData = new FormData()
+      formData.append('code', '400')
+      this.$http.post('user_info.php', formData)
+        .then(function (res) {
+          let data = res.data
+          // console.log('DDDDAta:', data)
+          for (let i = 0; i < data.length; i++) {
+            that.options222.push({
+              value: data[i].id + ';' + data[i].st_departmentVal + ';' + data[i].st_name,
+              label: data[i].st_departmentVal + data[i].st_name
+            })
+          }
+        //   console.log('StaffName:', that.staffNames)
+        }).catch(function (err) {
+          console.log(err)
+        })
     }
   }
 </script>
