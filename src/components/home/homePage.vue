@@ -18,7 +18,7 @@
                     <img src="../../assets/order.png" alt="" width="120" height="120">
                 </div>
                 <div class="cards-right">
-                    <p class="cards-main">+8</p>
+                    <p class="cards-main">{{ myOrder }}</p>
                     <p class="cards-tit">我的订单数量</p>
                 </div>
                 </el-card>
@@ -29,7 +29,7 @@
                     <img src="../../assets/money.png" alt="" width="120" height="120">
                     </div>
                     <div class="cards-right">
-                        <p class="cards-main">￥15446</p>
+                        <p class="cards-main">￥{{ myPm }}</p>
                         <p class="cards-tit">我的业绩总额</p>
                     </div>
                 </el-card>
@@ -39,18 +39,54 @@
     <el-row :gutter="20" class="home-header2">
         <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
              <el-card class="hh-2">
-                <h1>Swift</h1>
+                <h1>{{ bt_apart + bt_name }}</h1>
                 <p class="best-tit">月度最佳员工</p>
-                <div>
-                    <img src="../../assets/hd.jpg" alt="">
+                <div style="height:125px;">
+                  <img :src="bt_avatar" width="120" height="120" alt="">
                 </div>
-                <p class="best-reason">的沙发发送到发送到开了房间的上课了房间大收费电商连咖啡</p>
+                <p class="best-reason"><span style="font-weight:550;">上榜理由：</span>{{ bt_reason }}</p>
+                <el-button type="info" plain size="small" @click="setBest">设置</el-button>
             </el-card>
             </el-col>
         <el-col :xs="16" :sm="16" :md="16" :lg="16" :xl="16">
              <div id="ech"></div>
         </el-col>
     </el-row>
+
+    <el-dialog :visible.sync="dialogTableVisible">
+
+      <div class="best-set-form">
+           <el-form ref="form" :model="form" label-width="80px">
+            <el-form-item label="员工名称">
+            <el-col :span="6">
+                    <el-select v-model="form.setName" filterable placeholder="请选择(可搜索)">
+                        <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                        </el-option>
+                    </el-select>
+            </el-col>
+            </el-form-item>
+            <el-form-item label="上榜理由">
+            <el-col :span="20">
+                    <el-input
+                        type="textarea"
+                        :rows="10"
+                        placeholder="请输入内容"
+                        v-model="form.reason">
+                    </el-input>
+            </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-col :span="24">
+                    <el-button type="primary">提交更改</el-button>
+                </el-col>
+            </el-form-item>
+        </el-form>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -58,41 +94,150 @@ let echarts = require('echarts')
 export default {
   data () {
     return {
-      pmData: [820, 932, 901, 934, 1290, 1330, 1320],
-      myClient: 0
+      dialogTableVisible: false,
+      form: {
+        setName: '',
+        reason: ''
+      },
+      bt_name: '共创',
+      bt_apart: '灵动',
+      bt_reason: 'Because emmmmmmmm...',
+      bt_avatar: 'https://img.alicdn.com/imgextra/i4/662134481/O1CN011iyLEmtX4Jj7jhy-662134481.png',
+      options: [],
+      setName: '',
+      pmData: [],
+      myClient: 0,
+      myOrder: 0,
+      myPm: 0
     }
   },
   created () {
-    let date = new Date()
-    let nowDate = this.formatDate(date)
-    // let that = this
+    // my  client
+    let that = this
+    let usern = this.$store.state.userName
+
     let formData = new FormData()
-    //   formData.append('flag', 'conditionFetch')
-      formData.append('now_date', nowDate)
-      this.$http.post('computed_home.php', formData)
+    formData.append('flag', 'myClient')
+    formData.append('user_name', usern)
+    this.$http.post('computed_home.php', formData)
         .then(function (res) {
-          console.log(res.data.length)
+        console.log('homeee1', res.data.length)
+            that.myClient = res.data.length
+        }).catch(function (err) {
+        console.log(err)
+    })
+    // my order
+      let formData2 = new FormData()
+      formData2.append('flag', 'myOrder')
+      formData2.append('user_name', usern)
+      this.$http.post('computed_home.php', formData2)
+        .then(function (res) {
+        console.log('homeee2', res.data)
+            that.myOrder = res.data.length
+        }).catch(function (err) {
+          console.log(err)
+        })
+    // my pm total
+     let formData3 = new FormData()
+      formData3.append('flag', 'myPm')
+      formData3.append('user_name', usern)
+      this.$http.post('computed_home.php', formData3)
+        .then(function (res) {
+          let data = res.data
+          console.log('homeee3', res.data)
+          let pm = 0
+          data.forEach(item => {
+            pm += parseInt(item.pay_price)
+          })
+
+          that.myPm = pm
+        //   if (res.data.length !== 0) {
+        //     that.myOrder = res.data.length
+        //   }
+        }).catch(function (err) {
+          console.log(err)
+        })
+    //  my pm detail
+     let formData4 = new FormData()
+      formData4.append('flag', 'myPmDetail')
+      formData4.append('user_name', usern)
+      this.$http.post('computed_home.php', formData4)
+        .then(function (res) {
+        // let date = new Date()
+        //     // let nowDate = this.formatDate(date)
+        // let nd = date.setDate(date.getDate() - 7)
+        // console.log(that.formatDate(new Date(nd)))
+          let data = res.data
+          let arr = [0, 0, 0, 0, 0, 0, 0]
+          let username = that.$store.state.userName
+          data.forEach(item => {
+            if (item.reach_name.indexOf(username) !== -1) {
+                let week = new Date(item.reg_date).getDay()
+                arr[week] += parseInt(item.pay_price)
+            }
+          })
+
+          that.pmData = arr
+           console.log('homeee4', data)
+          console.log('homeee444', arr)
+        }).catch(function (err) {
+          console.log(err)
+        })
+      //  all  users' name
+      let formData5 = new FormData()
+      formData5.append('code', '400')
+      this.$http.post('user_info.php', formData5)
+        .then(function (res) {
+            let data = res.data
+            console.log('DDDDAta:', data)
+            for (let i = 0; i < data.length; i++) {
+            that.options.push({
+                value: data[i].id + ';' + data[i].st_departmentVal + ';' + data[i].st_name,
+                label: data[i].st_departmentVal + data[i].st_name
+            })
+            }
+        //   console.log('StaffName:', that.staffNames)
+        }).catch(function (err) {
+            console.log(err)
+        })
+      let formData6 = new FormData()
+      formData6.append('flag', 'fetchUserInfo')
+      this.$http.post('computed_home.php', formData6)
+        .then(function (res) {
+          let data = res.data
+          that.bt_name = data[0].st_name
+          that.bt_apart = data[0].st_departmentVal
+          that.bt_reason = data[0].best_reason
+          that.bt_avatar = data[0].st_avatar
+          console.log('homeee666', res.data)
         }).catch(function (err) {
           console.log(err)
         })
   },
   methods: {
+    setBest () {
+      this.dialogTableVisible = true
+    },
     formatDate (date) {
-    var y = date.getFullYear()
-    var m = date.getMonth() + 1
-    m = m < 10 ? '0' + m : m
-    var d = date.getDate()
-    d = d < 10 ? ('0' + d) : d
-    return y + '-' + m + '-' + d
+        var y = date.getFullYear()
+        var m = date.getMonth() + 1
+        m = m < 10 ? '0' + m : m
+        var d = date.getDate()
+        d = d < 10 ? ('0' + d) : d
+        return y + '-' + m + '-' + d
     }
   },
   mounted () {
-     // 基于准备好的dom，初始化echarts实例
+    setTimeout(() => {
+        // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('ech'), 'light')
     // 绘制图表
     myChart.setOption({
         title: {
-        text: '业绩统计图'
+        text: '个人业绩(上周)',
+        textStyle: {
+          color: '#303133'
+        }
     },
     tooltip : {
         trigger: 'axis',
@@ -123,7 +268,7 @@ export default {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+            data : ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
         }
     ],
     yAxis : [
@@ -132,6 +277,7 @@ export default {
         }
     ]
     })
+    }, 1000)
   }
 }
 </script>
@@ -189,16 +335,37 @@ export default {
           font-size: 1.1em;
           background-color: rgb(241, 128, 144);
           img{
-              width: 100px;
-              height: 100px;
+              width: 120px;
+              height: 120px;
               border-radius: 6px;
           }
           .best-tit{
               padding: 16px;
+              font-weight: 550;
           }
           .best-reason{
+              font-size: 0.95em;
               padding: 20px;
+              margin-bottom: 0;
           }
+          .el-button--info.is-plain{
+              float: right;
+          }
+        }
+    }
+    .best-set-form{
+        font-size: 1.1em;
+        box-sizing: border-box;
+        padding: 20px 60px 20px;
+        .el-form-item__label{
+         color: #409EFF;
+         font-weight: 550;
+        }
+        .el-col-24{
+          padding-right: 100px;
+          .el-button--primary{
+            float: right;
+           }
         }
     }
 }
