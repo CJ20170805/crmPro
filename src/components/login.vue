@@ -31,7 +31,7 @@ export default {
       let that = this
       this.$http.get('api_login.php?un=' + this.un + '&pw=' + this.pw)
         .then(function (res) {
-          console.log('LoginCodedede', res)
+          // console.log('LoginCodedede', res)
           if (res.data.loginCode === '10000') {
             sessionStorage.setItem('loginFlag', res.data.userName)
             that.$router.push({path: '/index'})

@@ -87,7 +87,7 @@
           <el-col :span="16">
             <div class="table-item">
               <span class="table-item-tit">店铺链接：</span>
-              <span class="table-item-con"><a :href="shopInfo.s_url" target="_blank">{{ shopInfo.s_url}}</a></span>
+              <span class="table-item-con"><a :href="shopInfo.s_url" style="color:red;text-decoration:none;" target="_blank">点击打开</a></span>
             </div>
           </el-col>
            <el-col :span="8">
@@ -382,11 +382,11 @@ export default {
         }
       })
       this.acordImgs = this.acordImgsNew
-      console.log(this.acordImgs)
+      // console.log(this.acordImgs)
     },
     handlePreview (file) {
       this.acordImgs.push(file)
-      console.log(this.acordImgs)
+      // console.log(this.acordImgs)
     },
     beforeImgUpload (file) {
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
@@ -401,7 +401,7 @@ export default {
     },
     viewDetail (index, row) {
       this.shopInfoVisible = true
-      console.log(index, row)
+      // console.log(index, row)
       this.shopInfo.s_name = row.shop_name
       this.shopInfo.s_id = row.shop_id
       this.shopInfo.s_url = row.shop_url
@@ -436,7 +436,7 @@ export default {
       this.$http.post('order_acord.php', formData)
         .then(function (res) {
           that.acordFetchData = res.data
-          console.log('res', res)
+          // console.log('res', res)
           console.log('fetchData', that.acordFetchData)
         }).catch(function (err) {
           console.log(err)

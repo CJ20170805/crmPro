@@ -45,7 +45,7 @@
                   <img :src="bt_avatar" width="120" height="120" alt="">
                 </div>
                 <p class="best-reason"><span style="font-weight:550;">上榜理由：</span>{{ bt_reason }}</p>
-                <el-button type="info" plain size="small" @click="setBest">设置</el-button>
+                <el-button v-if="$store.getters.userAuthority === '80001'" type="info" plain size="small" @click="setBest">设置</el-button>
             </el-card>
             </el-col>
         <el-col :xs="16" :sm="16" :md="16" :lg="16" :xl="16">
@@ -81,7 +81,7 @@
             </el-form-item>
             <el-form-item>
                 <el-col :span="24">
-                    <el-button type="primary">提交更改</el-button>
+                    <el-button type="primary" @click="submitSet">提交更改</el-button>
                 </el-col>
             </el-form-item>
         </el-form>
@@ -105,7 +105,6 @@ export default {
       bt_avatar: 'https://img.alicdn.com/imgextra/i4/662134481/O1CN011iyLEmtX4Jj7jhy-662134481.png',
       options: [],
       setName: '',
-      pmData: [],
       myClient: 0,
       myOrder: 0,
       myPm: 0
@@ -113,7 +112,7 @@ export default {
   },
   created () {
     // my  client
-    let that = this
+        let that = this
     let usern = this.$store.state.userName
 
     let formData = new FormData()
@@ -121,7 +120,7 @@ export default {
     formData.append('user_name', usern)
     this.$http.post('computed_home.php', formData)
         .then(function (res) {
-        console.log('homeee1', res.data.length)
+        // console.log('homeee1', res.data.length)
             that.myClient = res.data.length
         }).catch(function (err) {
         console.log(err)
@@ -132,7 +131,7 @@ export default {
       formData2.append('user_name', usern)
       this.$http.post('computed_home.php', formData2)
         .then(function (res) {
-        console.log('homeee2', res.data)
+        // console.log('homeee2', res.data)
             that.myOrder = res.data.length
         }).catch(function (err) {
           console.log(err)
@@ -144,7 +143,7 @@ export default {
       this.$http.post('computed_home.php', formData3)
         .then(function (res) {
           let data = res.data
-          console.log('homeee3', res.data)
+        //   console.log('homeee3', res.data)
           let pm = 0
           data.forEach(item => {
             pm += parseInt(item.pay_price)
@@ -157,39 +156,13 @@ export default {
         }).catch(function (err) {
           console.log(err)
         })
-    //  my pm detail
-     let formData4 = new FormData()
-      formData4.append('flag', 'myPmDetail')
-      formData4.append('user_name', usern)
-      this.$http.post('computed_home.php', formData4)
-        .then(function (res) {
-        // let date = new Date()
-        //     // let nowDate = this.formatDate(date)
-        // let nd = date.setDate(date.getDate() - 7)
-        // console.log(that.formatDate(new Date(nd)))
-          let data = res.data
-          let arr = [0, 0, 0, 0, 0, 0, 0]
-          let username = that.$store.state.userName
-          data.forEach(item => {
-            if (item.reach_name.indexOf(username) !== -1) {
-                let week = new Date(item.reg_date).getDay()
-                arr[week] += parseInt(item.pay_price)
-            }
-          })
-
-          that.pmData = arr
-           console.log('homeee4', data)
-          console.log('homeee444', arr)
-        }).catch(function (err) {
-          console.log(err)
-        })
       //  all  users' name
       let formData5 = new FormData()
       formData5.append('code', '400')
       this.$http.post('user_info.php', formData5)
         .then(function (res) {
             let data = res.data
-            console.log('DDDDAta:', data)
+            // console.log('DDDDAta:', data)
             for (let i = 0; i < data.length; i++) {
             that.options.push({
                 value: data[i].id + ';' + data[i].st_departmentVal + ';' + data[i].st_name,
@@ -209,7 +182,7 @@ export default {
           that.bt_apart = data[0].st_departmentVal
           that.bt_reason = data[0].best_reason
           that.bt_avatar = data[0].st_avatar
-          console.log('homeee666', res.data)
+        //   console.log('homeee666', res.data)
         }).catch(function (err) {
           console.log(err)
         })
@@ -217,6 +190,33 @@ export default {
   methods: {
     setBest () {
       this.dialogTableVisible = true
+    },
+    submitSet () {
+      let that = this
+      let formData7 = new FormData()
+      formData7.append('flag', 'setUserInfo')
+      formData7.append('set_name', this.form.setName.split(';')[2])
+      formData7.append('set_info', this.form.reason)
+      this.$http.post('computed_home.php', formData7)
+        .then(function (res) {
+          let data = res.data
+        // console.log('homeee7777', res.data)
+         if (data === 'setSuc') {
+             that.$message({
+                type: 'success',
+                message: '设置成功!'
+            })
+            that.dialogTableVisible = false
+            that.$store.state.defaultComp = 'myOrder'
+            setTimeout(() => {
+              that.$store.state.defaultComp = 'homePage'
+            }, 10)
+         } else {
+             that.$message.error('请选择员工！')
+         }
+        }).catch(function (err) {
+          console.log(err)
+        })
     },
     formatDate (date) {
         var y = date.getFullYear()
@@ -228,56 +228,73 @@ export default {
     }
   },
   mounted () {
-    setTimeout(() => {
-        // 基于准备好的dom，初始化echarts实例
+    // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('ech'), 'light')
-    // 绘制图表
-    myChart.setOption({
-        title: {
-        text: '个人业绩(上周)',
-        textStyle: {
-          color: '#303133'
-        }
-    },
-    tooltip : {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'cross',
-            label: {
-                backgroundColor: '#6a7985'
+        //  my pm detail
+    let that = this
+     let formData4 = new FormData()
+      formData4.append('flag', 'myPmDetail')
+      formData4.append('user_name', this.$store.state.userName)
+      this.$http.post('computed_home.php', formData4)
+        .then(function (res) {
+          let data = res.data
+          let arr = [0, 0, 0, 0, 0, 0, 0]
+          let username = that.$store.state.userName
+          data.forEach(item => {
+            if (item.reach_name.indexOf(username) !== -1) {
+                let week = new Date(item.reg_date).getDay()
+                arr[week] += parseInt(item.pay_price)
             }
-        }
-    },
-    toolbox: {
-        feature: {
-            saveAsImage: {}
-        }
-    },
-    series: [{
-        data: this.pmData,
-        type: 'line',
-        areaStyle: {}
-    }],
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis : [
-        {
-            type : 'category',
-            boundaryGap : false,
-            data : ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-        }
-    ],
-    yAxis : [
-        {
-            type : 'value'
-        }
-    ]
-    })
-    }, 1000)
+          })
+        // 绘制图表
+            myChart.setOption({
+                title: {
+                text: '个人业绩(上周)',
+                textStyle: {
+                color: '#303133'
+                }
+            },
+            tooltip : {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            series: [{
+                data: arr,
+                type: 'line',
+                areaStyle: {}
+            }],
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ]
+            })
+        }).catch(function (err) {
+          console.log(err)
+        })
   }
 }
 </script>
@@ -347,6 +364,7 @@ export default {
               font-size: 0.95em;
               padding: 20px;
               margin-bottom: 0;
+              margin-top: 0;
           }
           .el-button--info.is-plain{
               float: right;

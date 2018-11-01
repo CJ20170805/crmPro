@@ -165,7 +165,7 @@
         <el-col :span="24">
             <div class="table-item">
                 <span class="table-item-tit">店铺链接：</span>
-                <span class="table-item-con">{{ shopUrl}}</span>
+                <span class="table-item-con"><a :href="shopUrl" style="color:red;text-decoration:none;" target="_blank">点击打开</a></span>
             </div>
         </el-col>
       </el-row>

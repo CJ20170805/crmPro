@@ -101,8 +101,8 @@ export default {
     formdata.append('username', usern)
     this.$http.post('user_info.php', formdata)
       .then(function (res) {
-        console.log('user_info', res)
-        console.log('storge', usern)
+        // console.log('user_info', res)
+        // console.log('storge', usern)
         let data = res.data[0]
         that.userLoginData = data
         that.$store.state.userName = data.st_name

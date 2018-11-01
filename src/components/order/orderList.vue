@@ -94,8 +94,8 @@
         <el-row>
         <el-col :span="16">
           <div class="table-item">
-            <span class="table-item-tit else-info-tit">店铺链接：</span>
-            <span class="table-item-con else-info-con"><a style="font-size:.8em;" :href="shopInfo.s_url" target="_blank">{{ shopInfo.s_url}}</a></span>
+            <span class="table-item-tit">店铺链接：</span>
+            <span class="table-item-con"><a :href="shopInfo.s_url" style="color:red;text-decoration:none;" target="_blank">点击打开</a></span>
           </div>
         </el-col>
          <el-col :span="8">

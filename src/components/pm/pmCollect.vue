@@ -114,8 +114,6 @@ let moment = require('moment')
         tAll: '',
         tSeller: '',
         tSkill: '',
-        ss1:[],
-        ss2:[],
         pickerOptions2: {
           shortcuts: [{
             text: '最近一周',
@@ -188,9 +186,10 @@ let moment = require('moment')
         console.log(err)
       })
     },
-    beforeMount () {
+    mounted () {
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('ech2'), 'light')
       // collect imgTable
-      let that = this
       let formData3 = new FormData()
       formData3.append('flag', 'conditionFetchLastWeek')
       this.$http.post('pm_mng.php', formData3)
@@ -208,88 +207,77 @@ let moment = require('moment')
             s2[week] += parseInt(v.pay_price)
           }
         })
-        that.ss1 = s1
-        that.ss2 = s2
-        console.log('Lasttttt', res)
-        console.log('LLLLLLLL1', s1)
-        console.log('LLLLLLLL2', s2)
+         myChart.setOption({
+            title: {
+                text: '业绩统计图'
+            },
+            tooltip : {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                }
+            },
+            legend: {
+                data:['石一分公司', '石二分公司']
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'石一分公司',
+                    type:'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    areaStyle: {normal: {}},
+                    data: s1
+                },
+                {
+                    name:'石二分公司',
+                    type:'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    areaStyle: {normal: {}},
+                    data: s2
+                }
+            ]
+            })
       }).catch(function (err) {
         console.log(err)
       })
-    },
-    mounted () {
-      // 基于准备好的dom，初始化echarts实例
-      setTimeout(() => {
-        var myChart = echarts.init(document.getElementById('ech2'), 'light')
-                myChart.setOption({
-        title: {
-            text: '业绩统计图'
-        },
-        tooltip : {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'cross',
-                label: {
-                    backgroundColor: '#6a7985'
-                }
-            }
-        },
-        legend: {
-            data:['石一分公司', '石二分公司']
-        },
-        toolbox: {
-            feature: {
-                saveAsImage: {}
-            }
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis : [
-            {
-                type : 'category',
-                boundaryGap : false,
-                data : ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-            }
-        ],
-        yAxis : [
-            {
-                type : 'value'
-            }
-        ],
-        series : [
-            {
-                name:'石一分公司',
-                type:'line',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'top'
-                    }
-                },
-                areaStyle: {normal: {}},
-                data: this.ss1
-            },
-            {
-                name:'石二分公司',
-                type:'line',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'top'
-                    }
-                },
-                areaStyle: {normal: {}},
-                data: this.ss2
-            }
-        ]
-        })
-      }, 1000)
     },
     methods: {
       handleClick (tab, event) {
