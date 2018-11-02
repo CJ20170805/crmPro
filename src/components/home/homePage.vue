@@ -111,8 +111,9 @@ export default {
     }
   },
   created () {
-    // my  client
-        let that = this
+    setTimeout(() => {
+        // my  client
+    let that = this
     let usern = this.$store.state.userName
 
     let formData = new FormData()
@@ -133,6 +134,7 @@ export default {
         .then(function (res) {
         // console.log('homeee2', res.data)
             that.myOrder = res.data.length
+            // that.$set(that.myOrder, 0, res.data.length)
         }).catch(function (err) {
           console.log(err)
         })
@@ -148,7 +150,6 @@ export default {
           data.forEach(item => {
             pm += parseInt(item.pay_price)
           })
-
           that.myPm = pm
         //   if (res.data.length !== 0) {
         //     that.myOrder = res.data.length
@@ -186,6 +187,7 @@ export default {
         }).catch(function (err) {
           console.log(err)
         })
+    }, 1600)
   },
   methods: {
     setBest () {
