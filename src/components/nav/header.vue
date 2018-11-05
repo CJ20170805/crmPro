@@ -37,7 +37,7 @@
                     </el-submenu> -->
                 </el-submenu>
                   <li style="float:right;line-height:60px;margin-right:30px;">
-                      <el-badge :value="0" class="item">
+                      <el-badge :value="auditNums" class="item">
 
                            <el-popover
                                 placement="bottom"
@@ -74,7 +74,8 @@ export default {
     return {
       userName: '3443',
       userLoginData: '',
-      activeIndex: '1'
+      activeIndex: '1',
+      auditNums: ''
     }
   },
   methods: {
@@ -114,6 +115,20 @@ export default {
           that.$store.state.userAvatar = data.st_avatar
           that.$refs.usersImg.src = that.$store.state.userAvatar
         }
+
+          //  fetch audit order's id
+        let formData2 = new FormData()
+        formData2.append('st_flag', 'auditFetch')
+        formData2.append('staff_id', data.id)
+        that.$http.post('staff_mng.php', formData2)
+          .then(function (res) {
+            let str = String(res.data)
+            let strs = str.split(';')
+            console.log('useRid', strs[1])
+            that.auditNums = strs.length
+          }).catch(function (err) {
+            console.log(err)
+          })
         // if (this.$store.state.userAvatar === '') {
         //   this.$refs.usersImg.src = this.$store.state.userAvatar
         // }

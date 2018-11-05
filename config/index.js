@@ -3,7 +3,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-
+// 0276436594
+// 0406953854
 module.exports = {
   dev: {
 
@@ -12,8 +13,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://www.huibohehe.com',
-        // target: 'http://localhost/',
+        // target: 'http://www.huibohehe.com',
+        target: 'http://localhost/',
         //  上下两个 crmAPi 加上main.js 里的  是绝对路径！  
         changeOrigin: true,
         pathRewrite: {

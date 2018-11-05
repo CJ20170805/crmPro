@@ -8,7 +8,8 @@ const store = new Vuex.Store({
     userAvatar: '',
     userName: '',
     userDepart: '',
-    userPower: ''
+    userPower: '',
+    userId: ''
   },
   mutations: {
   },

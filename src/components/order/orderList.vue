@@ -39,13 +39,14 @@
       </el-table-column>
       <el-table-column
         label="下单时间"
+        width="200"
         >
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
           <span style="margin-left: 10px">{{ scope.row.reg_date }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="400">
+      <el-table-column label="操作" width="480">
         <!-- width="420" -->
         <template slot-scope="scope">
           <el-button
@@ -56,6 +57,10 @@
             size="mini"
             type="primary"
             @click="dispenseOrder(scope.$index, scope.row)">分发此单</el-button>
+          <el-button
+            size="mini"
+            type="warning"
+            @click="handleAudit(scope.$index, scope.row)">发起审核</el-button>
           <el-button
             size="mini"
             type="success"
@@ -186,6 +191,23 @@
 
       <el-row>
         <el-col :span="24">
+          <div class="table-title">审核信息</div>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="24">
+          <el-steps :active="1" align-center>
+            <el-step title="录入成功"></el-step>
+            <el-step title="经理审核"></el-step>
+            <el-step title="总经理审核"></el-step>
+            <el-step title="审核成功"></el-step>
+          </el-steps>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="24">
           <div class="table-title">附件 (点击图标下载)</div>
         </el-col>
       </el-row>
@@ -262,6 +284,33 @@ export default {
     this.fetchOrderData()
   },
   methods: {
+    handleAudit (index, row) {
+      this.$confirm('即将通知销售经理、总经理进行订单审核, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let formData = new FormData()
+        formData.append('st_flag', 'audit')
+        formData.append('order_id', row.id)
+        formData.append('staff_id', 38)
+        this.$http.post('staff_mng.php', formData)
+          .then(function (res) {
+            console.log(res)
+          }).catch(function (err) {
+            console.log(err)
+          })
+        this.$message({
+          type: 'success',
+          message: '通知成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消通知'
+        })
+      })
+    },
     dispenseOrder (index, row) {
       this.dispenceOrderVisible = true
       this.orderDispenseInfo = row
