@@ -100,7 +100,7 @@
         <el-col :span="16">
           <div class="table-item">
             <span class="table-item-tit">店铺链接：</span>
-            <span class="table-item-con"><a :href="shopInfo.s_url" style="color:red;text-decoration:none;" target="_blank">点击打开</a></span>
+            <span class="table-item-con"><a v-if="shopInfo.s_url !== ''" :href="shopInfo.s_url" style="color:red;text-decoration:none;" target="_blank">点击打开</a></span>
           </div>
         </el-col>
          <el-col :span="8">
@@ -197,7 +197,7 @@
 
       <el-row>
         <el-col :span="24">
-          <el-steps :active="1" align-center>
+          <el-steps :active="auditStatus" align-center>
             <el-step title="录入成功"></el-step>
             <el-step title="经理审核"></el-step>
             <el-step title="总经理审核"></el-step>
@@ -212,7 +212,7 @@
         </el-col>
       </el-row>
 
-      <el-row>
+      <el-row v-if="shopInfo.s_someImg.length !== 0">
         <el-col :span="24">
             <div class="imgList">
               <span class="down-left"  v-for="(item, index) in shopInfo.s_someImg" :key="index">
@@ -261,6 +261,7 @@ export default {
       orderDispenseInfo: '',
       acordFetchData: [],
       orderActive: 3,
+      auditStatus: '',
       shopInfo: {
         s_name: '',
         s_id: '',
@@ -293,7 +294,7 @@ export default {
         let formData = new FormData()
         formData.append('st_flag', 'audit')
         formData.append('order_id', row.id)
-        formData.append('staff_id', 38)
+        formData.append('staff_depart', this.$store.state.userDepart)
         this.$http.post('staff_mng.php', formData)
           .then(function (res) {
             console.log(res)
@@ -332,6 +333,17 @@ export default {
       this.shopInfo.s_descInfo = row.desc_info
       this.shopInfo.s_timeLimit = row.time_limit
       this.shopInfo.s_salesMan = row.sales_man
+      let jl = row.jl_audit
+      let zjl = row.zjl_audit
+      if (jl === '1' && zjl === '1') {
+        this.auditStatus = 1
+      } else if (jl === '2' && zjl === '2') {
+        this.auditStatus = 4
+      } else if (jl === '2' || zjl === '2') {
+        this.auditStatus = 2
+      } else if (jl === '3' || zjl === '3') {
+        this.auditStatus = 0
+      }
       // split string for array
       let someImgArr = []
       let someImg = row.some_img
@@ -341,6 +353,8 @@ export default {
           someImgArr.push(someStr[i])
         }
         // console.log('AAAA',someImgArr)
+        this.shopInfo.s_someImg = someImgArr
+      } else {
         this.shopInfo.s_someImg = someImgArr
       }
     },

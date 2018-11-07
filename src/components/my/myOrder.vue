@@ -87,7 +87,7 @@
           <el-col :span="16">
             <div class="table-item">
               <span class="table-item-tit">店铺链接：</span>
-              <span class="table-item-con"><a :href="shopInfo.s_url" style="color:red;text-decoration:none;" target="_blank">点击打开</a></span>
+              <span class="table-item-con"><a v-if="shopInfo.s_url !== ''" :href="shopInfo.s_url" style="color:red;text-decoration:none;" target="_blank">点击打开</a></span>
             </div>
           </el-col>
            <el-col :span="8">

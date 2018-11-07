@@ -48,7 +48,7 @@
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
                     <el-menu-item index="701" @click="switchComp('orderList')">订单列表</el-menu-item>
-                    <el-menu-item index="702" @click="switchComp('orderAdd')" v-if="$store.getters.userAuthority === '' || $store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80003' || $store.getters.userAuthority === '80005'">
+                    <el-menu-item index="702" @click="switchComp('orderAdd')">
                       新单录入
                     </el-menu-item>
                     </el-menu-item-group>
@@ -61,6 +61,7 @@
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
                     <el-menu-item index="801" @click="switchComp('myOrder')">我的订单</el-menu-item>
+                     <el-menu-item index="802" @click="switchComp('myAudit')">我的审核</el-menu-item>
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
                 </el-submenu>
@@ -99,6 +100,7 @@ import homePage from './home/homePage'
 import orderList from './order/orderList'
 import orderAdd from './order/orderAdd'
 import myOrder from './my/myOrder'
+import myAudit from './my/myAudit'
 import clientAdd from './client/clientAdd'
 import clientList from './client/clientList'
 import pmAdd from './pm/pmAdd'
@@ -124,6 +126,7 @@ export default {
     orderList,
     orderAdd,
     myOrder,
+    myAudit,
     clientAdd,
     clientList,
     pmAdd,

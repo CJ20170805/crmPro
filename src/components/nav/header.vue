@@ -49,10 +49,12 @@
                                   <dl>
                                     <dd>
                                       <i class="el-icon-news"></i>
-                                      <span>暂无消息</span>
+                                      <span v-if="auditNums === ''">暂无消息</span>
+                                      <span v-if="auditNums !== 0 && auditNums !== ''">您有{{auditNums}}个订单需要审核</span>
+                                      <span style="float:right"></span>
                                     </dd>
                                     <dt>
-                                      <span>清除消息</span>
+                                      <span @click="gotoAudit">进入审核列表</span>
                                     </dt>
                                   </dl>
                                 </div>
@@ -90,6 +92,9 @@ export default {
       if (key === '1') {
         this.$store.state.defaultComp = 'homePage'
       }
+    },
+    gotoAudit () {
+      this.$store.state.defaultComp = 'myAudit'
     }
   },
   mounted () {
@@ -122,10 +127,14 @@ export default {
         formData2.append('staff_id', data.id)
         that.$http.post('staff_mng.php', formData2)
           .then(function (res) {
-            let str = String(res.data)
-            let strs = str.split(';')
-            console.log('useRid', strs[1])
-            that.auditNums = strs.length
+            if (res.data !== '') {
+              let str = String(res.data)
+              let strs = str.split(';')
+              console.log('useRid', strs)
+              that.auditNums = strs.length
+            } else {
+               that.auditNums = ''
+            }
           }).catch(function (err) {
             console.log(err)
           })
@@ -167,6 +176,7 @@ export default {
         color: #ffffff;
         background-color: #409EFF;
         border: 1px solid #cccccc;
+        cursor: pointer;
       }
     }
   }
