@@ -60,7 +60,7 @@
           <el-button
             size="mini"
             type="warning"
-            @click="handleAudit(scope.$index, scope.row)">发起审核</el-button>
+            @click="handleAudit(scope.$index, scope.row)">{{ scope.row.order_status }}</el-button>
           <el-button
             size="mini"
             type="success"
@@ -203,6 +203,7 @@
             <el-step title="总经理审核"></el-step>
             <el-step title="审核成功"></el-step>
           </el-steps>
+          <el-tag type="danger">{{ auditStatusText }}</el-tag>
         </el-col>
       </el-row>
 
@@ -253,6 +254,7 @@ import dispenseOrder from './dispenseOrder'
 export default {
   data () {
     return {
+      auditStatusText: '录入成功，等待审核',
       tableData: [],
       orderData: [],
       shopInfoVisible: false,
@@ -286,31 +288,62 @@ export default {
   },
   methods: {
     handleAudit (index, row) {
-      this.$confirm('即将通知销售经理、总经理进行订单审核, 是否继续?', '提示', {
+      console.log('III', index, 'RRR', row)
+      // this.$refs.auditBtnn.$el.innerText = 'PPPPP'
+      if (row.order_code === '1') {
+        this.$alert('审核信息已提交，等待审核完成', '审核信息', {
+          confirmButtonText: '确定'
+        })
+      } else if (row.order_code === '0') {
+        this.$confirm('即将通知销售经理、总经理进行订单审核, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        let that = this
         let formData = new FormData()
         formData.append('st_flag', 'audit')
         formData.append('order_id', row.id)
         formData.append('staff_depart', this.$store.state.userDepart)
+        formData.append('staff_job', 'BD经理')
         this.$http.post('staff_mng.php', formData)
           .then(function (res) {
-            console.log(res)
+            // console.log(res)
+            if (res.data === 'notiSuc') {
+              //  change  btn text
+                  let formData2 = new FormData()
+                  formData2.append('flag', 'changeBtnText')
+                  formData2.append('order_id', row.id)
+                  formData2.append('btn_text', '审核中')
+                  that.$http.post('order_mng.php', formData2)
+                    .then(function (res) {
+                      //  console.log(res)
+                      that.$store.state.defaultComp = 'orderAdd'
+                      setTimeout(() => {
+                        that.$store.state.defaultComp = 'orderList'
+                      }, 10)
+                    }).catch(function (err) {
+                      console.log(err)
+                    })
+              // that.auditBtn = '正在审核'
+              // that.auditBtnStu = true
+              that.$message({
+                type: 'success',
+                message: '通知成功!'
+              })
+            } else {
+              that.$message.error('通知失败！')
+            }
           }).catch(function (err) {
             console.log(err)
           })
-        this.$message({
-          type: 'success',
-          message: '通知成功!'
-        })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消通知'
         })
       })
+      }
     },
     dispenseOrder (index, row) {
       this.dispenceOrderVisible = true
@@ -337,12 +370,16 @@ export default {
       let zjl = row.zjl_audit
       if (jl === '1' && zjl === '1') {
         this.auditStatus = 1
+        this.auditStatusText = '录入成功，等待审核'
       } else if (jl === '2' && zjl === '2') {
         this.auditStatus = 4
-      } else if (jl === '2' || zjl === '2') {
-        this.auditStatus = 2
+        this.auditStatusText = '审核通过'
       } else if (jl === '3' || zjl === '3') {
         this.auditStatus = 0
+        this.auditStatusText = '审核不通过'
+      } else if (jl === '2') {
+        this.auditStatus = 2
+        this.auditStatusText = '经理审核通过'
       }
       // split string for array
       let someImgArr = []
@@ -446,9 +483,15 @@ export default {
     }
   }
 }
+.el-steps--horizontal{
+  padding: 10px;
+}
 .order-step{
   width: 100%;
   padding:20px 0 30px 0;
+}
+.el-tag--danger{
+  width: 100%;
 }
 .order-status-title{
   color: #409EFF;

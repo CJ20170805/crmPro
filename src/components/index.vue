@@ -61,7 +61,7 @@
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
                     <el-menu-item index="801" @click="switchComp('myOrder')">我的订单</el-menu-item>
-                     <el-menu-item index="802" @click="switchComp('myAudit')">我的审核</el-menu-item>
+                     <el-menu-item index="802" @click="switchComp('myAudit')" v-if="$store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80003'">我的审核</el-menu-item>
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
                 </el-submenu>

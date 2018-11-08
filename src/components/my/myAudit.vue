@@ -1,5 +1,7 @@
 <template>
   <div class="audit-wrap">
+     <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="待审核" name="first">
         <el-table
         :data="tableData"
         style="width: 100%">
@@ -12,18 +14,18 @@
         </el-table-column>
         <el-table-column
         label="所属部门"
-        width="180">
+        >
         <template slot-scope="scope">
             <span style="margin-left: 10px">{{ scope.row.sales_apart }}</span>
         </template>
         </el-table-column>
         <el-table-column
         label="录入人员"
-        width="80">
+        >
         <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
-            <p>姓名: {{ scope.row.name }}</p>
-            <p>住址: {{ scope.row.address }}</p>
+            <p>订购套餐: {{ scope.row.combo_info }}</p>
+            <p>到账金额: {{ scope.row.pay_price }}</p>
             <div slot="reference" class="name-wrapper">
                 <el-tag size="medium">{{ scope.row.sales_man }}</el-tag>
             </div>
@@ -39,25 +41,28 @@
         </template>
         </el-table-column>
         <el-table-column
-        label="订单状态"
-        width="180">
+        label="审核状态"
+        >
         <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.date }}</span>
+            <span style="margin-left: 10px">{{ scope.row.order_status }}</span>
         </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="120">
         <template slot-scope="scope">
             <el-button
             size="mini"
             type="primary"
             @click="handleEdit(scope.$index, scope.row)">审核</el-button>
-            <el-button
+            <!-- <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
         </template>
         </el-table-column>
     </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="已审核" name="second">配置管理</el-tab-pane>
+    </el-tabs>
     <!-- Audit dialog -->
     <el-dialog :visible.sync="dialogTableVisible">
        <div class="shopInfoTable">
@@ -217,13 +222,13 @@
             <el-col :span="12">
                     <el-checkbox-group v-model="auditPass">
                        <el-checkbox label="确认已通过审核"></el-checkbox>
-                        <el-button type="primary" plain @click="passA">通过审核</el-button>
+                        <el-button :disabled="passAbled" type="primary" plain @click="passA">{{ passBtnText }}</el-button>
                     </el-checkbox-group>
             </el-col>
              <el-col :span="12">
                    <el-checkbox-group v-model="auditReject">
                        <el-checkbox label="确认未通过审核"></el-checkbox>
-                        <el-button type="danger" plain @click="rejectA">驳回审核</el-button>
+                        <el-button :disabled="rejectAbled" type="danger" plain @click="rejectA">{{ rejectBtnText }}</el-button>
                     </el-checkbox-group>
             </el-col>
         </div>
@@ -237,6 +242,11 @@
   export default {
     data () {
       return {
+        activeName: 'first',
+        passBtnText: '通过审核',
+        rejectBtnText: '驳回审核',
+        passAbled: false,
+        rejectAbled: false,
         auditPass: false,
         auditReject: false,
         tableData: [],
@@ -291,6 +301,9 @@
           })
     },
     methods: {
+      handleClick (tab, event) {
+        console.log(tab, event)
+      },
       passA () {
          let orderId = this.shopInfo.id
          let power = this.$store.getters.userAuthority
@@ -317,7 +330,22 @@
                     }).catch(function (err) {
                     console.log(err)
                     })
-         } else if (power === '80003' && this.auditReject === true) {
+                //  change order status
+                let formData2 = new FormData()
+                  formData2.append('flag', 'changeBtnText')
+                  formData2.append('order_id', orderId)
+                  formData2.append('btn_text', '已通过')
+                  that.$http.post('order_mng.php', formData2)
+                    .then(function (res) {
+                      //  console.log(res)
+                      that.$store.state.defaultComp = 'myOrder'
+                      setTimeout(() => {
+                        that.$store.state.defaultComp = 'myAudit'
+                      }, 10)
+                    }).catch(function (err) {
+                      console.log(err)
+                    })
+         } else if (power === '80003' && this.auditPass === true) {
                 let that = this
                 let formData = new FormData()
                 formData.append('flag', 'changeStu')
@@ -326,22 +354,105 @@
                 formData.append('audit_code', '2')
                 this.$http.post('order_mng.php', formData)
                     .then(function (res) {
+                        console.log('WWWW', res)
+                        if (res.data === 'auditChangeSuc') {
+                            that.$message({
+                              type: 'success',
+                              message: '审核成功!'
+                            })
+                            that.dialogTableVisible = false
+                              //   通知 总经理 审核
+                              let formData2 = new FormData()
+                              formData2.append('st_flag', 'audit')
+                              formData2.append('order_id', orderId)
+                              formData2.append('staff_depart', '石一,管理层')
+                              formData2.append('staff_job', '分公司总经理')
+                              that.$http.post('staff_mng.php', formData2)
+                                .then(function (res) {
+                                   console.log('HHHHHHH', res)
+                                  if (res.data === 'notiSuc') {
+                                    that.$message({
+                                      type: 'success',
+                                      message: '已通知总经理审核!'
+                                    })
+                                  } else {
+                                    that.$message.error('通知失败！')
+                                  }
+                                }).catch(function (err) {
+                                  console.log(err)
+                                })
+                        } else {
+                            that.$message.error('审核失败！')
+                        }
+                    }).catch(function (err) {
+                      console.log(err)
+                    })
+         }
+      },
+      rejectA () {
+         let orderId = this.shopInfo.id
+         let power = this.$store.getters.userAuthority
+         if (power === '80001' && this.auditReject === true) {
+            //  alert(order_id + '****' + power)
+                let that = this
+                let formData = new FormData()
+                formData.append('flag', 'changeStu')
+                formData.append('order_id', orderId)
+                formData.append('where_audit', 'zjl_audit')
+                formData.append('audit_code', '3')
+                this.$http.post('order_mng.php', formData)
+                    .then(function (res) {
                         // console.log('WWWW', res)
                     if (res.data === 'auditChangeSuc') {
                         that.$message({
                         type: 'success',
-                        message: '审核成功!'
+                        message: '已驳回!'
                         })
                         that.dialogTableVisible = false
                     } else {
-                        that.$message.error('审核失败！')
+                        that.$message.error('驳回失败！')
+                    }
+                    }).catch(function (err) {
+                    console.log(err)
+                    })
+                     //  change order status
+                let formData2 = new FormData()
+                  formData2.append('flag', 'changeBtnText')
+                  formData2.append('order_id', orderId)
+                  formData2.append('btn_text', '未通过')
+                  that.$http.post('order_mng.php', formData2)
+                    .then(function (res) {
+                      //  console.log(res)
+                      that.$store.state.defaultComp = 'myOrder'
+                      setTimeout(() => {
+                        that.$store.state.defaultComp = 'myAudit'
+                      }, 10)
+                    }).catch(function (err) {
+                      console.log(err)
+                    })
+         } else if (power === '80003' && this.auditReject === true) {
+                let that = this
+                let formData = new FormData()
+                formData.append('flag', 'changeStu')
+                formData.append('order_id', orderId)
+                formData.append('where_audit', 'jl_audit')
+                formData.append('audit_code', '3')
+                this.$http.post('order_mng.php', formData)
+                    .then(function (res) {
+                        // console.log('WWWW', res)
+                    if (res.data === 'auditChangeSuc') {
+                        that.$message({
+                        type: 'success',
+                        message: '已驳回!'
+                        })
+                        that.dialogTableVisible = false
+                    } else {
+                        that.$message.error('驳回失败！')
                     }
                     }).catch(function (err) {
                     console.log(err)
                     })
          }
-      },
-      rejectA () {
       },
       handleEdit (index, row) {
         this.dialogTableVisible = true
