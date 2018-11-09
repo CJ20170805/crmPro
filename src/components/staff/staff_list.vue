@@ -149,11 +149,23 @@
           <el-input v-model="m_jobVal"></el-input>
         </td>
       </tr>
-        <tr>
+      <tr>
         <td class="tdTit">备注信息：</td>
         <td>
             <el-input type="textarea" :rows="2" v-model="m_elseInfo"></el-input>
         </td>
+      </tr>
+      <tr>
+          <td class="tdTit">附件：</td>
+          <td>
+            <div class="imgList"  v-if="m_files.length !== 0">
+            <span class="down-left"  v-for="(item, index) in m_files" :key="index">
+                  <a :href="item" target="_blank">
+                      <img :src="item.substring(item.length-3) === 'zip' ? 'https://img.alicdn.com/imgextra/i2/662134481/O1CN011iyLEr3kJJ6YdeJ-662134481.jpg' : item" width="120" height="120">
+                  </a>
+            </span>
+          </div>
+          </td>
       </tr>
       <tr>
         <td></td>
@@ -184,7 +196,8 @@ export default {
       m_staffPhone2: '',
       m_deparmentVal: '',
       m_jobVal: '',
-      m_elseInfo: ''
+      m_elseInfo: '',
+      m_files: []
     }
   },
   methods: {
@@ -204,6 +217,20 @@ export default {
       this.m_deparmentVal = row.st_departmentVal
       this.m_jobVal = row.st_jobVal
       this.m_elseInfo = row.st_elseInfo
+      // this.m_files = row.files
+      // split string for array
+      let someImgArr = []
+      let someImg = row.files
+      if (someImg !== '') {
+        let someStr = someImg.split(',')
+        for (let i = 0; i < someStr.length; i++) {
+          someImgArr.push(someStr[i])
+        }
+        // console.log('AAAA',someImgArr)
+        this.m_files = someImgArr
+      } else {
+        this.m_files = someImgArr
+      }
     },
     handleDelete (index, row) {
       // console.log(row.id)
@@ -292,6 +319,7 @@ export default {
 }
 </script>
 <style lang="less">
+@blue: #409EFF;
 .el-table th>.cell{
   text-align: center;
 }
@@ -317,5 +345,23 @@ table{
       font-size: 1.1em;
     }
   }
+}
+.imgList{
+  width: 100%;
+  height: 130px;
+    border: 1px solid @blue;
+    span{
+      display: inline-block;
+      a{
+        display: block;
+      }
+    }
+    .down-left{
+      border-right:1px solid @blue;
+      width: 80%;
+      width: 120px;
+      float: left;
+      margin: 6px;
+    }
 }
 </style>

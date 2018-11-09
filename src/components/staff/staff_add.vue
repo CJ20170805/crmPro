@@ -113,6 +113,23 @@
                     </td>
                </tr>
                <tr>
+                 <td class="input-name">备注信息：</td>
+                  <td class="input-main">
+                    <!-- action="http://www.huibohehe.com/crmApi/order_img.php" -->
+                  <el-upload
+                    action="http://localhost:8080/api/crmApi/staff_img.php"
+                    list-type="picture-card"
+                    :on-preview="handlePictureCardPreview"
+                    :on-success="orderUploadSuc"
+                    :on-remove="handleRemove">
+                    <i class="el-icon-plus"></i>
+                  </el-upload>
+                  <el-dialog :visible.sync="dialogVisible">
+                    <img width="100%" :src="dialogImageUrl" alt="">
+                  </el-dialog>
+                  </td>
+               </tr>
+               <tr>
                    <td></td>
                    <td>
                       <el-button style="float:right" type="primary" @click="submitInfo">提交录入</el-button>
@@ -126,6 +143,9 @@
 export default {
   data () {
     return {
+      dialogVisible: false,
+      orderImgs: [],
+      orderImgsNew: [],
       staffName: '',
       staffSex: '男',
       address: '',
@@ -313,6 +333,26 @@ export default {
     }
   },
   methods: {
+    orderUploadSuc (response, file, fileList) {
+      let imgUrl = file.response
+      this.orderImgs.push(imgUrl)
+      // console.log("Onsuc",this.orderImgs)
+    },
+    handleRemove (file, fileList) {
+      let fileName = file.name
+      this.orderImgsNew = []
+      this.orderImgs.forEach((v, k) => {
+        if (v.indexOf(fileName) === -1) {
+          this.orderImgsNew.push(v)
+        }
+      })
+      this.orderImgs = this.orderImgsNew
+      // console.log("OnErr",this.orderImgs)
+    },
+    handlePictureCardPreview (file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
     submitInfo () {
       console.log(this.joinDate)
       let that = this
@@ -329,6 +369,7 @@ export default {
       formData.append('st_departmentVal', this.departmentVal)
       formData.append('st_jobVal', this.jobVal)
       formData.append('st_elseInfo', this.elseInfo)
+      formData.append('files', this.orderImgs)
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -396,19 +437,19 @@ export default {
       width: 600px;
       margin: 0 auto;
       tr{
-          td{
-              padding: 10px;
-          }
-          .input-name{
-              float:right;
-              line-height:40px;
-          }
-          .input-fl{
-              float: left;
-          }
-          .input-size-100{
-              width: 100px;
-          }
+        td{
+            padding: 10px;
+        }
+        .input-name{
+            float:right;
+            line-height:40px;
+        }
+        .input-fl{
+            float: left;
+        }
+        .input-size-100{
+            width: 100px;
+        }
       }
   }
 }

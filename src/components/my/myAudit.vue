@@ -61,7 +61,66 @@
         </el-table-column>
     </el-table>
       </el-tab-pane>
-      <el-tab-pane label="已审核" name="second">配置管理</el-tab-pane>
+      <el-tab-pane label="已审核" name="second">
+        <el-table
+        :data="tableData2"
+        style="width: 100%">
+        <el-table-column
+        label="订单编号"
+        width="80">
+        <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.id }}</span>
+        </template>
+        </el-table-column>
+        <el-table-column
+        label="所属部门"
+        >
+        <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.sales_apart }}</span>
+        </template>
+        </el-table-column>
+        <el-table-column
+        label="录入人员"
+        >
+        <template slot-scope="scope">
+            <el-popover trigger="hover" placement="top">
+            <p>订购套餐: {{ scope.row.combo_info }}</p>
+            <p>到账金额: {{ scope.row.pay_price }}</p>
+            <div slot="reference" class="name-wrapper">
+                <el-tag size="medium">{{ scope.row.sales_man }}</el-tag>
+            </div>
+            </el-popover>
+        </template>
+        </el-table-column>
+        <el-table-column
+        label="录入日期"
+        >
+        <template slot-scope="scope">
+            <i class="el-icon-time"></i>
+            <span style="margin-left: 10px">{{ scope.row.reg_date }}</span>
+        </template>
+        </el-table-column>
+        <el-table-column
+        label="审核状态"
+        >
+        <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.order_status }}</span>
+        </template>
+        </el-table-column>
+        <el-table-column label="操作" width="120">
+        <template slot-scope="scope">
+            <el-button
+            size="mini"
+            type="primary"
+            @click="handleEdit(scope.$index, scope.row)">审核</el-button>
+            <!-- <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
+        </template>
+        </el-table-column>
+    </el-table>
+      </el-tab-pane>
     </el-tabs>
     <!-- Audit dialog -->
     <el-dialog :visible.sync="dialogTableVisible">
@@ -250,6 +309,7 @@
         auditPass: false,
         auditReject: false,
         tableData: [],
+        tableData2: [],
         dialogTableVisible: false,
         shopInfo: {
         id: '',
@@ -277,17 +337,19 @@
         let that = this
         let formData = new FormData()
         formData.append('st_flag', 'auditFetch')
+        // formData.append('col_name', 'audit_content')
         formData.append('staff_id', this.$store.state.userId)
         this.$http.post('staff_mng.php', formData)
           .then(function (res) {
             let str = String(res.data)
+            console.log('new', str)
             //  Get order's detail
             let formData2 = new FormData()
             formData2.append('flag', 'auditOrderFetch')
             formData2.append('order_id', str)
             that.$http.post('order_mng.php', formData2)
             .then(function (res) {
-              console.log('TTTTTT', res)
+              // console.log('TTTTTT', res)
               that.tableData = res.data
                 // console.log('useRid', strs[1])
                 // that.auditNums = strs.length
@@ -302,7 +364,38 @@
     },
     methods: {
       handleClick (tab, event) {
-        console.log(tab, event)
+        // console.log(tab, event)
+        if (tab.index === '1') {
+          //  fetch audit order's id
+          let that = this
+          let formData = new FormData()
+          formData.append('st_flag', 'auditFetch2')
+          // formData.append('col_name', 'audit_content2')
+          formData.append('staff_id', this.$store.state.userId)
+          this.$http.post('staff_mng.php', formData)
+            .then(function (res) {
+              let str = String(res.data)
+              console.log('old', str)
+              // console.log('PPPP', res)
+              //  Get order's detail
+              let formData2 = new FormData()
+              formData2.append('flag', 'auditOrderFetch')
+              formData2.append('order_id', str)
+              that.$http.post('order_mng.php', formData2)
+              .then(function (res) {
+                // console.log('OOOOO', res)
+                that.tableData2 = res.data
+                  // console.log('useRid', strs[1])
+                  // that.auditNums = strs.length
+              }).catch(function (err) {
+                  console.log(err)
+              })
+              // console.log('useRid', strs[1])
+              // that.auditNums = strs.length
+            }).catch(function (err) {
+              console.log(err)
+            })
+        }
       },
       passA () {
          let orderId = this.shopInfo.id
@@ -315,9 +408,10 @@
                 formData.append('order_id', orderId)
                 formData.append('where_audit', 'zjl_audit')
                 formData.append('audit_code', '2')
+                formData.append('staff_id', this.$store.state.userId)
                 this.$http.post('order_mng.php', formData)
                     .then(function (res) {
-                        // console.log('WWWW', res)
+                       console.log('WWWW', res)
                     if (res.data === 'auditChangeSuc') {
                         that.$message({
                         type: 'success',

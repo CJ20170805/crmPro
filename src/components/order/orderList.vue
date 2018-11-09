@@ -432,6 +432,9 @@ export default {
       let that = this
       let formData = new FormData()
       formData.append('flag', 'fetch')
+      formData.append('depart', this.$store.state.userDepart)
+      formData.append('name', this.$store.state.userName)
+      formData.append('power', this.$store.state.userPower)
       // formData.append('shop_name', this.shop.name)
       this.$http.post('order_mng.php', formData)
         .then(function (res) {
