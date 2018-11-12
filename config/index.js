@@ -13,7 +13,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        // target: 'http://www.huibohehe.com',
+          // target: 'http://www.huibohehe.com',
         target: 'http://localhost/',
         //  上下两个 crmAPi 加上main.js 里的  是绝对路径！  
         changeOrigin: true,

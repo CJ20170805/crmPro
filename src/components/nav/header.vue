@@ -54,7 +54,7 @@
                                       <span style="float:right"></span>
                                     </dd>
                                     <dt>
-                                      <span @click="gotoAudit">进入审核列表</span>
+                                      <span @click="gotoAudit" v-if="$store.getters.userAuthority !== '80002'">进入审核列表</span>
                                     </dt>
                                   </dl>
                                 </div>

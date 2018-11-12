@@ -113,11 +113,11 @@
                     </td>
                </tr>
                <tr>
-                 <td class="input-name">备注信息：</td>
+                 <td class="input-name">附件：</td>
                   <td class="input-main">
                     <!-- action="http://www.huibohehe.com/crmApi/order_img.php" -->
                   <el-upload
-                    action="http://localhost:8080/api/crmApi/staff_img.php"
+                    action="http://www.huibohehe.com/crmApi/staff_img.php"
                     list-type="picture-card"
                     :on-preview="handlePictureCardPreview"
                     :on-success="orderUploadSuc"

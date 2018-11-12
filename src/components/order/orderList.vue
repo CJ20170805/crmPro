@@ -284,11 +284,12 @@ export default {
     dispenseOrder
   },
   created () {
+    console.log('orderList', 1)
     this.fetchOrderData()
   },
   methods: {
     handleAudit (index, row) {
-      console.log('III', index, 'RRR', row)
+      // console.log('III', index, 'RRR', row)
       // this.$refs.auditBtnn.$el.innerText = 'PPPPP'
       if (row.order_code === '1') {
         this.$alert('审核信息已提交，等待审核完成', '审核信息', {
@@ -305,44 +306,44 @@ export default {
         formData.append('st_flag', 'audit')
         formData.append('order_id', row.id)
         formData.append('staff_depart', this.$store.state.userDepart)
-        formData.append('staff_job', 'BD经理')
+        formData.append('staff_job', this.$store.state.userDepart.indexOf('销') === -1 ? 'AM' : 'BD经理')
         this.$http.post('staff_mng.php', formData)
           .then(function (res) {
             // console.log(res)
             if (res.data === 'notiSuc') {
               //  change  btn text
-                  let formData2 = new FormData()
-                  formData2.append('flag', 'changeBtnText')
-                  formData2.append('order_id', row.id)
-                  formData2.append('btn_text', '审核中')
-                  that.$http.post('order_mng.php', formData2)
-                    .then(function (res) {
-                      //  console.log(res)
-                      that.$store.state.defaultComp = 'orderAdd'
-                      setTimeout(() => {
-                        that.$store.state.defaultComp = 'orderList'
-                      }, 10)
-                    }).catch(function (err) {
-                      console.log(err)
-                    })
+                let formData2 = new FormData()
+                formData2.append('flag', 'changeBtnText')
+                formData2.append('order_id', row.id)
+                formData2.append('btn_text', '审核中')
+                that.$http.post('order_mng.php', formData2)
+                  .then(function (res) {
+                    //  console.log(res)
+                    that.$store.state.defaultComp = 'orderAdd'
+                    setTimeout(() => {
+                      that.$store.state.defaultComp = 'orderList'
+                    }, 10)
+                  }).catch(function (err) {
+                    console.log(err)
+                  })
               // that.auditBtn = '正在审核'
               // that.auditBtnStu = true
               that.$message({
                 type: 'success',
                 message: '通知成功!'
               })
-            } else {
-              that.$message.error('通知失败！')
-            }
-          }).catch(function (err) {
-            console.log(err)
+              } else {
+                that.$message.error('通知失败！')
+              }
+            }).catch(function (err) {
+              console.log(err)
+            })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消通知'
           })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消通知'
         })
-      })
       }
     },
     dispenseOrder (index, row) {
@@ -438,7 +439,7 @@ export default {
       // formData.append('shop_name', this.shop.name)
       this.$http.post('order_mng.php', formData)
         .then(function (res) {
-          console.log(res)
+          // console.log(res)
           that.orderData = res.data
         // alert(that.submitFlag)
         }).catch(function (err) {

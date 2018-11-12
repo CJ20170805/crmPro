@@ -411,7 +411,7 @@
                 formData.append('staff_id', this.$store.state.userId)
                 this.$http.post('order_mng.php', formData)
                     .then(function (res) {
-                       console.log('WWWW', res)
+                      // console.log('WWWW', res)
                     if (res.data === 'auditChangeSuc') {
                         that.$message({
                         type: 'success',
@@ -446,9 +446,10 @@
                 formData.append('order_id', orderId)
                 formData.append('where_audit', 'jl_audit')
                 formData.append('audit_code', '2')
+                formData.append('staff_id', this.$store.state.userId)
                 this.$http.post('order_mng.php', formData)
                     .then(function (res) {
-                        console.log('WWWW', res)
+                       // console.log('WWWW', res)
                         if (res.data === 'auditChangeSuc') {
                             that.$message({
                               type: 'success',
@@ -463,7 +464,7 @@
                               formData2.append('staff_job', '分公司总经理')
                               that.$http.post('staff_mng.php', formData2)
                                 .then(function (res) {
-                                   console.log('HHHHHHH', res)
+                                  // console.log('HHHHHHH', res)
                                   if (res.data === 'notiSuc') {
                                     that.$message({
                                       type: 'success',
@@ -481,6 +482,21 @@
                     }).catch(function (err) {
                       console.log(err)
                     })
+                     //  change order status
+                let formData2 = new FormData()
+                  formData2.append('flag', 'changeBtnText')
+                  formData2.append('order_id', orderId)
+                  formData2.append('btn_text', '等待总经理审核')
+                  that.$http.post('order_mng.php', formData2)
+                    .then(function (res) {
+                      //  console.log(res)
+                      that.$store.state.defaultComp = 'myOrder'
+                      setTimeout(() => {
+                        that.$store.state.defaultComp = 'myAudit'
+                      }, 10)
+                    }).catch(function (err) {
+                      console.log(err)
+                    })
          }
       },
       rejectA () {
@@ -494,6 +510,7 @@
                 formData.append('order_id', orderId)
                 formData.append('where_audit', 'zjl_audit')
                 formData.append('audit_code', '3')
+                formData.append('staff_id', this.$store.state.userId)
                 this.$http.post('order_mng.php', formData)
                     .then(function (res) {
                         // console.log('WWWW', res)
@@ -510,7 +527,7 @@
                     console.log(err)
                     })
                      //  change order status
-                let formData2 = new FormData()
+                  let formData2 = new FormData()
                   formData2.append('flag', 'changeBtnText')
                   formData2.append('order_id', orderId)
                   formData2.append('btn_text', '未通过')
@@ -531,6 +548,7 @@
                 formData.append('order_id', orderId)
                 formData.append('where_audit', 'jl_audit')
                 formData.append('audit_code', '3')
+                formData.append('staff_id', this.$store.state.userId)
                 this.$http.post('order_mng.php', formData)
                     .then(function (res) {
                         // console.log('WWWW', res)
@@ -546,6 +564,21 @@
                     }).catch(function (err) {
                     console.log(err)
                     })
+                //  change order status
+                let formData2 = new FormData()
+                  formData2.append('flag', 'changeBtnText')
+                  formData2.append('order_id', orderId)
+                  formData2.append('btn_text', '未通过')
+                  that.$http.post('order_mng.php', formData2)
+                    .then(function (res) {
+                      //  console.log(res)
+                      that.$store.state.defaultComp = 'myOrder'
+                      setTimeout(() => {
+                        that.$store.state.defaultComp = 'myAudit'
+                      }, 10)
+                    }).catch(function (err) {
+                      console.log(err)
+                  })
          }
       },
       handleEdit (index, row) {
