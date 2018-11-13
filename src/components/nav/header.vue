@@ -130,8 +130,8 @@ export default {
             if (res.data !== '') {
               let str = String(res.data)
               let strs = str.split(';')
-              console.log('useRid', strs)
-              that.auditNums = strs.length
+              // console.log('useRid', strs)
+              that.auditNums = strs.length - 1
             } else {
                that.auditNums = ''
             }

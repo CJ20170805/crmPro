@@ -264,10 +264,13 @@ export default {
     let that = this
     let formData = new FormData()
     formData.append('flag', 'fetch')
+    formData.append('depart', this.$store.state.userDepart)
+    formData.append('name', this.$store.state.userName)
+    formData.append('power', this.$store.state.userPower)
     this.$http.post('client_mng.php', formData)
       .then(function (res) {
         that.clientData = res.data
-        console.log('Client', res)
+        // console.log('Client', res)
       }).catch(function (err) {
         console.log(err)
       })

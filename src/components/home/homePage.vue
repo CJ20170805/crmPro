@@ -183,7 +183,7 @@ export default {
           that.bt_apart = data[0].st_departmentVal
           that.bt_reason = data[0].best_reason
           that.bt_avatar = data[0].st_avatar
-          console.log('homeee666', res.data)
+          // console.log('homeee666', res.data)
         }).catch(function (err) {
           console.log(err)
         })

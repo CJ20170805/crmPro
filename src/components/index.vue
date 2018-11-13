@@ -65,7 +65,7 @@
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
                 </el-submenu>
-                <el-submenu index="11" v-if="$store.getters.userAuthority !== '80002'">
+                <el-submenu index="11" v-if="$store.getters.userAuthority !== '80002' ">
                     <template slot="title">
                     <i class="el-icon-news"></i>
                     <span slot="title">业绩管理</span>
@@ -74,8 +74,8 @@
                     <!-- <span slot="title">---</span> -->
                     <el-menu-item index="1100" v-if="$store.getters.userAuthority === '80001'" @click="switchComp('pmCollect')">业绩统计</el-menu-item>
                     <el-menu-item index="1101" @click="switchComp('pmList')">业绩列表</el-menu-item>
-                    <el-menu-item index="1102" @click="switchComp('pmAdd')">业绩录入</el-menu-item>
-                    <el-menu-item index="1103" @click="switchComp('pmExport')">业绩导出</el-menu-item>
+                    <el-menu-item index="1102" @click="switchComp('pmAdd')" v-if="$store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80005'">业绩录入</el-menu-item>
+                    <el-menu-item index="1103" @click="switchComp('pmExport')" v-if="$store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80005'">业绩导出</el-menu-item>
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
                 </el-submenu>

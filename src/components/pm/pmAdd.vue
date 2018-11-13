@@ -276,7 +276,7 @@
       this.$http.post('user_info.php', formData)
         .then(function (res) {
           let data = res.data
-          console.log('DDDDAta:', data)
+          // console.log('DDDDAta:', data)
           for (let i = 0; i < data.length; i++) {
             that.options.push({
               value: data[i].id + ';' + data[i].st_departmentVal + ';' + data[i].st_name,

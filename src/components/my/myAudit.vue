@@ -342,7 +342,7 @@
         this.$http.post('staff_mng.php', formData)
           .then(function (res) {
             let str = String(res.data)
-            console.log('new', str)
+            // console.log('new', str)
             //  Get order's detail
             let formData2 = new FormData()
             formData2.append('flag', 'auditOrderFetch')
@@ -375,7 +375,7 @@
           this.$http.post('staff_mng.php', formData)
             .then(function (res) {
               let str = String(res.data)
-              console.log('old', str)
+              // console.log('old', str)
               // console.log('PPPP', res)
               //  Get order's detail
               let formData2 = new FormData()
@@ -399,6 +399,9 @@
       },
       passA () {
          let orderId = this.shopInfo.id
+         let linkMan = this.shopInfo.s_linkMan
+         let salesMan = this.shopInfo.s_salesMan
+         let payPrice = this.shopInfo.s_payPrice
          let power = this.$store.getters.userAuthority
          if (power === '80001' && this.auditPass === true) {
             //  alert(order_id + '****' + power)
@@ -406,12 +409,15 @@
                 let formData = new FormData()
                 formData.append('flag', 'changeStu')
                 formData.append('order_id', orderId)
+                formData.append('sales_man', salesMan)
+                formData.append('pay_price', payPrice)
+                formData.append('link_man', linkMan)
                 formData.append('where_audit', 'zjl_audit')
                 formData.append('audit_code', '2')
                 formData.append('staff_id', this.$store.state.userId)
                 this.$http.post('order_mng.php', formData)
                     .then(function (res) {
-                      // console.log('WWWW', res)
+                     console.log('WWWW', res)
                     if (res.data === 'auditChangeSuc') {
                         that.$message({
                         type: 'success',
@@ -422,13 +428,13 @@
                         that.$message.error('审核失败！')
                     }
                     }).catch(function (err) {
-                    console.log(err)
+                      console.log(err)
                     })
                 //  change order status
                 let formData2 = new FormData()
                   formData2.append('flag', 'changeBtnText')
                   formData2.append('order_id', orderId)
-                  formData2.append('btn_text', '已通过')
+                  formData2.append('btn_text', '已通过审核')
                   that.$http.post('order_mng.php', formData2)
                     .then(function (res) {
                       //  console.log(res)
@@ -439,6 +445,7 @@
                     }).catch(function (err) {
                       console.log(err)
                     })
+                // audit and visibilety the PM
          } else if (power === '80003' && this.auditPass === true) {
                 let that = this
                 let formData = new FormData()
@@ -486,7 +493,7 @@
                 let formData2 = new FormData()
                   formData2.append('flag', 'changeBtnText')
                   formData2.append('order_id', orderId)
-                  formData2.append('btn_text', '等待总经理审核')
+                  formData2.append('btn_text', '审核中1/2')
                   that.$http.post('order_mng.php', formData2)
                     .then(function (res) {
                       //  console.log(res)
@@ -530,7 +537,7 @@
                   let formData2 = new FormData()
                   formData2.append('flag', 'changeBtnText')
                   formData2.append('order_id', orderId)
-                  formData2.append('btn_text', '未通过')
+                  formData2.append('btn_text', '审核不通过')
                   that.$http.post('order_mng.php', formData2)
                     .then(function (res) {
                       //  console.log(res)
@@ -568,7 +575,7 @@
                 let formData2 = new FormData()
                   formData2.append('flag', 'changeBtnText')
                   formData2.append('order_id', orderId)
-                  formData2.append('btn_text', '未通过')
+                  formData2.append('btn_text', '审核不通过')
                   that.$http.post('order_mng.php', formData2)
                     .then(function (res) {
                       //  console.log(res)
@@ -613,7 +620,7 @@
         } else {
             this.shopInfo.s_someImg = someImgArr
         }
-            console.log(index, row)
+          // console.log(index, row)
      },
       handleDelete (index, row) {
         console.log(index, row)

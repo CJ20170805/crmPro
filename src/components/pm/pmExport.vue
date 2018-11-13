@@ -120,7 +120,7 @@ export default {
       window.location.href = 'http://www.huibohehe.com/crmApi/exportExcel.php?bn=' + begin + '&ed=' + end
     },
     exportSome () {
-      console.log(this.selectId)
+      // console.log(this.selectId)
       window.location.href = 'http://www.huibohehe.com/crmApi/exportExcel.php?sid=' + this.selectId
     },
     open1 () {

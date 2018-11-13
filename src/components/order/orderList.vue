@@ -59,10 +59,6 @@
             @click="dispenseOrder(scope.$index, scope.row)">分发此单</el-button>
           <el-button
             size="mini"
-            type="warning"
-            @click="handleAudit(scope.$index, scope.row)">{{ scope.row.order_status }}</el-button>
-          <el-button
-            size="mini"
             type="success"
             @click="viewAcord(scope.$index, scope.row)">日志记录</el-button>
           <el-button
@@ -70,6 +66,11 @@
             size="mini"
             type="danger"
             @click="handleDelete(scope.$index, scope.row)">删除订单</el-button>
+          <el-button
+            v-if="$store.getters.userAuthority !== '80001' && $store.getters.userAuthority !== '80005'"
+            size="mini"
+            type="warning"
+            @click="handleAudit(scope.$index, scope.row)">{{ scope.row.order_status }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -284,7 +285,6 @@ export default {
     dispenseOrder
   },
   created () {
-    console.log('orderList', 1)
     this.fetchOrderData()
   },
   methods: {
@@ -315,7 +315,7 @@ export default {
                 let formData2 = new FormData()
                 formData2.append('flag', 'changeBtnText')
                 formData2.append('order_id', row.id)
-                formData2.append('btn_text', '审核中')
+                formData2.append('btn_text', '审核中0/2')
                 that.$http.post('order_mng.php', formData2)
                   .then(function (res) {
                     //  console.log(res)
@@ -343,6 +343,10 @@ export default {
             type: 'info',
             message: '已取消通知'
           })
+        })
+      } else if (row.order_code === '2') {
+         this.$alert('此订单已通过审核！', '审核信息', {
+          confirmButtonText: '确定'
         })
       }
     },

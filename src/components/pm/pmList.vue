@@ -343,9 +343,9 @@
       formData.append('flag', 'fetch')
       this.$http.post('pm_mng.php', formData)
       .then(function (res) {
-        console.log('Page', res.data)
+        // console.log('Page', res.data)
         that.pmListData = res.data
-        that.totalList = res.data.length
+        // that.totalList = res.data.length
         // console.log(res)
         // console.log('Client', res)
       }).catch(function (err) {
