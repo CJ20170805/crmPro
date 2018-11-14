@@ -7,7 +7,7 @@
                 <el-radio-button :label="false">展开</el-radio-button>
                 <el-radio-button :label="true" v-if="isCollapse !== true">收起</el-radio-button>
                 </el-radio-group>
-                <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+                <el-menu default-active="1-4-1" :unique-opened="true"  class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
                 <el-submenu v-if="$store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80004'" index="1">
                     <template slot="title">
                       <i class="el-icon-location"></i>
@@ -85,7 +85,7 @@
                 </el-menu-item> -->
                 </el-menu>
             </el-aside>
-            <el-main style="width">
+            <el-main ref="elMainHeight">
                 <component :is="this.$store.state.defaultComp" class="compon-sc"></component>
             </el-main>
         </el-container>
@@ -116,6 +116,11 @@ export default {
   },
   mounted () {
     // alert(this.$store.state.toStaffList)
+    // let that = this
+    // window.onresize = function () {
+    //   console.log('111',document.documentElement.clientHeight)
+    //   that.clientHeight = document.documentElement.clientHeight
+    // }
   },
   components: {
     headerC,

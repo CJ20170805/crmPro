@@ -201,7 +201,7 @@ let moment = require('moment')
         res.data.forEach(v => {
           let week = new Date(v.reg_date).getDay()
           console.log(week)
-          if (v.reach_apart.indexOf('石一') !== -1) {
+          if (v.reach_apart.indexOf('销售') !== -1) {
             s1[week] += parseInt(v.pay_price)
           } else {
             s2[week] += parseInt(v.pay_price)
@@ -221,7 +221,7 @@ let moment = require('moment')
                 }
             },
             legend: {
-                data:['石一分公司', '石二分公司']
+                data:['销售', '技术']
             },
             toolbox: {
                 feature: {
@@ -248,7 +248,7 @@ let moment = require('moment')
             ],
             series : [
                 {
-                    name:'石一分公司',
+                    name:'销售',
                     type:'line',
                     stack: '总量',
                     label: {
@@ -261,7 +261,7 @@ let moment = require('moment')
                     data: s1
                 },
                 {
-                    name:'石二分公司',
+                    name:'技术',
                     type:'line',
                     stack: '总量',
                     label: {

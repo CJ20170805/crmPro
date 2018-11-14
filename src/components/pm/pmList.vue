@@ -356,6 +356,9 @@
 </script>
 <style lang="less">
 @blue: #409EFF;
+.pm-list{
+  padding-bottom: 100px;
+}
 .el-table th>.cell{
   text-align: center;
 }

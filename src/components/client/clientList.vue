@@ -346,6 +346,7 @@ export default {
   text-align: center;
 }
 .client-list{
+  padding-bottom: 100px;
 .clientInfoTable{
   width: 100%;
   .imgList{

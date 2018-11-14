@@ -65,7 +65,7 @@
                 </el-table-column>
             </el-table>
         </div>
-         <div style="margin-top: 20px">
+         <div style="margin-top: 20px;padding-bottom:10px;">
             <div style="width:400px;heght:60px;float:right">
                <el-button @click="exportSome" :disabled="btnStu2" type="primary">仅导出已选择的数据</el-button>
                 <el-button @click="exportAll" :disabled="btnStu" type="primary">导出全部数据</el-button>
@@ -202,7 +202,7 @@ export default {
    }
    .query-res{
     //    border-top: 2px solid @blue;
-      height: 520px;
+      height: 510px;
       overflow-y: scroll;
       padding-top: 12px;
    }

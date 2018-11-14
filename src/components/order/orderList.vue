@@ -474,6 +474,9 @@ export default {
 </script>
 <style lang="less">
 @blue: #409EFF;
+.order-list{
+  padding-bottom: 100px;
+}
 .acord-block{
   text-align: left;
   .collapse-item-style{

@@ -448,6 +448,7 @@ export default {
 <style lang="less">
 @blue: #409EFF;
 .my-order{
+  padding-bottom: 100px;
   .el-table th>.cell{
     text-align: center;
   }

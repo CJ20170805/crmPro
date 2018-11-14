@@ -48,6 +48,14 @@
         <span style="margin-left: 10px">{{ scope.row.st_departmentVal }}</span>
       </template>
     </el-table-column>
+     <el-table-column
+      prop="name"
+      label="是否转正"
+      >
+      <template slot-scope="scope">
+        <span style="margin-left: 10px">{{ scope.row.whether_regular }}</span>
+      </template>
+    </el-table-column>
     <el-table-column
       label="入职日期"
       >
@@ -69,9 +77,12 @@
     </el-table-column>
   </el-table>
 
-  <!-- Table -->
-  <el-dialog title="信息更新" :visible.sync="dialogTableVisible">
+  <!-- Table Detail-->
+  <el-dialog :visible.sync="dialogTableVisible">
     <table>
+      <tr class="edit-title">
+        <td>基本信息</td>
+      </tr>
       <tr>
         <td class="tdTit">姓名：</td>
              <el-input v-model="m_name"></el-input>
@@ -89,6 +100,70 @@
         </td>
       </tr>
       <tr>
+        <td class="tdTit">民族：</td>
+        <td>
+          <el-input v-model="m_nation"></el-input>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+       <tr>
+        <td class="tdTit">学历：</td>
+        <td>
+           <el-input v-model="m_eduBack"></el-input>
+        </td>
+      </tr>
+       <tr>
+        <td class="tdTit">专业：</td>
+        <td>
+           <el-input v-model="m_major"></el-input>
+        </td>
+      </tr>
+       <tr>
+        <td class="tdTit">毕业院校：</td>
+        <td>
+           <el-input v-model="m_schoolName"></el-input>
+        </td>
+      </tr>
+       <tr>
+        <td class="tdTit">身份证号码：</td>
+        <td>
+          <el-input v-model="m_cardNum"></el-input>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="tdTit">身份证住址：</td>
+        <td>
+          <el-input v-model="m_address"></el-input>
+        </td>
+        <td></td>
+      </tr>
+      <tr class="edit-title">
+        <td>联系方式</td>
+      </tr>
+      <tr>
+        <td class="tdTit">现住址：</td>
+        <td>
+          <el-input v-model="m_nowAddress"></el-input>
+        </td>
+      </tr>
+       <tr>
+        <td class="tdTit">联系电话：</td>
+        <td>
+           <el-input v-model="m_staffPhone"></el-input>
+        </td>
+      </tr>
+        <tr>
+        <td class="tdTit">备用联系方式：</td>
+        <td>
+           <el-input v-model="m_staffPhone2"></el-input>
+        </td>
+      </tr>
+      <tr class="edit-title">
+        <td>职位信息</td>
+      </tr>
+       <tr>
         <td class="tdTit">入职日期：</td>
         <td>
             <el-date-picker
@@ -105,38 +180,7 @@
         </td>
         <td></td>
       </tr>
-       <tr>
-        <td class="tdTit">身份证号码：</td>
-        <td>
-          <el-input v-model="m_cardNum"></el-input>
-        </td>
-        <td></td>
-      </tr>
       <tr>
-        <td class="tdTit">身份证住址：</td>
-        <td>
-          <el-input v-model="m_address"></el-input>
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td class="tdTit">现住址：</td>
-        <td>
-          <el-input v-model="m_nowAddress"></el-input>
-        </td>
-      </tr>
-       <tr>
-        <td class="tdTit">联系电话：</td>
-        <td>
-           <el-input v-model="m_staffPhone"></el-input>
-        </td>
-      </tr>
-        <tr>
-        <td class="tdTit">备用联系电话：</td>
-        <td>
-           <el-input v-model="m_staffPhone2"></el-input>
-        </td>
-      </tr>
         <tr>
         <td class="tdTit">任职部门：</td>
         <td>
@@ -144,9 +188,33 @@
         </td>
       </tr>
         <tr>
-        <td class="tdTit">职位信息：</td>
+        <td class="tdTit">职位类型：</td>
         <td>
           <el-input v-model="m_jobVal"></el-input>
+        </td>
+      </tr>
+      <tr>
+        <td class="tdTit">转正信息：</td>
+        <td>
+          <el-radio-group v-model="m_whetherRegular">
+            <el-radio label="已转正">已转正</el-radio>
+            <el-radio label="未转正">未转正</el-radio>
+          </el-radio-group>
+        </td>
+      </tr>
+      <tr v-if="m_whetherRegular === '已转正' ? true : false">
+        <td class="tdTit">转正时间：</td>
+        <td>
+          <el-date-picker
+                        v-model="m_regularDate"
+                        align="right"
+                        type="date"
+                        placeholder="请选择日期"
+                        class="input-fl"
+                        format="yyyy 年 MM 月 dd 日"
+                        value-format="yyyy-MM-dd"
+                        :picker-options="pickerOptions1">
+                        </el-date-picker>
         </td>
       </tr>
       <tr>
@@ -197,12 +265,18 @@ export default {
       m_deparmentVal: '',
       m_jobVal: '',
       m_elseInfo: '',
-      m_files: []
+      m_files: [],
+      m_whetherRegular: '',
+      m_regularDate: '',
+      m_nation: '',
+      m_eduBack: '',
+      m_schoolName: '',
+      m_major: ''
     }
   },
   methods: {
     handleEdit (index, row) {
-      console.log(index, row)
+      // console.log(index, row)
       this.itemData = row
       this.dialogTableVisible = true
       this.m_id = row.id
@@ -217,6 +291,12 @@ export default {
       this.m_deparmentVal = row.st_departmentVal
       this.m_jobVal = row.st_jobVal
       this.m_elseInfo = row.st_elseInfo
+      this.m_whetherRegular = row.whether_regular
+      this.m_regularDate = row.regular_date
+      this.m_nation = row.nation
+      this.m_eduBack = row.edu_back
+      this.m_schoolName = row.school_name
+      this.m_major = row.major
       // this.m_files = row.files
       // split string for array
       let someImgArr = []
@@ -292,10 +372,17 @@ export default {
       formData.append('st_departmentVal', this.m_deparmentVal)
       formData.append('st_jobVal', this.m_jobVal)
       formData.append('st_elseInfo', this.m_elseInfo)
+      // newAdd 6
+       formData.append('whether_regular', this.m_whetherRegular)
+        formData.append('regular_date', this.m_regularDate)
+         formData.append('nation', this.m_nation)
+          formData.append('school_name', this.m_schoolName)
+           formData.append('major', this.m_major)
+            formData.append('edu_back', this.m_eduBack)
 
       this.$http.post('staff_mng.php', formData)
         .then(function (res) {
-          console.log(res.data)
+          // console.log(res.data)
           that.dialogTableVisible = false
           that.$store.state.defaultComp = 'staffAdd'
           setTimeout(() => {
@@ -320,6 +407,14 @@ export default {
 </script>
 <style lang="less">
 @blue: #409EFF;
+.edit-title{
+  color: @blue;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.staff-table{
+  padding-bottom: 100px;
+}
 .el-table th>.cell{
   text-align: center;
 }

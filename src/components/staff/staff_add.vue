@@ -23,6 +23,12 @@
                     </td>
                </tr>
                <tr>
+                    <td class="input-name">民族：</td>
+                    <td class="input-main">
+                    <el-input class="input-fl input-size-100" v-model="nation" placeholder="请输入"></el-input>
+                    </td>
+               </tr>
+               <tr>
                     <td class="input-name">入职日期：</td>
                     <td>
                         <el-date-picker
@@ -38,13 +44,13 @@
                     </td>
                </tr>
                 <tr>
-                  <td class="input-name">身份证号：</td>
+                  <td class="input-name">身份证号码：</td>
                     <td>
                       <el-input class="input-fl" v-model="cardNum" placeholder="请输入身份证号码"></el-input>
                     </td>
                </tr>
                <tr>
-                  <td class="input-name">家庭住址：</td>
+                  <td class="input-name">身份证住址：</td>
                     <td>
                       <el-input class="input-fl" v-model="address" placeholder="请输入家庭住址"></el-input>
                     </td>
@@ -77,6 +83,32 @@
                </tr>
             </tbody>
 
+             <thead>
+                <th>
+                    <div class="staff-title">学历信息</div>
+                </th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="input-name">学历：</td>
+                    <td class="input-main">
+                    <el-input class="input-fl" v-model="eduBack" placeholder="请输入学历信息"></el-input>
+                    </td>
+               </tr>
+               <tr>
+                    <td class="input-name">专业：</td>
+                    <td class="input-main">
+                    <el-input class="input-fl" v-model="major" placeholder="请输入专业信息"></el-input>
+                    </td>
+               </tr>
+                <tr>
+                    <td class="input-name">毕业院校：</td>
+                    <td class="input-main">
+                    <el-input class="input-fl" v-model="schoolName" placeholder="请输入院校名称"></el-input>
+                    </td>
+               </tr>
+            </tbody>
+
                <thead>
                 <th>
                     <div class="staff-title">职位信息</div>
@@ -85,7 +117,7 @@
             <tbody>
                 <tr>
                     <td class="input-name">部门：</td>
-                    <td class="input-main">
+                    <td>
                        <el-cascader
                         :options="departmentOptions"
                         v-model="departmentVal"
@@ -99,6 +131,30 @@
                         :options="jobOptions"
                         v-model="jobVal"
                         ></el-cascader>
+                    </td>
+               </tr>
+                <tr>
+                    <td class="input-name">转正信息：</td>
+                    <td class="input-main">
+                          <el-radio-group v-model="whetherRegular">
+                            <el-radio label="已转正">已转正</el-radio>
+                            <el-radio label="未转正">未转正</el-radio>
+                          </el-radio-group>
+                    </td>
+               </tr>
+               <tr v-if="whetherRegular === '已转正' ? true : false">
+                    <td class="input-name">转正时间：</td>
+                    <td>
+                        <el-date-picker
+                        v-model="regularDate"
+                        align="right"
+                        type="date"
+                        placeholder="选择日期"
+                        class="input-fl"
+                        format="yyyy 年 MM 月 dd 日"
+                        value-format="yyyy-MM-dd"
+                        :picker-options="pickerOptions1">
+                        </el-date-picker>
                     </td>
                </tr>
                 <tr>
@@ -144,10 +200,17 @@ export default {
   data () {
     return {
       dialogVisible: false,
+      dialogImageUrl: '',
       orderImgs: [],
       orderImgsNew: [],
       staffName: '',
       staffSex: '男',
+      major: '',
+      eduBack: '',
+      schoolName: '',
+      whetherRegular: '未转正',
+      regularDate: '',
+      nation: '',
       address: '',
       joinDate: '',
       cardNum: '',
@@ -159,98 +222,70 @@ export default {
       elseInfo: '',
       departmentOptions: [
         {
-          value: '石一',
-          label: '石一',
+          value: '销售部',
+          label: '销售部',
           children: [
             {
-              value: '家一',
-              label: '石一家一'
+              value: '一部',
+              label: '销售一部'
             },
             {
-              value: '家二',
-              label: '石一家二'
+              value: '二部',
+              label: '销售二部'
             },
             {
-              value: '家三',
-              label: '石一家三'
-            },
-            {
-              value: '销一',
-              label: '石一销一'
-            },
-            {
-              value: '销二',
-              label: '石一销二'
-            },
-            {
-              value: '销三',
-              label: '石一销三'
-            },
-            {
-              value: '视觉部',
-              label: '视觉部'
-            },
-            {
-              value: '管理层',
-              label: '管理层'
-            },
-            {
-              value: '人事',
-              label: '人事行政'
-            },
-            {
-              value: '技术总监',
-              label: '技术总监'
-            },
-            {
-              value: '销售总监',
-              label: '销售总监'
+              value: '三部',
+              label: '销售三部'
             }
           ]
         },
         {
-          value: '石二',
-          label: '石二',
+          value: '技术部',
+          label: '技术部',
           children: [
             {
-              value: '家一',
-              label: '石二家一'
+              value: '一部',
+              label: '技术一部'
             },
             {
-              value: '家二',
-              label: '石二家二'
+              value: '二部',
+              label: '技术二部'
             },
             {
-              value: '家三',
-              label: '石二家三'
+              value: '三部',
+              label: '技术三部'
+            }
+          ]
+        },
+        {
+          value: '客服部',
+          label: '客服部',
+          children: [
+            {
+              value: '一部',
+              label: '客服一部'
             },
             {
-              value: '销一',
-              label: '石二销一'
+              value: '二部',
+              label: '客服二部'
             },
             {
-              value: '销二',
-              label: '石二销二'
-            },
-            {
-              value: '销三',
-              label: '石二销三'
-            },
+              value: '三部',
+              label: '客服三部'
+            }
+          ]
+        },
+        {
+          value: '其他',
+          label: '其他',
+          children: [
             {
               value: '管理层',
               label: '管理层'
             },
             {
-              value: '销售总监',
-              label: '销售总监'
-            },
-            {
-              value: '技术总监',
-              label: '技术总监'
-            },
-            {
-              value: '人事',
-              label: '人事行政'
+              value: '人事部',
+              label: '人事部'
             }
           ]
         }
@@ -273,20 +308,8 @@ export default {
           label: 'BD经理'
         },
         {
-          value: '销售',
-          label: '销售'
-        },
-        {
-          value: '美工',
-          label: '美工'
-        },
-        {
           value: '客服',
           label: '客服'
-        },
-        {
-          value: '质检主管',
-          label: '质检主管'
         },
         {
           value: '销售总监',
@@ -370,6 +393,12 @@ export default {
       formData.append('st_jobVal', this.jobVal)
       formData.append('st_elseInfo', this.elseInfo)
       formData.append('files', this.orderImgs)
+      formData.append('whether_regular', this.whetherRegular)
+      formData.append('regular_date', this.regularDate)
+      formData.append('nation', this.nation)
+      formData.append('edu_back', this.eduBack)
+      formData.append('major', this.major)
+      formData.append('school_name', this.schoolName)
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -377,7 +406,7 @@ export default {
       }
       this.$http.post('staff_mng.php', formData, config)
         .then(function (res) {
-          console.log(res)
+          // console.log(res)
           if (res.data === 'AddSuccess') {
             that.staffData = res.data
             that.addBox()
@@ -460,7 +489,7 @@ export default {
     color: #409EFF;
 }
 .el-row{
-    margin: 20px 0;
+    // margin: 20px 0;
     .form-wrap{
         width: 100%;
         float: left;

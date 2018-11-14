@@ -115,12 +115,18 @@ export default {
         that.$store.state.userId = data.id
         that.$store.state.userPower = data.st_power
         that.$store.state.userDepart = data.st_departmentVal
+        let password = data.st_word
         if (data.st_avatar !== null) {
           // alert(that.userLoginData.st_avatar)
           that.$store.state.userAvatar = data.st_avatar
           that.$refs.usersImg.src = that.$store.state.userAvatar
         }
-
+        if (password === '12321') {
+           that.$alert('<p style="color:red; font-size:1.15em; font-weight:600;">用户首次登陆请重置密码！</p><br><span>1、点击右上角头像</span><br><span>2、打开资料设置</span><br><p>3、填写新密码并点击确认重置</p>', '安全提示', {
+              confirmButtonText: '确定',
+              dangerouslyUseHTMLString: true
+            })
+        }
           //  fetch audit order's id
         let formData2 = new FormData()
         formData2.append('st_flag', 'auditFetch')
@@ -138,10 +144,6 @@ export default {
           }).catch(function (err) {
             console.log(err)
           })
-        // if (this.$store.state.userAvatar === '') {
-        //   this.$refs.usersImg.src = this.$store.state.userAvatar
-        // }
-        // alert(that.$store.state.userPower)
       }).catch(function (err) {
         console.log(err)
       })
