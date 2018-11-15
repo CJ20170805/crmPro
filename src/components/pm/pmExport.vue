@@ -66,7 +66,7 @@
             </el-table>
         </div>
          <div style="margin-top: 20px;padding-bottom:10px;">
-            <div style="width:400px;heght:60px;float:right">
+            <div style="width:400px;heght:60px;float:right;padding-bottom:200px;">
                <el-button @click="exportSome" :disabled="btnStu2" type="primary">仅导出已选择的数据</el-button>
                 <el-button @click="exportAll" :disabled="btnStu" type="primary">导出全部数据</el-button>
             </div>

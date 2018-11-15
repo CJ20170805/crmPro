@@ -119,6 +119,7 @@
                     <td class="input-name">部门：</td>
                     <td>
                        <el-cascader
+                        style="float:left"
                         :options="departmentOptions"
                         v-model="departmentVal"
                         ></el-cascader>
@@ -128,6 +129,7 @@
                     <td class="input-name">职位：</td>
                     <td class="input-main">
                         <el-cascader
+                         style="float:left"
                         :options="jobOptions"
                         v-model="jobVal"
                         ></el-cascader>
@@ -187,7 +189,7 @@
                </tr>
                <tr>
                    <td></td>
-                   <td>
+                   <td style="padding-bottom:200px;">
                       <el-button style="float:right" type="primary" @click="submitInfo">提交录入</el-button>
                    </td>
                </tr>
@@ -377,7 +379,7 @@ export default {
       this.dialogVisible = true
     },
     submitInfo () {
-      console.log(this.joinDate)
+      // console.log(this.joinDate)
       let that = this
       let formData = new FormData()
       formData.append('st_flag', 'add')

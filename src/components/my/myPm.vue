@@ -1,80 +1,62 @@
 <template>
-    <div class="pm-list">
-      <!-- pmListData.slice(pageSize * (curPage - 1),pageSize * curPage) -->
-         <el-table
-            :data="pmListData"
-            style="width: 100%;">
-             <el-table-column
-            prop="id"
-            label="ID"
-            sortable
-            width="80">
-            </el-table-column>
-             <el-table-column
-            prop="reach_name"
-            label="签单人员"
-            width="180">
-            </el-table-column>
-             <el-table-column
-            prop="reach_apart"
-            label="所在部门"
-            width="180">
-            </el-table-column>
-             <el-table-column
-            prop="buy_serv"
-            label="服务产品"
-            >
-            </el-table-column>
-            <el-table-column
-            prop="pay_price"
-            label="到账金额"
-            width="180">
-            </el-table-column>
-            <el-table-column
-            prop="reg_date"
-            label="录入日期"
-            sortable
-            >
-            </el-table-column>
+  <div class="my-pm">
+      <el-table
+      :data="myPmData"
+      style="width: 100%">
+       <el-table-column
+        label="ID"
+        width="80">
+        <template slot-scope="scope">
+          <span style="margin-left: 10px">{{ scope.row.id }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="签单人员"
+        >
+        <template slot-scope="scope">
+          <span style="margin-left: 10px">{{ scope.row.reach_name }}</span>
+        </template>
+      </el-table-column>
+     <el-table-column
+        label="所在部门"
+        >
+        <template slot-scope="scope">
+          <span style="margin-left: 10px">{{ scope.row.reach_apart }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="订购套餐"
+        width="100">
+        <template slot-scope="scope">
+          <span style="margin-left: 10px">{{ scope.row.buy_serv }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="到账金额"
+        width="190"
+        >
+        <template slot-scope="scope">
+          <i class="el-icon-time"></i>
+          <span style="margin-left: 10px">{{ scope.row.pay_price }}</span>
+        </template>
+      </el-table-column>
+    <el-table-column
+        label="录入日期"
+        >
+        <template slot-scope="scope">
+          <span style="margin-left: 10px">{{ scope.row.reg_date }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="290">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            @click="viewDetail(scope.$index, scope.row)">查看详情</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
-            <el-table-column
-            prop="reach_apart"
-            label="分类筛选"
-            width="120"
-            :filters="apartData"
-            :filter-method="filterTag"
-            filter-placement="bottom-end">
-            <template slot-scope="scope">
-                <el-tag
-                disable-transitions>{{scope.row.reach_apart}}</el-tag>
-            </template>
-            </el-table-column>
-             <el-table-column label="操作">
-                <template slot-scope="scope">
-                    <el-button
-                    size="mini"
-                    @click="handleEdit(scope.$index, scope.row)">详情</el-button>
-                    <el-button
-                    size="mini"
-                    type="danger"
-                    v-if="$store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80005'"
-                    @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-
-          <!-- <div class="block" style="margin-top:20px;">
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page.sync="currentPage3"
-              :page-size="pageSize"
-              layout="prev, pager, next, jumper"
-              :total="totalList">
-            </el-pagination>
-          </div> -->
-
-        <!--Order Detail dialog -->
+    <!--Order Detail dialog -->
     <el-dialog title="" :visible.sync="pmInfoVisible">
         <div class="pmInfoTable">
         <el-row>
@@ -214,63 +196,51 @@
       </el-row>
       </div>
     </el-dialog>
-    </div>
+
+  </div>
 </template>
 <script>
-  export default {
-    data () {
-      return {
-        currentPage3: 1,
-        totalList: 1,
-        pageSize: 7,
-        curPage: 1,
-        pmInfoVisible: false,
-        pmListData: [],
-        pmListData2: [],
-        apartData: [
-            { text: '技术一部', value: '技术部,一部' },
-            { text: '技术二部', value: '技术部,二部' },
-            { text: '技术三部', value: '技术部,三部' },
-            { text: '销售一部', value: '销售部,一部' },
-            { text: '销售二部', value: '销售部,二部' },
-            { text: '销售三部', value: '销售部,三部' }
-        ],
-        reachMan: '',
-        reachApart: '',
-        clientName: '',
-        reachDate: '',
-        buyServ: '',
-        timeLimit: '',
-        servPrice: '',
-        payPrice: '',
-        payId: '',
-        recId: '',
-        dealId: '',
-        descInfo: '',
-        buyType: '',
-        imgs: []
-      }
-    },
-    methods: {
-      handleSizeChange (val) {
-        console.log(`每页 ${val} 条`)
-      },
-      handleCurrentChange (val) {
-        this.curPage = val
-        console.log(`当前页: ${val}`)
-      },
-      formatter (row, column) {
-        return row.reach_apart
-      },
-      filterTag (value, row) {
-        // console.log('filter', value, row)
-        return row.reach_apart === value
-      },
-      filterHandler (value, row, column) {
-        const property = column['property']
-        return row[property] === value
-      },
-      handleEdit (index, row) {
+export default {
+  data () {
+    return {
+      myPmData: [],
+      pmInfoVisible: false,
+    reachMan: '',
+    reachApart: '',
+    clientName: '',
+    reachDate: '',
+    buyServ: '',
+    timeLimit: '',
+    servPrice: '',
+    payPrice: '',
+    payId: '',
+    recId: '',
+    dealId: '',
+    descInfo: '',
+    buyType: '',
+    imgs: []
+    }
+  },
+  created () {
+       let that = this
+      let formData = new FormData()
+      formData.append('flag', 'fetch')
+      formData.append('depart', this.$store.state.userDepart)
+      formData.append('name', this.$store.state.userName)
+      formData.append('power', this.$store.state.userPower)
+      this.$http.post('pm_mng.php', formData)
+      .then(function (res) {
+        // console.log('Page', res.data)
+        that.myPmData = res.data
+        // that.totalList = res.data.length
+        // console.log(res)
+        // console.log('Client', res)
+      }).catch(function (err) {
+        console.log(err)
+      })
+  },
+  methods: {
+    viewDetail (index, row) {
         this.pmInfoVisible = true
         // console.log(index, row)
         this.descInfo = row.else_desc
@@ -288,78 +258,70 @@
         this.buyType = row.buy_type
         let imgs = row.upload_imgs
         if (imgs !== '') {
-          let imgsItem = imgs.split(',')
-          let arr = []
-          for (let i = 0; i < imgsItem.length; i++) {
+            let imgsItem = imgs.split(',')
+            let arr = []
+            for (let i = 0; i < imgsItem.length; i++) {
             arr.push(imgsItem[i])
-          }
-          this.imgs = arr
-        }
-      },
-      handleDelete (index, row) {
-        console.log(index, row)
-        this.$confirm('此操作将永久删除该条业绩, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        let that = this
-        let formData = new FormData()
-        formData.append('flag', 'delPm')
-        formData.append('delId', row.id)
-        this.$http.post('pm_mng.php', formData)
-          .then(function (res) {
-            // console.log(res)
-            if (res.data === 'delPmSuc') {
-              that.$message({
-                type: 'success',
-                message: '删除成功!'
-              })
-            that.$store.state.defaultComp = 'pmAdd'
-            setTimeout(() => {
-              that.$store.state.defaultComp = 'pmList'
-            }, 10)
             }
-          }).catch(function (err) {
-            console.log(err)
-          })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-      }
+            this.imgs = arr
+        }
     },
-    created () {
+    viewAcord (index, row) {
+      this.acordVisible = true
+      this.submitAcordId = row.id
+      //  acord fetch
       let that = this
       let formData = new FormData()
-      formData.append('flag', 'fetch')
-      formData.append('depart', this.$store.state.userDepart)
-      formData.append('name', this.$store.state.userName)
-      formData.append('power', this.$store.state.userPower)
-      this.$http.post('pm_mng.php', formData)
-      .then(function (res) {
-        // console.log('Page', res.data)
-        that.pmListData = res.data
-        // that.totalList = res.data.length
-        // console.log(res)
-        // console.log('Client', res)
-      }).catch(function (err) {
-        console.log(err)
-      })
+      formData.append('flag', 'fetchAcord')
+      formData.append('order_id', this.submitAcordId)
+      this.$http.post('order_acord.php', formData)
+        .then(function (res) {
+          that.acordFetchData = res.data
+          // console.log('res', res)
+          console.log('fetchData', that.acordFetchData)
+        }).catch(function (err) {
+          console.log(err)
+        })
     }
   }
+}
 </script>
 <style lang="less">
 @blue: #409EFF;
-.pm-list{
+.my-order{
   padding-bottom: 100px;
-}
-.el-table th>.cell{
-  text-align: center;
-}
-.pmInfoTable{
+  .el-table th>.cell{
+    text-align: center;
+  }
+ .imgList{
+  width: 100%;
+  padding: 0;
+  li{
+    display: inline-block;
+    padding: 10px;
+    list-style: none;
+  }
+ }
+ .el-tabs__content{
+   padding: 0 10px;
+   text-align: left;
+ }
+ .collapse-item-style{
+   color: red;
+ }
+ ul{
+   padding: 0 20px;
+   li{
+     list-style: none;
+     display: inline-block;
+     img{
+       width: 120px;
+       height: 160px;
+       margin: 3px;
+     }
+   }
+ }
+ .shopInfoTable{
   width: 100%;
   .imgList{
     width: 100%;
@@ -378,16 +340,6 @@
         float: left;
         margin: 6px;
       }
-  }
-  .table-textarea{
-    height: 80px!important;
-  }
-  .table-textarea-tit{
-    height: 80px!important;
-    line-height: 80px!important;
-  }
-  .table-textarea-con{
-    height: 80px!important;
   }
   .table-title{
     margin: 8px 0;
@@ -433,5 +385,11 @@
       font-weight: bold;
     }
   }
+}
+ .abv{
+   width: 100%;
+   height: 100%;
+   background-color: #cccccc
+ }
 }
 </style>

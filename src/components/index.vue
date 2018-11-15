@@ -61,6 +61,7 @@
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
                     <el-menu-item index="801" @click="switchComp('myOrder')">我的订单</el-menu-item>
+                    <el-menu-item index="803"  v-if="$store.getters.userAuthority === '80002' " @click="switchComp('myPm')">我的业绩</el-menu-item>
                      <el-menu-item index="802" @click="switchComp('myAudit')" v-if="$store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80003'">我的审核</el-menu-item>
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
@@ -74,8 +75,8 @@
                     <!-- <span slot="title">---</span> -->
                     <el-menu-item index="1100" v-if="$store.getters.userAuthority === '80001'" @click="switchComp('pmCollect')">业绩统计</el-menu-item>
                     <el-menu-item index="1101" @click="switchComp('pmList')">业绩列表</el-menu-item>
-                    <el-menu-item index="1102" @click="switchComp('pmAdd')" v-if="$store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80005'">业绩录入</el-menu-item>
-                    <el-menu-item index="1103" @click="switchComp('pmExport')" v-if="$store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80005'">业绩导出</el-menu-item>
+                    <el-menu-item index="1102" @click="switchComp('pmAdd')" v-if="$store.getters.userAuthority === '80001'">业绩录入</el-menu-item>
+                    <el-menu-item index="1103" @click="switchComp('pmExport')" v-if="$store.getters.userAuthority === '80001' || $store.getters.userAuthority === '80004'">业绩导出</el-menu-item>
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
                 </el-submenu>
@@ -107,6 +108,7 @@ import pmAdd from './pm/pmAdd'
 import pmList from './pm/pmList'
 import pmExport from './pm/pmExport'
 import pmCollect from './pm/pmCollect'
+import myPm from './my/myPm'
 export default {
   data () {
     return {
@@ -137,7 +139,8 @@ export default {
     pmAdd,
     pmList,
     pmExport,
-    pmCollect
+    pmCollect,
+    myPm
   },
   methods: {
     switchComp (aa) {

@@ -26,9 +26,9 @@
                         </el-card>
                     </el-col>
                 </el-row>
-                <div id="ech2"></div>
+                <div id="ech2" style="padding-bottom:200px;"></div>
             </el-tab-pane>
-            <el-tab-pane label="统计详情" name="second">
+            <el-tab-pane label="统计详情" name="second" style="padding-bottom:200px;">
                 <div class="query-data">
                     <div class="query-main">
                         <el-date-picker
@@ -201,7 +201,7 @@ let moment = require('moment')
         res.data.forEach(v => {
           let week = new Date(v.reg_date).getDay()
           console.log(week)
-          if (v.reach_apart.indexOf('销售') !== -1) {
+          if (v.reach_apart.indexOf('销') !== -1) {
             s1[week] += parseInt(v.pay_price)
           } else {
             s2[week] += parseInt(v.pay_price)

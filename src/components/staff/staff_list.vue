@@ -5,7 +5,8 @@
     style="width: 100%">
     <el-table-column
       prop="name"
-      label="序号"
+      label="ID"
+      sortable
       width="80">
       <template slot-scope="scope">
         <span style="margin-left: 10px">{{ scope.row.id}}</span>
@@ -43,6 +44,9 @@
      <el-table-column
       prop="name"
       label="任职部门"
+      :filters="apartData"
+        :filter-method="filterTag"
+        filter-placement="bottom-end"
       >
       <template slot-scope="scope">
         <span style="margin-left: 10px">{{ scope.row.st_departmentVal }}</span>
@@ -174,6 +178,7 @@
             placeholder="选择日期"
             class="input-fl"
             format="yyyy 年 MM 月 dd 日"
+            :picker-options="picker111"
             value-format="yyyy-MM-dd"
             >
             </el-date-picker>
@@ -184,7 +189,11 @@
         <tr>
         <td class="tdTit">任职部门：</td>
         <td>
-           <el-input v-model="m_deparmentVal"></el-input>
+               <el-cascader
+                style="float:left"
+                :options="departmentOptions"
+                v-model="m_deparmentVal"
+                ></el-cascader>
         </td>
       </tr>
         <tr>
@@ -213,7 +222,7 @@
                         class="input-fl"
                         format="yyyy 年 MM 月 dd 日"
                         value-format="yyyy-MM-dd"
-                        :picker-options="pickerOptions1">
+                        :picker-options="picker111">
                         </el-date-picker>
         </td>
       </tr>
@@ -262,7 +271,7 @@ export default {
       m_nowAddress: '',
       m_staffPhone: '',
       m_staffPhone2: '',
-      m_deparmentVal: '',
+      m_deparmentVal: [],
       m_jobVal: '',
       m_elseInfo: '',
       m_files: [],
@@ -271,7 +280,115 @@ export default {
       m_nation: '',
       m_eduBack: '',
       m_schoolName: '',
-      m_major: ''
+      m_major: '',
+      departmentOptions: [
+        {
+          value: '销售部',
+          label: '销售部',
+          children: [
+            {
+              value: '一部',
+              label: '销售一部'
+            },
+            {
+              value: '二部',
+              label: '销售二部'
+            },
+            {
+              value: '三部',
+              label: '销售三部'
+            }
+          ]
+        },
+        {
+          value: '技术部',
+          label: '技术部',
+          children: [
+            {
+              value: '一部',
+              label: '技术一部'
+            },
+            {
+              value: '二部',
+              label: '技术二部'
+            },
+            {
+              value: '三部',
+              label: '技术三部'
+            }
+          ]
+        },
+        {
+          value: '客服部',
+          label: '客服部',
+          children: [
+            {
+              value: '一部',
+              label: '客服一部'
+            },
+            {
+              value: '二部',
+              label: '客服二部'
+            },
+            {
+              value: '三部',
+              label: '客服三部'
+            }
+          ]
+        },
+        {
+          value: '其他',
+          label: '其他',
+          children: [
+            {
+              value: '管理层',
+              label: '管理层'
+            },
+            {
+              value: '人事部',
+              label: '人事部'
+            }
+          ]
+        }
+      ],
+      picker111: {
+        disabledDate (time) {
+          return time.getTime() > Date.now()
+        },
+        shortcuts: [{
+          text: '今天',
+          onClick (picker) {
+            picker.$emit('pick', new Date())
+          }
+        }, {
+          text: '昨天',
+          onClick (picker) {
+            const date = new Date()
+            date.setTime(date.getTime() - 3600 * 1000 * 24)
+            picker.$emit('pick', date)
+          }
+        }, {
+          text: '一周前',
+          onClick (picker) {
+            const date = new Date()
+            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', date)
+          }
+        }]
+      },
+      apartData: [
+          { text: '技术一部', value: '技术部,一部' },
+          { text: '技术二部', value: '技术部,二部' },
+          { text: '技术三部', value: '技术部,三部' },
+          { text: '销售一部', value: '销售部,一部' },
+          { text: '销售二部', value: '销售部,二部' },
+          { text: '销售三部', value: '销售部,三部' },
+          { text: '客服一部', value: '客服部,一部' },
+          { text: '客服二部', value: '客服部,二部' },
+          { text: '客服三部', value: '客服部,三部' },
+          { text: '管理层', value: '其他,管理层' },
+          { text: '人事部', value: '其他,人事部' }
+      ]
     }
   },
   methods: {
@@ -288,7 +405,7 @@ export default {
       this.m_nowAddress = row.st_nowAddress
       this.m_staffPhone = row.st_staffPhone
       this.m_staffPhone2 = row.st_staffPhone2
-      this.m_deparmentVal = row.st_departmentVal
+      // this.m_deparmentVal = ['技术部','一部']
       this.m_jobVal = row.st_jobVal
       this.m_elseInfo = row.st_elseInfo
       this.m_whetherRegular = row.whether_regular
@@ -311,6 +428,15 @@ export default {
       } else {
         this.m_files = someImgArr
       }
+      // depart split
+      let departStr = row.st_departmentVal.split(',')
+      this.m_deparmentVal = departStr
+      // let deArr = []
+      // console.log('Q', departStr)
+    },
+    filterTag (value, row) {
+      // console.log('filter', value, row)
+      return row.st_departmentVal === value
     },
     handleDelete (index, row) {
       // console.log(row.id)
