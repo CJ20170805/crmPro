@@ -77,24 +77,54 @@
               </el-col>
         </el-form-item>
 
-        <el-form-item label="订购套餐" prop="region">
+        <el-form-item label="签单产品" required>
           <el-col :span="10">
-              <el-select v-model="comboInfo" placeholder="请选择已订购的套餐">
+              <!-- <el-select v-model="comboInfo" placeholder="请选择已订购的套餐">
                 <el-option label="店铺运营流量白金版/7000/2个月" value="店铺运营流量白金版"></el-option>
                 <el-option label="店铺运营白银版/6000/5款产品/2个月" value="店铺运营白银版"></el-option>
                 <el-option label="店铺运营黄金版/8000/5款产品/2个月" value="店铺运营黄金版"></el-option>
                  <el-option label="店铺运营铂金版/12000/5款产品/2个月" value="店铺运营铂金版"></el-option>
                   <el-option label="店铺运营钻石版/22000/10款产品/2个月" value="店铺运营钻石版"></el-option>
+              </el-select> -->
+              <el-input v-model="comboInfo" suffix-icon="el-icon-sold-out"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="签单类型" required>
+          <el-col :span="10">
+                <el-cascader
+                        style="float:left"
+                        :options="departmentOptions"
+                        placeholder="请选择签单类型"
+                        v-model="reachType"
+                        ></el-cascader>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="签单渠道">
+          <el-col :span="10">
+               <el-select v-model="shop.reachMethods" placeholder="请选择签单渠道">
+                <el-option label="线下" value="线下"></el-option>
+                <el-option label="JD服务市场" value="JD服务市场"></el-option>
+                <el-option label="Ali服务市场" value="Ali服务市场"></el-option>
+                <el-option label="直通车BP后台" value="直通车BP后台"></el-option>
               </el-select>
           </el-col>
         </el-form-item>
-        <el-form-item label="付款金额" prop="payPrice">
+        <el-form-item label="签单金额" prop="reachPrice">
+          <el-col :span="10">
+            <el-input type="number" v-model="shop.reachPrice" suffix-icon="el-icon-sold-out"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="到账金额" prop="payPrice">
           <el-col :span="10">
             <el-input type="number" v-model="shop.payPrice" suffix-icon="el-icon-sold-out"></el-input>
           </el-col>
         </el-form-item>
-
-        <el-form-item label="付款日期">
+        <el-form-item label="直接成本" prop="payCost">
+          <el-col :span="10">
+            <el-input type="number" v-model="shop.payCost" suffix-icon="el-icon-sold-out"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="到账日期">
           <el-col :span="10">
             <!-- <el-input v-model="shop.payPrice" suffix-icon="el-icon-sold-out"></el-input> -->
              <el-date-picker
@@ -105,23 +135,24 @@
             </el-date-picker>
           </el-col>
         </el-form-item>
-         <el-form-item label="付款方式">
+         <el-form-item label="到账方式">
           <el-col :span="10">
                <el-select v-model="shop.payMethods" placeholder="请选择付款方式">
-                <el-option label="支付宝" value="支付宝"></el-option>
+                <el-option label="分公司账号" value="分公司账号"></el-option>
+                <el-option label="支付宝TP" value="支付宝TP"></el-option>
+                <el-option label="京东钱包" value="京东钱包"></el-option>
                 <el-option label="微信支付" value="微信支付"></el-option>
-                <el-option label="银行转账" value="银行转账"></el-option>
                 <el-option label="网银支付" value="网银支付"></el-option>
                 <el-option label="现金支付" value="现金支付"></el-option>
               </el-select>
           </el-col>
         </el-form-item>
-         <el-form-item label="付款账户" prop="payId">
+         <el-form-item label="付款账号" prop="payId">
           <el-col :span="17">
             <el-input v-model="shop.payId" suffix-icon="el-icon-sold-out"></el-input>
           </el-col>
         </el-form-item>
-           <el-form-item label="收款账户">
+           <el-form-item label="收款账号">
           <el-col :span="17">
             <el-input v-model="shop.recId" suffix-icon="el-icon-sold-out"></el-input>
           </el-col>
@@ -198,7 +229,10 @@
           linkMan: '',
           linkMethods: '',
           linkMethodsSel: '',
+          reachMethods: '',
           payPrice: '',
+          reachPrice: '',
+          payCost: 0,
           timeLimit: '',
           payId: '',
           payMethods: '',
@@ -235,11 +269,15 @@
             { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
           ],
           payPrice: [
-            { required: true, message: '请输入付款金额', trigger: 'blur' },
+            { required: true, message: '请输入到账金额', trigger: 'blur' },
+            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+          ],
+          reachPrice: [
+            { required: true, message: '请输入签单金额', trigger: 'blur' },
             { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
           ],
           payId: [
-            { required: true, message: '请输入付款账户', trigger: 'blur' },
+            { required: true, message: '请输入付款账号', trigger: 'blur' },
             { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
           ],
           salesMan: [
@@ -256,8 +294,55 @@
           //   { required: true, message: '请选择活动资源', trigger: 'change' }
           // ]
         },
+        departmentOptions: [
+          {
+            value: '新单',
+            label: '新单',
+            children: [
+              {
+                value: '首款',
+                label: '首款'
+              },
+              {
+                value: '尾款',
+                label: '尾款'
+              },
+              {
+                value: '全款',
+                label: '全款'
+              }
+            ]
+          },
+          {
+            value: '续费',
+            label: '续费',
+            children: [
+              {
+                value: '首款',
+                label: '首款'
+              },
+              {
+                value: '尾款',
+                label: '尾款'
+              },
+              {
+                value: '全款',
+                label: '全款'
+              }
+            ]
+          },
+          {
+            value: '分业绩',
+            label: '分业绩'
+          },
+          {
+            value: '换店/换产品',
+            label: '换店/换产品'
+          }
+        ],
         comboInfo: '',
         descInfo: '',
+        reachType: '',
         submitFlag: false,
         orderImgs: [],
         orderImgsNew: [],
@@ -360,6 +445,7 @@
             formData.append('link_methods', linkStr)
             formData.append('combo_info', this.comboInfo)
             formData.append('pay_price', this.shop.payPrice)
+            formData.append('reach_price', this.shop.reachPrice)
             formData.append('pay_id', this.shop.payId)
             formData.append('pay_methods', this.shop.payMethods)
             formData.append('pay_date', this.shop.payDate)
@@ -376,6 +462,11 @@
             formData.append('shop_industry', this.shop.industry)
             formData.append('shop_address', this.shop.address)
             formData.append('write_man', this.$store.state.userName)
+            // new add 4
+            formData.append('reach_type', this.reachType)
+            formData.append('pay_cost', this.shop.payCost)
+            formData.append('reach_methods', this.shop.reachMethods)
+            formData.append('job_type', sales[1].substring(0, 2))
             this.$http.post('order_mng.php', formData)
               .then(function (res) {
                 console.log(res)
@@ -416,7 +507,7 @@
           for (let i = 0; i < data.length; i++) {
             that.options222.push({
               value: data[i].id + ';' + data[i].st_departmentVal + ';' + data[i].st_name,
-              label: data[i].st_departmentVal + data[i].st_name
+              label: data[i].st_departmentVal + '=>' + data[i].st_name
             })
           }
         //   console.log('StaffName:', that.staffNames)

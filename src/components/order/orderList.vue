@@ -10,19 +10,24 @@
           <span style="margin-left: 10px">{{ scope.row.id }}</span>
         </template>
       </el-table-column>
+       <el-table-column
+        label="签单部门">
+        <template slot-scope="scope">
+          <span style="margin-left: 10px">{{ scope.row.sales_apart }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
-        label="销售人员">
+        label="签单人员">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.sales_man }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="店铺名称"
+        label="店铺信息"
       >
         <template slot-scope="scope">
           <el-popover trigger="hover" placement="top">
             <p><span class="shop-bar-title">店铺ID: </span> {{ scope.row.shop_id }}</p>
-            <p><span class="shop-bar-title">店铺URL: </span>{{ scope.row.shop_url }}</p>
             <p><span class="shop-bar-title">店铺类型: </span>{{ scope.row.shop_type }}</p>
             <div slot="reference" class="name-wrapper">
               <el-tag size="medium">{{ scope.row.shop_name }}</el-tag>
@@ -31,14 +36,14 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="订购套餐"
-        width="150">
+        label="签单产品"
+        width="180">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.combo_info }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="下单时间"
+        label="录入时间"
         width="200"
         >
         <template slot-scope="scope">
@@ -133,14 +138,42 @@
       <el-row>
         <el-col :span="10">
           <div class="table-item">
-            <span class="table-item-tit">订购套餐：</span>
+            <span class="table-item-tit">签单产品：</span>
             <span class="table-item-con">{{ shopInfo.s_comboInfo }}</span>
           </div>
         </el-col>
           <el-col :span="14">
-            <div class="table-item">
-            <span class="table-item-tit">付款金额：</span>
+               <div class="table-item">
+            <span class="table-item-tit">服务时间：</span>
+            <span class="table-item-con">{{ shopInfo.s_timeLimit }}</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="10">
+          <div class="table-item">
+            <span class="table-item-tit">签单金额：</span>
+            <span class="table-item-con">{{ shopInfo.serv_price }}</span>
+          </div>
+        </el-col>
+          <el-col :span="14">
+                    <div class="table-item">
+            <span class="table-item-tit">到账金额：</span>
             <span class="table-item-con">{{ shopInfo.s_payPrice }}</span>
+          </div>
+        </el-col>
+      </el-row>
+       <el-row>
+          <el-col :span="10">
+            <div class="table-item">
+            <span class="table-item-tit">签单渠道：</span>
+            <span class="table-item-con">{{ shopInfo.reach_methods }}</span>
+          </div>
+        </el-col>
+        <el-col :span="14">
+          <div class="table-item">
+            <span class="table-item-tit">签单类型：</span>
+            <span class="table-item-con">{{ shopInfo.reach_type }}</span>
           </div>
         </el-col>
       </el-row>
@@ -152,50 +185,58 @@
             <span class="table-item-con">{{ shopInfo.s_payId }}</span>
           </div>
         </el-col>
-          <el-col :span="7">
+          <el-col :span="14">
             <div class="table-item">
             <span class="table-item-tit">付款方式：</span>
             <span class="table-item-con">{{ shopInfo.s_payMethods }}</span>
           </div>
         </el-col>
-          <el-col :span="7">
+      </el-row>
+   <el-row>
+          <el-col :span="10">
+            <div class="table-item">
+            <span class="table-item-tit">直接成本：</span>
+            <span class="table-item-con">{{ shopInfo.pay_cost }}</span>
+          </div>
+        </el-col>
+        <el-col :span="14">
             <div class="table-item">
             <span class="table-item-tit">付款时间：</span>
             <span class="table-item-con">{{ shopInfo.s_payDate }}</span>
           </div>
         </el-col>
       </el-row>
-
-      <el-row>
-        <el-col :span="16">
+          <el-row>
+        <el-col :span="10">
           <div class="table-item">
-            <span class="table-item-tit">服务时间：</span>
-            <span class="table-item-con">{{ shopInfo.s_timeLimit }}</span>
+            <span class="table-item-tit">签单部门：</span>
+            <span class="table-item-con">{{ shopInfo.sales_apart }}</span>
           </div>
         </el-col>
-          <el-col :span="8">
+          <el-col :span="14">
             <div class="table-item">
             <span class="table-item-tit">签单人员：</span>
             <span class="table-item-con">{{ shopInfo.s_salesMan }}</span>
           </div>
         </el-col>
       </el-row>
-
+      <el-row>
+        <el-col :span="24">
+        </el-col>
+      </el-row>
        <el-row>
         <el-col :span="24">
           <div class="table-item">
-            <span class="table-item-tit else-info-tit">备注信息：</span>
-            <span class="table-item-con else-info-con">{{ shopInfo.s_descInfo }}</span>
+            <span class="table-item-tit">备注信息：</span>
+            <span class="table-item-con">{{ shopInfo.s_descInfo }}</span>
           </div>
         </el-col>
       </el-row>
-
       <el-row>
         <el-col :span="24">
           <div class="table-title">审核信息</div>
         </el-col>
       </el-row>
-
       <el-row>
         <el-col :span="24">
           <el-steps :active="auditStatus" align-center>
@@ -277,7 +318,12 @@ export default {
         s_descInfo: '',
         s_timeLimit: '',
         s_someImg: [],
-        s_salesMan: ''
+        s_salesMan: '',
+        reach_type: '',
+        reach_methods: '',
+        pay_cost: '',
+        sales_apart: '',
+        serv_price: ''
       }
     }
   },
@@ -371,6 +417,11 @@ export default {
       this.shopInfo.s_descInfo = row.desc_info
       this.shopInfo.s_timeLimit = row.time_limit
       this.shopInfo.s_salesMan = row.sales_man
+      this.shopInfo.reach_type = row.reach_type
+      this.shopInfo.reach_methods = row.reach_methods
+      this.shopInfo.pay_cost = row.pay_cost
+      this.shopInfo.serv_price = row.reach_price
+      this.shopInfo.sales_apart = row.sales_apart
       let jl = row.jl_audit
       let zjl = row.zjl_audit
       if (jl === '1' && zjl === '1') {
@@ -569,13 +620,13 @@ export default {
       width: 40%;
       background-color: @blue;
     }
-    .else-info-tit{
-      width: 16%;
-    }
-    .else-info-con{
-      text-align: left;
-      padding-left: 4px;
-    }
+    // .else-info-tit{
+    //   width: 39%;
+    // }
+    // .else-info-con{
+    //   text-align: left;
+    //   padding-left: 4px;
+    // }
     .table-item-con{
       width: 60%;
       color: red;

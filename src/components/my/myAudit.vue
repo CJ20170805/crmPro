@@ -125,7 +125,7 @@
     <!-- Audit dialog -->
     <el-dialog :visible.sync="dialogTableVisible">
        <div class="shopInfoTable">
-        <el-row>
+       <el-row>
           <el-col :span="24">
             <div class="table-title">店铺信息</div>
           </el-col>
@@ -180,14 +180,42 @@
       <el-row>
         <el-col :span="10">
           <div class="table-item">
-            <span class="table-item-tit">订购套餐：</span>
+            <span class="table-item-tit">签单产品：</span>
             <span class="table-item-con">{{ shopInfo.s_comboInfo }}</span>
           </div>
         </el-col>
           <el-col :span="14">
-            <div class="table-item">
-            <span class="table-item-tit">付款金额：</span>
+               <div class="table-item">
+            <span class="table-item-tit">服务时间：</span>
+            <span class="table-item-con">{{ shopInfo.s_timeLimit }}</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="10">
+          <div class="table-item">
+            <span class="table-item-tit">签单金额：</span>
+            <span class="table-item-con">{{ shopInfo.serv_price }}</span>
+          </div>
+        </el-col>
+          <el-col :span="14">
+                    <div class="table-item">
+            <span class="table-item-tit">到账金额：</span>
             <span class="table-item-con">{{ shopInfo.s_payPrice }}</span>
+          </div>
+        </el-col>
+      </el-row>
+       <el-row>
+          <el-col :span="10">
+            <div class="table-item">
+            <span class="table-item-tit">签单渠道：</span>
+            <span class="table-item-con">{{ shopInfo.reach_methods }}</span>
+          </div>
+        </el-col>
+        <el-col :span="14">
+          <div class="table-item">
+            <span class="table-item-tit">签单类型：</span>
+            <span class="table-item-con">{{ shopInfo.reach_type }}</span>
           </div>
         </el-col>
       </el-row>
@@ -199,55 +227,46 @@
             <span class="table-item-con">{{ shopInfo.s_payId }}</span>
           </div>
         </el-col>
-          <el-col :span="7">
+          <el-col :span="14">
             <div class="table-item">
             <span class="table-item-tit">付款方式：</span>
             <span class="table-item-con">{{ shopInfo.s_payMethods }}</span>
           </div>
         </el-col>
-          <el-col :span="7">
+      </el-row>
+   <el-row>
+          <el-col :span="10">
+            <div class="table-item">
+            <span class="table-item-tit">直接成本：</span>
+            <span class="table-item-con">{{ shopInfo.pay_cost }}</span>
+          </div>
+        </el-col>
+        <el-col :span="14">
             <div class="table-item">
             <span class="table-item-tit">付款时间：</span>
             <span class="table-item-con">{{ shopInfo.s_payDate }}</span>
           </div>
         </el-col>
       </el-row>
-
-     <el-row>
+          <el-row>
         <el-col :span="10">
           <div class="table-item">
-            <span class="table-item-tit">收款账号：</span>
-            <span class="table-item-con">{{ shopInfo.s_recId }}</span>
+            <span class="table-item-tit">签单部门：</span>
+            <span class="table-item-con">{{ shopInfo.sales_apart }}</span>
           </div>
         </el-col>
           <el-col :span="14">
-            <div class="table-item">
-            <span class="table-item-tit">交易单号：</span>
-            <span class="table-item-con">{{ shopInfo.s_priceId }}</span>
-          </div>
-        </el-col>
-      </el-row>
-
-      <el-row>
-        <el-col :span="17">
-          <div class="table-item">
-            <span class="table-item-tit">服务时间：</span>
-            <span class="table-item-con">{{ shopInfo.s_timeLimit }}</span>
-          </div>
-        </el-col>
-          <el-col :span="7">
             <div class="table-item">
             <span class="table-item-tit">签单人员：</span>
             <span class="table-item-con">{{ shopInfo.s_salesMan }}</span>
           </div>
         </el-col>
       </el-row>
-
        <el-row>
         <el-col :span="24">
           <div class="table-item">
-            <span class="table-item-tit else-info-tit">备注信息：</span>
-            <span class="table-item-con else-info-con">{{ shopInfo.s_descInfo }}</span>
+            <span class="table-item-tit">备注信息：</span>
+            <span class="table-item-con">{{ shopInfo.s_descInfo }}</span>
           </div>
         </el-col>
       </el-row>
@@ -326,7 +345,12 @@
         s_someImg: [],
         s_salesMan: '',
         s_priceId: '',
-        s_recId: ''
+        s_recId: '',
+        reach_type: '',
+        reach_methods: '',
+        pay_cost: '',
+        sales_apart: '',
+        serv_price: ''
         // s_jlAudit: '',
         // s_zjlAudit: ''
       }
@@ -417,7 +441,7 @@
                 formData.append('staff_id', this.$store.state.userId)
                 this.$http.post('order_mng.php', formData)
                     .then(function (res) {
-                     console.log('WWWW', res)
+                     // console.log('WWWW', res)
                     if (res.data === 'auditChangeSuc') {
                         that.$message({
                         type: 'success',
@@ -425,7 +449,7 @@
                         })
                         that.dialogTableVisible = false
                     } else {
-                        that.$message.error('审核失败！')
+                        that.$message.error('请勿重复审核！')
                     }
                     }).catch(function (err) {
                       console.log(err)
@@ -467,7 +491,7 @@
                               let formData2 = new FormData()
                               formData2.append('st_flag', 'audit')
                               formData2.append('order_id', orderId)
-                              formData2.append('staff_depart', '石一,管理层')
+                              formData2.append('staff_depart', '其他,管理层')
                               formData2.append('staff_job', '分公司总经理')
                               that.$http.post('staff_mng.php', formData2)
                                 .then(function (res) {
@@ -478,32 +502,32 @@
                                       message: '已通知总经理审核!'
                                     })
                                   } else {
-                                    that.$message.error('通知失败！')
+                                    that.$message.error('已通知，请勿重复提交！')
                                   }
                                 }).catch(function (err) {
                                   console.log(err)
                                 })
                         } else {
-                            that.$message.error('审核失败！')
+                            that.$message.error('已审核，请勿重复提交')
                         }
                     }).catch(function (err) {
                       console.log(err)
                     })
                      //  change order status
-                let formData2 = new FormData()
-                  formData2.append('flag', 'changeBtnText')
-                  formData2.append('order_id', orderId)
-                  formData2.append('btn_text', '审核中1/2')
-                  that.$http.post('order_mng.php', formData2)
-                    .then(function (res) {
-                      //  console.log(res)
-                      that.$store.state.defaultComp = 'myOrder'
-                      setTimeout(() => {
-                        that.$store.state.defaultComp = 'myAudit'
-                      }, 10)
-                    }).catch(function (err) {
-                      console.log(err)
-                    })
+                  let formData2 = new FormData()
+                    formData2.append('flag', 'changeBtnText')
+                    formData2.append('order_id', orderId)
+                    formData2.append('btn_text', '审核中1/2')
+                    that.$http.post('order_mng.php', formData2)
+                      .then(function (res) {
+                        //  console.log(res)
+                        that.$store.state.defaultComp = 'myOrder'
+                        setTimeout(() => {
+                          that.$store.state.defaultComp = 'myAudit'
+                        }, 10)
+                      }).catch(function (err) {
+                        console.log(err)
+                      })
          }
       },
       rejectA () {
@@ -607,6 +631,11 @@
         this.shopInfo.s_priceId = row.price_id
         this.shopInfo.s_recId = row.rec_id
         this.shopInfo.id = row.id
+        this.shopInfo.reach_type = row.reach_type
+        this.shopInfo.reach_methods = row.reach_methods
+        this.shopInfo.pay_cost = row.pay_cost
+        this.shopInfo.serv_price = row.reach_price
+        this.shopInfo.sales_apart = row.sales_apart
         // split string for array
         let someImgArr = []
         let someImg = row.some_img

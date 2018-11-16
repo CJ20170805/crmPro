@@ -99,22 +99,6 @@
             </div>
             </el-col>
       </el-row>
-
-      <el-row>
-           <el-col :span="12">
-                <div class="table-item">
-                <span class="table-item-tit">所在地区：</span>
-                <span class="table-item-con">{{ clientAddress }}</span>
-            </div>
-            </el-col>
-        <el-col :span="12">
-            <div class="table-item">
-                <span class="table-item-tit">客户编号：</span>
-                <span class="table-item-con">{{ clientId }}</span>
-            </div>
-        </el-col>
-      </el-row>
-
      <el-row>
         <el-col :span="24">
             <div class="table-item">
@@ -131,12 +115,25 @@
             </div>
         </el-col>
       </el-row>
+      <el-row>
+           <el-col :span="12">
+                <div class="table-item">
+                <span class="table-item-tit">所在地区：</span>
+                <span class="table-item-con">{{ clientAddress }}</span>
+            </div>
+            </el-col>
+        <el-col :span="12">
+            <div class="table-item">
+                <span class="table-item-tit">客户编号：</span>
+                <span class="table-item-con">{{ clientId }}</span>
+            </div>
+        </el-col>
+      </el-row>
        <el-row>
           <el-col :span="24">
             <div class="table-title">店铺信息</div>
           </el-col>
         </el-row>
-
       <el-row>
         <el-col :span="24">
             <div class="table-item">
@@ -145,7 +142,14 @@
             </div>
         </el-col>
       </el-row>
-
+     <el-row>
+        <el-col :span="24">
+            <div class="table-item">
+                <span class="table-item-tit">店铺链接：</span>
+                <span class="table-item-con"><a :href="shopUrl" style="color:red;text-decoration:none;" target="_blank">点击打开</a></span>
+            </div>
+        </el-col>
+      </el-row>
       <el-row>
         <el-col :span="12">
             <div class="table-item">
@@ -157,15 +161,6 @@
             <div class="table-item">
                 <span class="table-item-tit">店铺等级：</span>
                 <span class="table-item-con">{{ shopGrade }}</span>
-            </div>
-        </el-col>
-      </el-row>
-
-     <el-row>
-        <el-col :span="24">
-            <div class="table-item">
-                <span class="table-item-tit">店铺链接：</span>
-                <span class="table-item-con"><a :href="shopUrl" style="color:red;text-decoration:none;" target="_blank">点击打开</a></span>
             </div>
         </el-col>
       </el-row>
@@ -214,7 +209,7 @@
           </el-col>
         </el-row>
 
-       <el-row>
+       <!-- <el-row>
           <el-col :span="24">
             <div class="table-title">附件（点击图标下载）</div>
           </el-col>
@@ -222,7 +217,6 @@
          <el-row>
           <el-col :span="24">
               <div class="imgList">
-                  <!-- <img :src="item" alt="item" width="100" height="120"> -->
                 <span class="down-left" v-for="(item, index) in clientFiles" :key="index">
                    <a :href="item" target="_blank">
                        <img :src="item.substring(item.length-3) === 'zip' ? 'https://img.alicdn.com/imgextra/i2/662134481/O1CN011iyLEr3kJJ6YdeJ-662134481.jpg' : item" width="120" height="120">
@@ -230,7 +224,7 @@
                 </span>
               </div>
           </el-col>
-      </el-row>
+      </el-row> -->
 
       </div>
     </el-dialog>
@@ -294,14 +288,14 @@ export default {
       this.comboType = row.combo_type
       this.regDate = row.reg_date
       // this.clientFiles = row.files
-      if (row.files !== '') {
-        let file = row.files.split(',')
-        let fileArr = []
-        for (let i = 0; i < file.length; i++) {
-          fileArr.push(file[i])
-        }
-        this.clientFiles = fileArr
-        }
+      // if (row.files !== '') {
+      //   let file = row.files.split(',')
+      //   let fileArr = []
+      //   for (let i = 0; i < file.length; i++) {
+      //     fileArr.push(file[i])
+      //   }
+      //   this.clientFiles = fileArr
+      //   }
     },
     handleDelete (index, row) {
      console.log(index, row)
