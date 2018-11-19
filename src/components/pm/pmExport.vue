@@ -41,13 +41,19 @@
                 </el-table-column>
                 <el-table-column
                 prop="address"
-                label="所在部门"
+                label="签单部门"
                 show-overflow-tooltip>
                   <template slot-scope="scope">{{ scope.row.reach_apart}}</template>
                 </el-table-column>
+                  <el-table-column
+                prop="address"
+                label="签单类型"
+                show-overflow-tooltip>
+                  <template slot-scope="scope">{{ scope.row.reach_type}}</template>
+                </el-table-column>
                 <el-table-column
                 prop="address"
-                label="订购产品"
+                label="签单产品"
                 show-overflow-tooltip>
                   <template slot-scope="scope">{{ scope.row.buy_serv }}</template>
                 </el-table-column>

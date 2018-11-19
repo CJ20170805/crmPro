@@ -101,14 +101,22 @@
       <el-row>
             <el-col :span="12">
               <div class="table-item">
-                <span class="table-item-tit">客户名称：</span>
+                <span class="table-item-tit">客户姓名：</span>
                 <span class="table-item-con">{{ clientName }}</span>
               </div>
             </el-col>
         <el-col :span="12">
             <div class="table-item">
-                <span class="table-item-tit">签单日期：</span>
+                <span class="table-item-tit">到账日期：</span>
                 <span class="table-item-con">{{ reachDate }}</span>
+            </div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+            <div class="table-item">
+                <span class="table-item-tit">店铺名称：</span>
+                <span class="table-item-con">{{ shopName }}</span>
             </div>
         </el-col>
       </el-row>
@@ -116,23 +124,17 @@
      <el-row>
         <el-col :span="24">
             <div class="table-item">
-                <span class="table-item-tit">订购服务：</span>
+                <span class="table-item-tit">签单产品：</span>
                 <span class="table-item-con">{{ buyServ }}</span>
             </div>
         </el-col>
       </el-row>
 
        <el-row>
-        <el-col :span="16">
+        <el-col :span="24">
             <div class="table-item">
                 <span class="table-item-tit">服务时间：</span>
                 <span class="table-item-con">{{ timeLimit }}</span>
-            </div>
-        </el-col>
-         <el-col :span="8">
-            <div class="table-item">
-                <span class="table-item-tit">服务费用：</span>
-                <span class="table-item-con">{{ servPrice }}</span>
             </div>
         </el-col>
       </el-row>
@@ -143,26 +145,45 @@
           </el-col>
         </el-row>
        <el-row>
-      <el-col :span="24">
+      <el-col :span="12">
             <div class="table-item">
-                <span class="table-item-tit">到账类型：</span>
-                <span class="table-item-con">{{ buyType }}</span>
+                <span class="table-item-tit">签单类型：</span>
+                <span class="table-item-con">{{ reachType }}</span>
+            </div>
+        </el-col>
+         <el-col :span="12">
+            <div class="table-item">
+                <span class="table-item-tit">签单金额：</span>
+                <span class="table-item-con">{{ reachPrice }}</span>
             </div>
         </el-col>
       </el-row>
       <el-row>
-      <el-col :span="24">
+      <el-col :span="12">
             <div class="table-item">
                 <span class="table-item-tit">到账金额：</span>
                 <span class="table-item-con">{{ payPrice }}</span>
             </div>
         </el-col>
+          <el-col :span="12">
+            <div class="table-item">
+                <span class="table-item-tit">直接成本：</span>
+                <span class="table-item-con">{{ payCost }}</span>
+            </div>
+        </el-col>
       </el-row>
-
+            <el-row>
+      <el-col :span="24">
+            <div class="table-item">
+                <span class="table-item-tit">最终业绩：</span>
+                <span class="table-item-con">{{ payPrice - payCost }}</span>
+            </div>
+        </el-col>
+      </el-row>
       <el-row>
           <el-col :span="24">
               <div class="table-item">
-                  <span class="table-item-tit">付款账户：</span>
+                  <span class="table-item-tit">付款账号：</span>
                   <span class="table-item-con">{{ payId}}</span>
               </div>
           </el-col>
@@ -171,8 +192,8 @@
        <el-row>
         <el-col :span="24">
             <div class="table-item">
-                <span class="table-item-tit">收款账户：</span>
-                <span class="table-item-con">{{ recId }}</span>
+                <span class="table-item-tit">到账方式：</span>
+                <span class="table-item-con">{{ payMethods }}</span>
             </div>
         </el-col>
       </el-row>
@@ -180,8 +201,8 @@
         <el-row>
         <el-col :span="24">
             <div class="table-item">
-                <span class="table-item-tit">交易订单号：</span>
-                <span class="table-item-con">{{ dealId }}</span>
+                <span class="table-item-tit">签单渠道：</span>
+                <span class="table-item-con">{{ reachMethods }}</span>
             </div>
         </el-col>
       </el-row>
@@ -200,9 +221,9 @@
             <div class="table-title">附件（点击图标下载）</div>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row  v-if="imgs.length !== 0">
           <el-col :span="24">
-              <div v-if="imgs !== ''" class="imgList">
+              <div class="imgList">
                   <!-- <img :src="item" alt="item" width="100" height="120"> -->
                 <span class="down-left"  v-for="(item, index) in imgs" :key="index">
                    <a :href="item" target="_blank">
@@ -248,6 +269,12 @@
         dealId: '',
         descInfo: '',
         buyType: '',
+        shopName: '',
+        reachType: '',
+        reachPrice: '',
+        payCost: '',
+        payMethods: '',
+        reachMethods: '',
         imgs: []
       }
     },
@@ -286,6 +313,12 @@
         this.buyServ = row.buy_serv
         this.timeLimit = row.time_limit
         this.buyType = row.buy_type
+        this.shopName = row.shop_name
+        this.reachType = row.reach_type
+        this.reachPrice = row.reach_price
+        this.payCost = row.pay_cost
+        this.payMethods = row.pay_methods
+        this.reachMethods = row.reach_methods
         let imgs = row.upload_imgs
         if (imgs !== '') {
           let imgsItem = imgs.split(',')

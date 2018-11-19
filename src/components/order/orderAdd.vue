@@ -342,7 +342,7 @@
         ],
         comboInfo: '',
         descInfo: '',
-        reachType: '',
+        reachType: [],
         submitFlag: false,
         orderImgs: [],
         orderImgsNew: [],

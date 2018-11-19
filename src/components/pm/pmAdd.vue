@@ -3,7 +3,7 @@
       <div class="pm-main">
         <el-form :model="pmForm" :rules="rules" ref="pmForm" label-width="100px">
             <div class="form-title">
-              <p>订购信息</p>
+              <p>签单信息</p>
             </div>
             <el-form-item label="签单人员"  required>
                 <el-col :span="9">
@@ -18,29 +18,44 @@
                     </el-select>
                 </el-col>
             </el-form-item>
-            <el-form-item label="签单时间" required>
+            <el-form-item label="签单类型" required>
                 <el-col :span="9">
-                    <el-date-picker
-                        v-model="pmForm.reachDate"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        placeholder="选择日期">
-                    </el-date-picker>
+                      <el-cascader
+                              style="float:left"
+                              :options="departmentOptions"
+                              placeholder="请选择签单类型"
+                              v-model="pmForm.reachType"
+                              ></el-cascader>
                 </el-col>
             </el-form-item>
-            <el-form-item label="客户名称" prop="clientName">
-                <el-col :span="12">
-                    <el-input v-model="pmForm.clientName"></el-input>
-                </el-col>
-            </el-form-item>
-            <el-form-item label="订购服务" >
+          <el-form-item label="签单渠道">
+          <el-col :span="10">
+               <el-select v-model="pmForm.reachMethods" placeholder="请选择签单渠道">
+                <el-option label="线下" value="线下"></el-option>
+                <el-option label="JD服务市场" value="JD服务市场"></el-option>
+                <el-option label="Ali服务市场" value="Ali服务市场"></el-option>
+                <el-option label="直通车BP后台" value="直通车BP后台"></el-option>
+              </el-select>
+          </el-col>
+        </el-form-item>
+            <el-form-item label="签单产品" required>
                 <el-col :span="12">
                     <el-input v-model="pmForm.buyServ"></el-input>
                 </el-col>
             </el-form-item>
-             <el-form-item label="服务费用"  required>
+            <el-form-item label="客户姓名" prop="clientName">
                 <el-col :span="12">
-                    <el-input v-model="pmForm.servPrice"></el-input>
+                    <el-input v-model="pmForm.clientName"></el-input>
+                </el-col>
+            </el-form-item>
+             <el-form-item label="店铺名称">
+                <el-col :span="12">
+                    <el-input v-model="pmForm.shopName"></el-input>
+                </el-col>
+            </el-form-item>
+                  <el-form-item label="店铺ID">
+                <el-col :span="12">
+                    <el-input v-model="pmForm.shopId"></el-input>
                 </el-col>
             </el-form-item>
           <el-form-item label="服务时间" required>
@@ -61,6 +76,16 @@
            <div class="form-title">
               <p>到账信息</p>
             </div>
+              <el-form-item label="到账时间" required>
+                <el-col :span="8">
+                    <el-date-picker
+                        v-model="pmForm.reachDate"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期">
+                    </el-date-picker>
+                </el-col>
+            </el-form-item>
              <el-form-item label="到账类型" prop="region">
               <el-col :span="10">
                   <el-select v-model="pmForm.buyType" placeholder="请选择到账类型">
@@ -73,27 +98,49 @@
                   </el-select>
               </el-col>
             </el-form-item>
-            <el-form-item label="到账金额" >
-                <el-col :span="12">
-                    <el-input v-model="pmForm.payPrice" suffix-icon="el-icon-star-off"></el-input>
-                </el-col>
-            </el-form-item>
-            <el-form-item label="付款账户" prop="payId">
+        <el-form-item label="签单金额" prop="reachPrice">
+          <el-col :span="10">
+            <el-input type="number" v-model="pmForm.reachPrice" suffix-icon="el-icon-sold-out"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="到账金额" prop="payPrice">
+          <el-col :span="10">
+            <el-input type="number" v-model="pmForm.payPrice" suffix-icon="el-icon-sold-out"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="直接成本" prop="payCost">
+          <el-col :span="10">
+            <el-input type="number" v-model="pmForm.payCost" suffix-icon="el-icon-sold-out"></el-input>
+          </el-col>
+        </el-form-item>
+          <el-form-item label="到账方式">
+          <el-col :span="10">
+               <el-select v-model="pmForm.payMethods" placeholder="请选择付款方式">
+                <el-option label="分公司账号" value="分公司账号"></el-option>
+                <el-option label="支付宝TP" value="支付宝TP"></el-option>
+                <el-option label="京东钱包" value="京东钱包"></el-option>
+                <el-option label="微信支付" value="微信支付"></el-option>
+                <el-option label="网银支付" value="网银支付"></el-option>
+                <el-option label="现金支付" value="现金支付"></el-option>
+              </el-select>
+          </el-col>
+        </el-form-item>
+            <el-form-item label="付款账号">
                 <el-col>
                     <el-input v-model="pmForm.payId" suffix-icon="el-icon-star-off"></el-input>
                 </el-col>
             </el-form-item>
-            <el-form-item label="收款账户" required>
+            <el-form-item label="收款账号">
                 <el-col>
                     <el-input v-model="pmForm.recId" suffix-icon="el-icon-star-off"></el-input>
                 </el-col>
             </el-form-item>
-            <el-form-item label="交易订单号" required>
+            <el-form-item label="交易订单号">
                 <el-col>
                     <el-input v-model="pmForm.dealId"></el-input>
                 </el-col>
             </el-form-item>
-            <el-form-item label="交易凭证">
+            <el-form-item label="附件添加">
                   <!-- action="http://localhost:8080/api/crmApi/pm_img.php" -->
                 <el-col :span="9">
                     <el-upload
@@ -124,22 +171,75 @@
     data () {
       return {
         pmForm: {
-        timeLimit: '',
-        reachDate: '',
-        clientName: '',
-        reachMan: '',
-        buyServ: '',
-        servPrice: '',
-        payPrice: '',
-        payId: '',
-        recId: '',
-        dealId: '',
-        elseDesc: '',
-        buyType: '',
-        uploadImgs: [],
-        uploadImgsNew: []
+          shopName: '',
+          shopId: '',
+          reachType: [],
+          reachMethods: '',
+          reachPrice: '',
+          payPrice: '',
+          payCost: '',
+          payMethods: '',
+          timeLimit: '',
+          reachDate: '',
+          clientName: '',
+          reachMan: '',
+          buyServ: '',
+          servPrice: '',
+          payId: '',
+          recId: '',
+          dealId: '',
+          elseDesc: '',
+          buyType: '',
+          uploadImgs: [],
+          uploadImgsNew: []
         },
         options: [],
+         departmentOptions: [
+          {
+            value: '新单',
+            label: '新单',
+            children: [
+              {
+                value: '首款',
+                label: '首款'
+              },
+              {
+                value: '尾款',
+                label: '尾款'
+              },
+              {
+                value: '全款',
+                label: '全款'
+              }
+            ]
+          },
+          {
+            value: '续费',
+            label: '续费',
+            children: [
+              {
+                value: '首款',
+                label: '首款'
+              },
+              {
+                value: '尾款',
+                label: '尾款'
+              },
+              {
+                value: '全款',
+                label: '全款'
+              }
+            ]
+          },
+          {
+            value: '分业绩',
+            label: '分业绩'
+          },
+          {
+            value: '换店/换产品',
+            label: '换店/换产品'
+          }
+        ],
         rules: {
           clientName: [
             { required: true, message: '请填写客户名称', trigger: 'change' }
@@ -215,9 +315,18 @@
             formData.append('deal_id', this.pmForm.dealId)
             formData.append('else_desc', this.pmForm.elseDesc)
             formData.append('upload_imgs', this.pmForm.uploadImgs)
+            // new add
+            formData.append('job_type', reachMan[1].substring(0, 2))
+            formData.append('shop_id', this.pmForm.shopId)
+            formData.append('shop_name', this.pmForm.shopName)
+            formData.append('reach_type', this.pmForm.reachType)
+            formData.append('reach_methods', this.pmForm.reachMethods)
+            formData.append('pay_methods', this.pmForm.payMethods)
+            formData.append('reach_price', this.pmForm.reachPrice)
+            formData.append('pay_cost', this.pmForm.payCost)
             this.$http.post('pm_mng.php', formData)
               .then(function (res) {
-                console.log(res)
+                // console.log(res)
             if (res.data === 'AddSUC') {
               that.$message({
                 type: 'success',
@@ -280,7 +389,7 @@
           for (let i = 0; i < data.length; i++) {
             that.options.push({
               value: data[i].id + ';' + data[i].st_departmentVal + ';' + data[i].st_name,
-              label: data[i].st_departmentVal + data[i].st_name
+              label: data[i].st_departmentVal + '=>' + data[i].st_name
             })
           }
         //   console.log('StaffName:', that.staffNames)
