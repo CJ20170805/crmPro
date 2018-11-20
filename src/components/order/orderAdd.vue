@@ -437,6 +437,7 @@
             let that = this
             let formData = new FormData()
             formData.append('flag', 'add')
+            formData.append('power', this.$store.getters.userAuthority)
             formData.append('shop_name', this.shop.name)
             formData.append('shop_url', this.shop.url)
             formData.append('shop_id', this.shop.id)
@@ -469,7 +470,7 @@
             formData.append('job_type', sales[1].substring(0, 2))
             this.$http.post('order_mng.php', formData)
               .then(function (res) {
-                console.log(res)
+               console.log(res)
             if (res.data === 'AddSUC') {
               that.$message({
                 type: 'success',
@@ -520,7 +521,7 @@
 <style lang="less">
 @blue: #409EFF;
 .submitBtn{
-  padding:80px 0 100px 300px;
+  padding:60px 0 300px 300px;
 }
 .input-with-select .el-input-group__prepend {
   background-color: #fff;

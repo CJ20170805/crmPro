@@ -30,7 +30,7 @@
                     </div>
                     <div class="cards-right">
                         <p class="cards-main">￥{{ myPm }}</p>
-                        <p class="cards-tit">我的业绩总额</p>
+                        <p class="cards-tit">我的到账总额</p>
                     </div>
                 </el-card>
         </el-col>
@@ -179,11 +179,13 @@ export default {
       this.$http.post('computed_home.php', formData6)
         .then(function (res) {
           let data = res.data
-          that.bt_name = data[0].st_name
-          that.bt_apart = data[0].st_departmentVal
-          that.bt_reason = data[0].best_reason
-          that.bt_avatar = data[0].st_avatar
-          // console.log('homeee666', res.data)
+          // console.log('homeee666', data)
+          if (data.length !== 0) {
+            that.bt_name = data[0].st_name
+            that.bt_apart = data[0].st_departmentVal
+            that.bt_reason = data[0].best_reason
+            that.bt_avatar = data[0].st_avatar
+          }
         }).catch(function (err) {
           console.log(err)
         })
@@ -347,7 +349,7 @@ export default {
         }
     }
     .home-header2{
-        padding: 20px 0;
+        padding: 20px 0 200px 0;
         .hh-2{
           height: 440px;
           color: #ffffff;

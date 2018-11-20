@@ -18,10 +18,12 @@
                 <!-- <li class="site-btns">
                     <el-button type="primary" class="loginOutBtn" plain @click="loginOut">退出登录</el-button>
                 </li> -->
-                <el-menu-item index='1' >
+                <el-menu-item index='1'>
                    首页
                 </el-menu-item>
-
+              <el-menu-item index='1111'>
+                   <!-- <span style="font-size:1.4em;font-weight:bold;padding-left:400px;">正在维护中，可能出现功能异常！请稍后使用！(11-20,16:40)</span> -->
+                </el-menu-item>
                 <el-submenu style="float:right;" class="userInfo" index='2'>
                     <template slot="title">
                          <img class='header-img' ref="usersImg" src="https://img.alicdn.com/imgextra/i3/662134481/O1CN011iyLEkOqL2AVhlE-662134481.png" alt="userLogo">
@@ -128,22 +130,24 @@ export default {
             })
         }
           //  fetch audit order's id
-        let formData2 = new FormData()
-        formData2.append('st_flag', 'auditFetch')
-        formData2.append('staff_id', data.id)
-        that.$http.post('staff_mng.php', formData2)
-          .then(function (res) {
-            if (res.data !== '') {
-              let str = String(res.data)
-              let strs = str.split(';')
-              // console.log('useRid', strs)
-              that.auditNums = strs.length - 1
-            } else {
-               that.auditNums = ''
-            }
-          }).catch(function (err) {
-            console.log(err)
-          })
+          setInterval(() => {
+               let formData2 = new FormData()
+                formData2.append('st_flag', 'auditFetch')
+                formData2.append('staff_id', data.id)
+                that.$http.post('staff_mng.php', formData2)
+                  .then(function (res) {
+                    if (res.data !== '') {
+                      let str = String(res.data)
+                      let strs = str.split(';')
+                      // console.log('useRid', strs)
+                      that.auditNums = strs.length - 1
+                    } else {
+                      that.auditNums = ''
+                    }
+                  }).catch(function (err) {
+                    console.log(err)
+                  })
+          }, 6000)
       }).catch(function (err) {
         console.log(err)
       })

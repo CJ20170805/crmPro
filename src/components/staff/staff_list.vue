@@ -539,7 +539,7 @@ export default {
   font-weight: bold;
 }
 .staff-table{
-  padding-bottom: 100px;
+  padding-bottom: 180px;
 }
 .el-table th>.cell{
   text-align: center;
