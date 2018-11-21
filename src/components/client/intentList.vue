@@ -23,13 +23,6 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="订购套餐"
-      >
-      <template slot-scope="scope">
-        <span style="margin-left: 10px">{{ scope.row.combo_type }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column
       label="店铺名称"
       >
       <template slot-scope="scope">
@@ -37,17 +30,17 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="店铺类型"
+      label="主营类目"
       >
       <template slot-scope="scope">
-        <span style="margin-left: 10px">{{ scope.row.shop_type }}</span>
+        <span style="margin-left: 10px">{{ scope.row.shop_industry }}</span>
       </template>
     </el-table-column>
     <el-table-column
-      label="销售人员"
+      label="旺旺名称"
       >
       <template slot-scope="scope">
-        <span style="margin-left: 10px">{{ scope.row.sales_man }}</span>
+        <span style="margin-left: 10px">{{ scope.row.ww_name }}</span>
       </template>
     </el-table-column>
 
@@ -75,7 +68,7 @@
         <el-button
           size="mini"
           type="danger"
-          v-if="$store.getters.userAuthority !== '80002' && $store.getters.userAuthority !== '80004'"
+          v-if="$store.getters.userAuthority === '80002' || $store.getters.userAuthority === '80003'"
           @click="handleDelete(scope.$index, scope.row)">删除</el-button>
       </template>
     </el-table-column>
@@ -106,11 +99,19 @@
             </div>
         </el-col>
       </el-row>
+      <el-row>
+        <el-col :span="24">
+            <div class="table-item">
+                <span class="table-item-tit">联系日期：</span>
+                <span class="table-item-con">{{ linkDate }}</span>
+            </div>
+        </el-col>
+      </el-row>
     <el-row>
         <el-col :span="24">
             <div class="table-item">
-                <span class="table-item-tit">订购套餐：</span>
-                <span class="table-item-con">{{ comboType }}</span>
+                <span class="table-item-tit">旺旺名称：</span>
+                <span class="table-item-con">{{ wwName }}</span>
             </div>
         </el-col>
       </el-row>
@@ -152,8 +153,8 @@
       <el-row>
         <el-col :span="12">
             <div class="table-item">
-                <span class="table-item-tit">店铺ID：</span>
-                <span class="table-item-con">{{ shopId }}</span>
+                <span class="table-item-tit">所属行业：</span>
+                <span class="table-item-con">{{ shopIndustry }}</span>
             </div>
         </el-col>
         <el-col :span="12">
@@ -163,33 +164,11 @@
             </div>
         </el-col>
       </el-row>
-      <el-row>
-        <el-col :span="12">
-            <div class="table-item">
-                <span class="table-item-tit">店铺类型：</span>
-                <span class="table-item-con">{{ shopType }}</span>
-            </div>
-        </el-col>
-        <el-col :span="12">
-            <div class="table-item">
-                <span class="table-item-tit">所属行业：</span>
-                <span class="table-item-con">{{ shopIndustry }}</span>
-            </div>
-        </el-col>
-      </el-row>
        <el-row>
           <el-col :span="24">
             <div class="table-title">其他信息</div>
           </el-col>
         </el-row>
-      <el-row>
-        <el-col :span="24">
-            <div class="table-item">
-                <span class="table-item-tit">销售人员：</span>
-                <span class="table-item-con">{{ salesMan }}</span>
-            </div>
-        </el-col>
-      </el-row>
        <el-row>
         <el-col :span="24">
             <div class="table-item">
@@ -198,7 +177,6 @@
             </div>
         </el-col>
       </el-row>
-
       <el-row>
           <el-col :span="24">
               <div class="table-item">
@@ -206,14 +184,21 @@
                   <span class="table-item-con">{{ regDate }}</span>
               </div>
           </el-col>
-        </el-row>
-
-       <!-- <el-row>
+    </el-row>
+      <el-row>
           <el-col :span="24">
-            <div class="table-title">附件（点击图标下载）</div>
+              <div class="table-item" style="height:80px">
+                  <span class="table-item-tit" style="height:80px;line-height:80px">备注信息：</span>
+                  <span class="table-item-con" style="height:80px;">{{ desc }}</span>
+              </div>
           </el-col>
         </el-row>
-         <el-row>
+       <el-row v-if="clientFiles.length !== 0">
+          <el-col :span="24">
+            <div class="table-title">附件（点击下载）</div>
+          </el-col>
+        </el-row>
+         <el-row v-if="clientFiles.length !== 0">
           <el-col :span="24">
               <div class="imgList">
                 <span class="down-left" v-for="(item, index) in clientFiles" :key="index">
@@ -223,7 +208,7 @@
                 </span>
               </div>
           </el-col>
-      </el-row> -->
+      </el-row>
 
       </div>
     </el-dialog>
@@ -250,16 +235,19 @@ export default {
       shopType: '',
       comboType: '',
       regDate: '',
-      clientFiles: []
+      clientFiles: [],
+      wwName: '',
+      linkDate: '',
+      desc: ''
     }
   },
   created () {
+    let writeM = this.$store.state.userDepart + '=>' + this.$store.state.userName
     let that = this
     let formData = new FormData()
-    formData.append('flag', 'fetch')
-    formData.append('depart', this.$store.state.userDepart)
-    formData.append('name', this.$store.state.userName)
+    formData.append('flag', 'fetchIntent')
     formData.append('power', this.$store.state.userPower)
+    formData.append('writeM', writeM)
     this.$http.post('client_mng.php', formData)
       .then(function (res) {
         that.clientData = res.data
@@ -286,19 +274,23 @@ export default {
       this.shopType = row.shop_type
       this.comboType = row.combo_type
       this.regDate = row.reg_date
-      // this.clientFiles = row.files
-      // if (row.files !== '') {
-      //   let file = row.files.split(',')
-      //   let fileArr = []
-      //   for (let i = 0; i < file.length; i++) {
-      //     fileArr.push(file[i])
-      //   }
-      //   this.clientFiles = fileArr
-      //   }
+      // new add
+      this.wwName = row.ww_name
+      this.linkDate = row.link_date
+      this.desc = row.desc_info
+      this.clientFiles = row.files
+      if (row.files !== '') {
+        let file = row.files.split(',')
+        let fileArr = []
+        for (let i = 0; i < file.length; i++) {
+          fileArr.push(file[i])
+        }
+        this.clientFiles = fileArr
+        }
     },
     handleDelete (index, row) {
      console.log(index, row)
-     this.$confirm('此操作将永久删除该客户, 是否继续?', '提示', {
+     this.$confirm('此操作将永久删除该意向客户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -317,7 +309,7 @@ export default {
               })
             that.$store.state.defaultComp = 'clientAdd'
             setTimeout(() => {
-              that.$store.state.defaultComp = 'clientList'
+              that.$store.state.defaultComp = 'intentList'
             }, 10)
             }
           }).catch(function (err) {

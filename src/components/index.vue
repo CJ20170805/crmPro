@@ -34,8 +34,9 @@
                     </template>
                     <el-menu-item-group>
                     <!-- <span slot="title">---</span> -->
-                    <el-menu-item index="1001" @click="switchComp('clientList')">客户列表</el-menu-item>
-                    <el-menu-item index="1002" @click="switchComp('clientAdd')" v-if="false">客户添加</el-menu-item>
+                    <el-menu-item index="1001" @click="switchComp('clientList')">签单客户</el-menu-item>
+                     <el-menu-item index="1002" @click="switchComp('intentList')">意向列表</el-menu-item>
+                    <el-menu-item index="1003" @click="switchComp('clientAdd')">添加意向</el-menu-item>
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
                 </el-submenu>
@@ -104,6 +105,7 @@ import myOrder from './my/myOrder'
 import myAudit from './my/myAudit'
 import clientAdd from './client/clientAdd'
 import clientList from './client/clientList'
+import intentList from './client/intentList'
 import pmAdd from './pm/pmAdd'
 import pmList from './pm/pmList'
 import pmExport from './pm/pmExport'
@@ -136,6 +138,7 @@ export default {
     myAudit,
     clientAdd,
     clientList,
+    intentList,
     pmAdd,
     pmList,
     pmExport,

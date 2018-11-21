@@ -5,22 +5,55 @@
         <div class="form-title">
           <p>客户信息</p>
         </div>
-        <el-form-item label="客户名称" prop="name">
-          <el-col :span="9">
+        <el-form-item label="客户姓名">
+          <el-col :span="10">
              <el-input v-model="client.name"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="客户类型">
-            <el-col :span="9">
-              <el-radio-group v-model="client.type">
-                <el-radio label="新客户"></el-radio>
-                <el-radio label="老客户"></el-radio>
-              </el-radio-group>
-            </el-col>
+         <el-form-item label="旺旺名称" required>
+          <el-col :span="10">
+             <el-input v-model="client.wwName"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="店铺名称" required>
+          <el-col :span="10">
+             <el-input v-model="client.shopName"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="店铺等级" required>
+          <el-col :span="10">
+              <el-cascader
+                :options="gradeOptions"
+                v-model="client.shopGrade"
+                >
+              </el-cascader>
+          </el-col>
+        </el-form-item>
+         <el-form-item label="主营类目" required>
+          <el-col :span="10">
+              <el-cascader
+                :options="sortOptions"
+                v-model="client.shopSort"
+                 @change="handleChange"
+                >
+              </el-cascader>
+          </el-col>
         </el-form-item>
         <el-form-item label="所在地区">
-          <el-col :span="9">
+          <el-col :span="10">
              <el-input v-model="client.address"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="店铺链接">
+          <el-col :span="16">
+             <el-input v-model="client.shopUrl">
+                <!-- <el-button slot="append" icon="el-icon-search"></el-button> -->
+                  <i
+            class="el-icon-location-outline"
+            slot="suffix"
+            >
+             </i>
+             </el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="联系方式" prop="linkMethods">
@@ -35,23 +68,9 @@
           </el-input>
         </el-form-item>
 
-        <el-form-item label="客户意向">
-          <el-input type="textarea" rows="4" v-model="client.intent"></el-input>
-        </el-form-item>
-
-        <div class="form-title">
-          <p>联系信息</p>
-        </div>
-
         <el-form-item label="录入人员">
           <el-col :span="9">
             <el-input v-model="client.writeMan" :disabled="true"></el-input>
-          </el-col>
-        </el-form-item>
-
-        <el-form-item label="销售人员" prop="salesMan">
-          <el-col :span="9">
-            <el-input v-model="client.salesMan"></el-input>
           </el-col>
         </el-form-item>
 
@@ -66,16 +85,6 @@
             </el-date-picker>
           </el-col>
         </el-form-item>
-
-       <el-form-item label="联系渠道">
-            <el-col :span="9">
-              <el-radio-group v-model="client.linkChannel">
-                <el-radio label="电话沟通"></el-radio>
-                <el-radio label="其他"></el-radio>
-              </el-radio-group>
-            </el-col>
-        </el-form-item>
-
         <el-form-item label="备注信息">
           <el-input type="textarea" rows="4" v-model="client.descInfo"></el-input>
         </el-form-item>
@@ -119,25 +128,573 @@
       return {
         client: {
           name: '',
-          type: '',
           address: '',
           linkMethods: '',
-          intent: '',
-          salesMan: '',
           linkDate: '',
-          linkChannel: '',
           descInfo: '',
           linkMethodsSel: '',
-          writeMan: ''
+          writeMan: '',
+          shopGrade: [],
+          shopSort: [],
+          wwName: '',
+          shopName: '',
+          shopUrl: ''
         },
+        dialogImageUrl: '',
+        gradeOptions: [
+          {
+          value: 'A店',
+          label: 'A店',
+          children: [
+            {
+            value: '1心',
+            label: '1心'
+            },
+            {
+            value: '2心',
+            label: '2心'
+            },
+            {
+            value: '3心',
+            label: '3心'
+            },
+            {
+            value: '4心',
+            label: '4心'
+            },
+            {
+            value: '5心',
+            label: '5心'
+            },
+            {
+            value: '1钻',
+            label: '1钻'
+            },
+            {
+            value: '2钻',
+            label: '2钻'
+            },
+            {
+            value: '3钻',
+            label: '3钻'
+            },
+            {
+            value: '4钻',
+            label: '4钻'
+            },
+            {
+            value: '5钻',
+            label: '5钻'
+            },
+            {
+            value: '1皇冠',
+            label: '1皇冠'
+            },
+            {
+            value: '2皇冠',
+            label: '2皇冠'
+            },
+            {
+            value: '3皇冠',
+            label: '3皇冠'
+            },
+            {
+            value: '4皇冠',
+            label: '4皇冠'
+            },
+            {
+            value: '5皇冠',
+            label: '5皇冠'
+            },
+            {
+            value: '1金冠',
+            label: '1金冠'
+            },
+            {
+            value: '2金冠',
+            label: '2金冠'
+            },
+            {
+            value: '3金冠',
+            label: '3金冠'
+            },
+            {
+            value: '4金冠',
+            label: '4金冠'
+            },
+            {
+            value: '5金冠',
+            label: '5金冠'
+            }
+          ]
+          },
+          {
+          value: 'B店',
+          label: 'B店',
+          children: [
+            {
+            value: '1心',
+            label: '1心'
+            },
+            {
+            value: '2心',
+            label: '2心'
+            },
+            {
+            value: '3心',
+            label: '3心'
+            },
+            {
+            value: '4心',
+            label: '4心'
+            },
+            {
+            value: '5心',
+            label: '5心'
+            },
+            {
+            value: '1钻',
+            label: '1钻'
+            },
+            {
+            value: '2钻',
+            label: '2钻'
+            },
+            {
+            value: '3钻',
+            label: '3钻'
+            },
+            {
+            value: '4钻',
+            label: '4钻'
+            },
+            {
+            value: '5钻',
+            label: '5钻'
+            },
+            {
+            value: '1皇冠',
+            label: '1皇冠'
+            },
+            {
+            value: '2皇冠',
+            label: '2皇冠'
+            },
+            {
+            value: '3皇冠',
+            label: '3皇冠'
+            },
+            {
+            value: '4皇冠',
+            label: '4皇冠'
+            },
+            {
+            value: '5皇冠',
+            label: '5皇冠'
+            },
+            {
+            value: '1金冠',
+            label: '1金冠'
+            },
+            {
+            value: '2金冠',
+            label: '2金冠'
+            },
+            {
+            value: '3金冠',
+            label: '3金冠'
+            },
+            {
+            value: '4金冠',
+            label: '4金冠'
+            },
+            {
+            value: '5金冠',
+            label: '5金冠'
+            }
+          ]
+          },
+          {
+          value: 'C店',
+          label: 'C店',
+          children: [
+            {
+            value: '1心',
+            label: '1心'
+            },
+            {
+            value: '2心',
+            label: '2心'
+            },
+            {
+            value: '3心',
+            label: '3心'
+            },
+            {
+            value: '4心',
+            label: '4心'
+            },
+            {
+            value: '5心',
+            label: '5心'
+            },
+            {
+            value: '1钻',
+            label: '1钻'
+            },
+            {
+            value: '2钻',
+            label: '2钻'
+            },
+            {
+            value: '3钻',
+            label: '3钻'
+            },
+            {
+            value: '4钻',
+            label: '4钻'
+            },
+            {
+            value: '5钻',
+            label: '5钻'
+            },
+            {
+            value: '1皇冠',
+            label: '1皇冠'
+            },
+            {
+            value: '2皇冠',
+            label: '2皇冠'
+            },
+            {
+            value: '3皇冠',
+            label: '3皇冠'
+            },
+            {
+            value: '4皇冠',
+            label: '4皇冠'
+            },
+            {
+            value: '5皇冠',
+            label: '5皇冠'
+            },
+            {
+            value: '1金冠',
+            label: '1金冠'
+            },
+            {
+            value: '2金冠',
+            label: '2金冠'
+            },
+            {
+            value: '3金冠',
+            label: '3金冠'
+            },
+            {
+            value: '4金冠',
+            label: '4金冠'
+            },
+            {
+            value: '5金冠',
+            label: '5金冠'
+            }
+          ]
+          }
+        ],
+        sortOptions: [
+          {
+            value: 'A',
+            label: '服装类',
+            children: [
+              {
+              value: '男装',
+              label: '男装'
+              },
+              {
+              value: '女装',
+              label: '女装'
+              },
+              {
+              value: '内衣',
+              label: '内衣'
+              }
+            ]
+          },
+           {
+            value: 'B',
+            label: '鞋包类',
+            children: [
+              {
+              value: '鞋靴',
+              label: '鞋靴'
+              },
+              {
+              value: '箱包',
+              label: '箱包'
+              },
+              {
+              value: '配件配饰',
+              label: '配件配饰'
+              }
+            ]
+          },
+          {
+            value: 'C',
+            label: '孕产类',
+            children: [
+              {
+              value: '童装玩具',
+              label: '童装玩具'
+              },
+              {
+              value: '孕产用品',
+              label: '孕产用品'
+              },
+              {
+              value: '奶粉辅食',
+              label: '奶粉辅食'
+              }
+            ]
+          },
+          {
+            value: 'D',
+            label: '数码家电类',
+            children: [
+              {
+              value: '家电',
+              label: '家电'
+              },
+              {
+              value: '数码',
+              label: '数码'
+              },
+              {
+              value: '手机',
+              label: '手机'
+              }
+            ]
+          },
+          {
+            value: 'E',
+            label: '个人护理类',
+            children: [
+              {
+              value: '美妆',
+              label: '美妆'
+              },
+              {
+              value: '个人护理',
+              label: '个人护理'
+              },
+              {
+              value: '营养保健',
+              label: '营养保健'
+              }
+            ]
+          },
+          {
+            value: 'F',
+            label: '饰品类',
+            children: [
+              {
+              value: '珠宝',
+              label: '珠宝'
+              },
+              {
+              value: '眼镜',
+              label: '眼镜'
+              },
+              {
+              value: '手表',
+              label: '手表'
+              }
+            ]
+          },
+                 {
+            value: 'G',
+            label: '运动、乐器类',
+            children: [
+              {
+              value: '运动',
+              label: '运动'
+              },
+              {
+              value: '户外',
+              label: '户外'
+              },
+              {
+              value: '乐器',
+              label: '乐器'
+              }
+            ]
+          },
+                 {
+            value: 'H',
+            label: '动漫影视类',
+            children: [
+              {
+              value: '游戏',
+              label: '游戏'
+              },
+              {
+              value: '动漫',
+              label: '动漫'
+              },
+              {
+              value: '影视',
+              label: '影视'
+              }
+            ]
+          },
+                 {
+            value: 'I',
+            label: '食品类',
+            children: [
+              {
+              value: '美食',
+              label: '美食'
+              },
+              {
+              value: '生鲜',
+              label: '生鲜'
+              },
+              {
+              value: '零食',
+              label: '零食'
+              }
+            ]
+          },
+                 {
+            value: 'J',
+            label: '宠物园艺类',
+            children: [
+              {
+              value: '鲜花园艺',
+              label: '鲜花园艺'
+              },
+              {
+              value: '宠物水族',
+              label: '宠物水族'
+              },
+              {
+              value: '农资',
+              label: '农资'
+              }
+            ]
+          },
+          {
+            value: 'K',
+            label: '工具建材类',
+            children: [
+              {
+              value: '工具',
+              label: '工具'
+              },
+              {
+              value: '装修',
+              label: '装修'
+              },
+              {
+              value: '建材',
+              label: '建材'
+              }
+            ]
+          },
+                {
+            value: 'L',
+            label: '家居类',
+            children: [
+              {
+              value: '家居',
+              label: '家居'
+              },
+              {
+              value: '布艺软饰',
+              label: '布艺软饰'
+              },
+              {
+              value: '床上用品',
+              label: '床上用品'
+              }
+            ]
+          },
+          {
+            value: 'M',
+            label: '汽车类',
+            children: [
+              {
+              value: '品质汽车',
+              label: '品质汽车'
+              },
+              {
+              value: '二手车',
+              label: '二手车'
+              },
+              {
+              value: '汽车用品',
+              label: '汽车用品'
+              }
+            ]
+          },
+                {
+            value: 'N',
+            label: '办公五金类',
+            children: [
+              {
+              value: '办公用品',
+              label: '办公用品'
+              },
+              {
+              value: 'DIY',
+              label: 'DIY'
+              },
+              {
+              value: '五金电子',
+              label: '五金电子'
+              }
+            ]
+          },
+          {
+            value: 'O',
+            label: '家庭类',
+            children: [
+              {
+              value: '百货',
+              label: '百货'
+              },
+              {
+              value: '餐厨',
+              label: '餐厨'
+              },
+              {
+              value: '家庭保健',
+              label: '家庭保健'
+              }
+            ]
+          },
+           {
+            value: 'P',
+            label: '学习服务类',
+            children: [
+              {
+              value: '学习',
+              label: '学习'
+              },
+              {
+              value: '卡券',
+              label: '卡券'
+              },
+              {
+              value: '本地服务',
+              label: '本地服务'
+              }
+            ]
+          }
+        ],
         clientFiles: [],
         clientFilesNew: [],
         dialogVisible: false,
         rules: {
-          name: [
-            { required: true, message: '请输入客户名称', trigger: 'blur' },
-            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
-          ],
           linkMethods: [
             { required: true, message: '请输入联系人的联系方式', trigger: 'blur' },
             { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
@@ -151,7 +708,7 @@
     },
     created () {
       this.client.writeMan = this.$store.state.userDepart
-      this.client.writeMan += '✈'
+      this.client.writeMan += '=>'
       this.client.writeMan += this.$store.state.userName
     },
     methods: {
@@ -191,7 +748,9 @@
           })
         })
       },
-
+      handleChange (value) {
+          console.log(value)
+        },
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -202,16 +761,18 @@
             let formData = new FormData()
             formData.append('flag', 'add')
             formData.append('client_name', this.client.name)
-            formData.append('client_type', this.client.type)
             formData.append('client_address', this.client.address)
             formData.append('client_link', linkStr)
-            formData.append('client_intent', this.client.intent)
-            formData.append('sales_man', this.client.salesMan)
             formData.append('link_date', this.client.linkDate)
-            formData.append('link_channel', this.client.linkChannel)
             formData.append('desc_info', this.client.descInfo)
             formData.append('write_man', this.client.writeMan)
             formData.append('files', this.clientFiles)
+            // new add
+            formData.append('ww_name', this.client.wwName)
+            formData.append('shop_url', this.client.shopUrl)
+            formData.append('shop_name', this.client.shopName)
+            formData.append('shop_grade', this.client.shopGrade)
+            formData.append('shop_sort', this.client.shopSort[1])
             this.$http.post('client_mng.php', formData)
               .then(function (res) {
                 console.log(res)
@@ -220,7 +781,7 @@
                 type: 'success',
                 message: '添加成功!'
               })
-              that.$store.state.defaultComp = 'clientList'
+              that.$store.state.defaultComp = 'intentList'
             } else {
               that.$message({
                 type: 'info',
