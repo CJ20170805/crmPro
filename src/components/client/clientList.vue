@@ -97,133 +97,133 @@
                 <span class="table-item-con">{{ clientName }}</span>
             </div>
             </el-col>
-      </el-row>
-     <el-row>
-        <el-col :span="24">
-            <div class="table-item">
-                <span class="table-item-tit">联系方式：</span>
-                <span class="table-item-con">{{ clientLink }}</span>
-            </div>
-        </el-col>
-      </el-row>
-    <el-row>
-        <el-col :span="24">
-            <div class="table-item">
-                <span class="table-item-tit">订购套餐：</span>
-                <span class="table-item-con">{{ comboType }}</span>
-            </div>
-        </el-col>
-      </el-row>
-      <el-row>
-           <el-col :span="12">
-                <div class="table-item">
-                <span class="table-item-tit">所在地区：</span>
-                <span class="table-item-con">{{ clientAddress }}</span>
-            </div>
-            </el-col>
-        <el-col :span="12">
-            <div class="table-item">
-                <span class="table-item-tit">客户编号：</span>
-                <span class="table-item-con">{{ clientId }}</span>
-            </div>
-        </el-col>
-      </el-row>
-       <el-row>
-          <el-col :span="24">
-            <div class="table-title">店铺信息</div>
-          </el-col>
-        </el-row>
-      <el-row>
-        <el-col :span="24">
-            <div class="table-item">
-                <span class="table-item-tit">店铺名称：</span>
-                <span class="table-item-con">{{ shopName }}</span>
-            </div>
-        </el-col>
-      </el-row>
-     <el-row>
-        <el-col :span="24">
-            <div class="table-item">
-                <span class="table-item-tit">店铺链接：</span>
-                <span class="table-item-con"><a :href="shopUrl" style="color:red;text-decoration:none;" target="_blank">点击打开</a></span>
-            </div>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-            <div class="table-item">
-                <span class="table-item-tit">店铺ID：</span>
-                <span class="table-item-con">{{ shopId }}</span>
-            </div>
-        </el-col>
-        <el-col :span="12">
-            <div class="table-item">
-                <span class="table-item-tit">店铺等级：</span>
-                <span class="table-item-con">{{ shopGrade }}</span>
-            </div>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-            <div class="table-item">
-                <span class="table-item-tit">店铺类型：</span>
-                <span class="table-item-con">{{ shopType }}</span>
-            </div>
-        </el-col>
-        <el-col :span="12">
-            <div class="table-item">
-                <span class="table-item-tit">所属行业：</span>
-                <span class="table-item-con">{{ shopIndustry }}</span>
-            </div>
-        </el-col>
-      </el-row>
-       <el-row>
-          <el-col :span="24">
-            <div class="table-title">其他信息</div>
-          </el-col>
-        </el-row>
-      <el-row>
-        <el-col :span="24">
-            <div class="table-item">
-                <span class="table-item-tit">销售人员：</span>
-                <span class="table-item-con">{{ salesMan }}</span>
-            </div>
-        </el-col>
-      </el-row>
-       <el-row>
-        <el-col :span="24">
-            <div class="table-item">
-                <span class="table-item-tit">录入人员：</span>
-                <span class="table-item-con">{{ writeMan }}</span>
-            </div>
-        </el-col>
-      </el-row>
-
+       </el-row>
       <el-row>
           <el-col :span="24">
               <div class="table-item">
-                  <span class="table-item-tit">录入日期：</span>
-                  <span class="table-item-con">{{ regDate }}</span>
+                  <span class="table-item-tit">联系方式：</span>
+                  <span class="table-item-con">{{ clientLink }}</span>
+              </div>
+          </el-col>
+        </el-row>
+      <el-row>
+          <el-col :span="24">
+              <div class="table-item">
+                  <span class="table-item-tit">订购套餐：</span>
+                  <span class="table-item-con">{{ comboType }}</span>
+              </div>
+          </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="12">
+                  <div class="table-item">
+                  <span class="table-item-tit">所在地区：</span>
+                  <span class="table-item-con">{{ clientAddress }}</span>
+              </div>
+              </el-col>
+          <el-col :span="12">
+              <div class="table-item">
+                  <span class="table-item-tit">客户编号：</span>
+                  <span class="table-item-con">{{ clientId }}</span>
+              </div>
+          </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="24">
+              <div class="table-title">店铺信息</div>
+            </el-col>
+          </el-row>
+        <el-row>
+          <el-col :span="24">
+              <div class="table-item">
+                  <span class="table-item-tit">店铺名称：</span>
+                  <span class="table-item-con">{{ shopName }}</span>
+              </div>
+          </el-col>
+        </el-row>
+      <el-row>
+          <el-col :span="24">
+              <div class="table-item">
+                  <span class="table-item-tit">店铺链接：</span>
+                  <span class="table-item-con"><a :href="shopUrl" style="color:red;text-decoration:none;" target="_blank">点击打开</a></span>
+              </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+              <div class="table-item">
+                  <span class="table-item-tit">店铺ID：</span>
+                  <span class="table-item-con">{{ shopId }}</span>
+              </div>
+          </el-col>
+          <el-col :span="12">
+              <div class="table-item">
+                  <span class="table-item-tit">店铺等级：</span>
+                  <span class="table-item-con">{{ shopGrade }}</span>
+              </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+              <div class="table-item">
+                  <span class="table-item-tit">店铺类型：</span>
+                  <span class="table-item-con">{{ shopType }}</span>
+              </div>
+          </el-col>
+          <el-col :span="12">
+              <div class="table-item">
+                  <span class="table-item-tit">所属行业：</span>
+                  <span class="table-item-con">{{ shopIndustry }}</span>
+              </div>
+          </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="24">
+              <div class="table-title">其他信息</div>
+            </el-col>
+          </el-row>
+        <el-row>
+          <el-col :span="24">
+              <div class="table-item">
+                  <span class="table-item-tit">销售人员：</span>
+                  <span class="table-item-con">{{ salesMan }}</span>
+              </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+              <div class="table-item">
+                  <span class="table-item-tit">录入人员：</span>
+                  <span class="table-item-con">{{ writeMan }}</span>
               </div>
           </el-col>
         </el-row>
 
-       <!-- <el-row>
-          <el-col :span="24">
-            <div class="table-title">附件（点击图标下载）</div>
-          </el-col>
-        </el-row>
-         <el-row>
-          <el-col :span="24">
-              <div class="imgList">
-                <span class="down-left" v-for="(item, index) in clientFiles" :key="index">
-                   <a :href="item" target="_blank">
-                       <img :src="item.substring(item.length-3) === 'zip' ? 'https://img.alicdn.com/imgextra/i2/662134481/O1CN011iyLEr3kJJ6YdeJ-662134481.jpg' : item" width="120" height="120">
-                   </a>
-                </span>
-              </div>
-          </el-col>
-      </el-row> -->
+        <el-row>
+            <el-col :span="24">
+                <div class="table-item">
+                    <span class="table-item-tit">录入日期：</span>
+                    <span class="table-item-con">{{ regDate }}</span>
+                </div>
+            </el-col>
+          </el-row>
+
+        <!-- <el-row>
+            <el-col :span="24">
+              <div class="table-title">附件（点击图标下载）</div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+                <div class="imgList">
+                  <span class="down-left" v-for="(item, index) in clientFiles" :key="index">
+                    <a :href="item" target="_blank">
+                        <img :src="item.substring(item.length-3) === 'zip' ? 'https://img.alicdn.com/imgextra/i2/662134481/O1CN011iyLEr3kJJ6YdeJ-662134481.jpg' : item" width="120" height="120">
+                    </a>
+                  </span>
+                </div>
+            </el-col>
+        </el-row> -->
 
       </div>
     </el-dialog>

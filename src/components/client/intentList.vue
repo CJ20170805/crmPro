@@ -150,7 +150,7 @@
           <el-col :span="24">
               <div class="table-item">
                   <span class="table-item-tit">店铺链接：</span>
-                  <span class="table-item-con"><a :href="shopUrl" style="color:red;text-decoration:none;" target="_blank">点击打开</a></span>
+                  <span class="table-item-con"><a :href="shopUrl" v-if="shopUrl !== ''" style="color:red;text-decoration:none;" target="_blank">点击打开</a></span>
               </div>
           </el-col>
         </el-row>
@@ -219,105 +219,105 @@
     <!--edit dialog -->
     <el-dialog title="" :visible.sync="editInfoVisible">
       <div class="editInfoTable">
-        <el-row>
-          <el-col :span="24">
-            <div class="table-title">客户信息</div>
-          </el-col>
-        </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                        <div class="table-title">客户信息</div>
+                      </el-col>
+                    </el-row>
 
-        <el-row>
-            <el-col :span="24">
-            <div class="table-item">
-                <span class="table-item-tit">客户名称：</span>
-                <span class="table-item-con"><el-input v-model="clientName"></el-input></span>
-            </div>
-            </el-col>
-      </el-row>
-      <el-row>
-          <el-col :span="24">
-              <div class="table-item">
-                  <span class="table-item-tit">联系方式：</span>
-                  <span class="table-item-con"><el-input v-model="clientLink"></el-input></span>
-              </div>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-              <div class="table-item">
-                  <span class="table-item-tit">联系日期：</span>
-                  <span class="table-item-con"><el-input v-model="linkDate"></el-input></span>
-              </div>
-          </el-col>
-        </el-row>
-      <el-row>
-          <el-col :span="24">
-              <div class="table-item">
-                  <span class="table-item-tit">旺旺名称：</span>
-                  <span class="table-item-con"><el-input v-model="wwName"></el-input></span>
-              </div>
-          </el-col>
-        </el-row>
-        <el-row>
-            <el-col :span="24">
-                  <div class="table-item">
-                  <span class="table-item-tit">所在地区：</span>
-                  <span class="table-item-con"><el-input v-model="clientAddress"></el-input></span>
-              </div>
-              </el-col>
-        </el-row>
-        <el-row>
-            <el-col :span="24">
-              <div class="table-title">店铺信息</div>
-            </el-col>
-          </el-row>
-        <el-row>
-          <el-col :span="24">
-              <div class="table-item">
-                  <span class="table-item-tit">店铺名称：</span>
-                  <span class="table-item-con"><el-input v-model="shopName"></el-input></span>
-              </div>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-              <div class="table-item">
-                  <span class="table-item-tit">所属行业：</span>
-                  <span class="table-item-con"><el-input v-model="shopIndustry"></el-input></span>
-              </div>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-              <div class="table-item">
-                  <span class="table-item-tit">店铺等级：</span>
-                  <span class="table-item-con"><el-input v-model="shopGrade"></el-input></span>
-              </div>
-          </el-col>
-        </el-row>
-        <el-row>
-            <el-col :span="24">
-              <div class="table-title">其他信息</div>
-            </el-col>
-        </el-row>
-        <el-row>
-            <el-col :span="24">
-                <div class="table-item" style="height:80px">
-                    <span class="table-item-tit" style="height:92px;line-height:92px">备注信息：</span>
-                    <span class="table-item-con" style="height:92px;"><el-input
-                type="textarea"
-                rows="4"
-                v-model="desc">
-</el-input></span>
-                </div>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col>
-               <span style="display:block;">
-                  <el-button @click="submitUpdate" type="primary" style="float:right; margin:30px 20px 30px">提交更新</el-button>
-               </span>
-            </el-col>
-          </el-row>
+                    <el-row>
+                        <el-col :span="24">
+                        <div class="table-item">
+                            <span class="table-item-tit">客户名称：</span>
+                            <span class="table-item-con"><el-input v-model="clientName"></el-input></span>
+                        </div>
+                        </el-col>
+                  </el-row>
+                  <el-row>
+                      <el-col :span="24">
+                          <div class="table-item">
+                              <span class="table-item-tit">联系方式：</span>
+                              <span class="table-item-con"><el-input v-model="clientLink"></el-input></span>
+                          </div>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                          <div class="table-item">
+                              <span class="table-item-tit">联系日期：</span>
+                              <span class="table-item-con"><el-input v-model="linkDate"></el-input></span>
+                          </div>
+                      </el-col>
+                    </el-row>
+                  <el-row>
+                      <el-col :span="24">
+                          <div class="table-item">
+                              <span class="table-item-tit">旺旺名称：</span>
+                              <span class="table-item-con"><el-input v-model="wwName"></el-input></span>
+                          </div>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="24">
+                              <div class="table-item">
+                              <span class="table-item-tit">所在地区：</span>
+                              <span class="table-item-con"><el-input v-model="clientAddress"></el-input></span>
+                          </div>
+                          </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="24">
+                          <div class="table-title">店铺信息</div>
+                        </el-col>
+                      </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                          <div class="table-item">
+                              <span class="table-item-tit">店铺名称：</span>
+                              <span class="table-item-con"><el-input v-model="shopName"></el-input></span>
+                          </div>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                          <div class="table-item">
+                              <span class="table-item-tit">所属行业：</span>
+                              <span class="table-item-con"><el-input v-model="shopIndustry"></el-input></span>
+                          </div>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                          <div class="table-item">
+                              <span class="table-item-tit">店铺等级：</span>
+                              <span class="table-item-con"><el-input v-model="shopGrade"></el-input></span>
+                          </div>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="24">
+                          <div class="table-title">其他信息</div>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="24">
+                            <div class="table-item" style="height:80px">
+                                <span class="table-item-tit" style="height:92px;line-height:92px">备注信息：</span>
+                                <span class="table-item-con" style="height:92px;"><el-input
+                            type="textarea"
+                            rows="4"
+                            v-model="desc">
+            </el-input></span>
+                            </div>
+                        </el-col>
+                      </el-row>
+                      <el-row>
+                        <el-col>
+                          <span style="display:block;">
+                              <el-button @click="submitUpdate" type="primary" style="float:right; margin:30px 20px 30px">提交更新</el-button>
+                          </span>
+                        </el-col>
+                      </el-row>
       </div>
     </el-dialog>
  </div>

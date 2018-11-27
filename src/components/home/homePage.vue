@@ -107,10 +107,14 @@ export default {
       setName: '',
       myClient: 0,
       myOrder: 0,
-      myPm: 0
+      myPm: 0,
+      writeMan: ''
     }
   },
   created () {
+    this.writeMan = this.$store.state.userDepart
+    this.writeMan += '=>'
+    this.writeMan += this.$store.state.userName
     setTimeout(() => {
         // my  client
     let that = this
@@ -118,7 +122,7 @@ export default {
 
     let formData = new FormData()
     formData.append('flag', 'myClient')
-    formData.append('user_name', usern)
+    formData.append('user_name', that.writeMan)
     this.$http.post('computed_home.php', formData)
         .then(function (res) {
         // console.log('homeee1', res.data.length)
