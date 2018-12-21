@@ -81,9 +81,9 @@
                     <!-- <el-menu-item index="002" @click="switchComp('orderAdd')">开始下单</el-menu-item> -->
                     </el-menu-item-group>
                 </el-submenu>
-                <!-- <el-menu-item index="2">
+                <!-- <el-menu-item index="222">
                     <i class="el-icon-menu"></i>
-                    <span slot="title">导航二二</span>
+                    <span slot="title">问题反馈</span>
                 </el-menu-item> -->
                 </el-menu>
             </el-aside>
@@ -111,6 +111,7 @@ import pmList from './pm/pmList'
 import pmExport from './pm/pmExport'
 import pmCollect from './pm/pmCollect'
 import myPm from './my/myPm'
+import feedBack from './home/feedback'
 export default {
   data () {
     return {
@@ -143,7 +144,8 @@ export default {
     pmList,
     pmExport,
     pmCollect,
-    myPm
+    myPm,
+    feedBack
   },
   methods: {
     switchComp (aa) {
@@ -176,6 +178,9 @@ export default {
     overflow-y: scroll;
     overflow-x: hidden;
   }
+  .el-main::-webkit-scrollbar {
+        display: none;
+    }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;

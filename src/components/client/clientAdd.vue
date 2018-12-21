@@ -420,7 +420,7 @@
               }
             ]
           },
-           {
+          {
             value: 'B',
             label: '鞋包类',
             children: [
@@ -510,7 +510,7 @@
               }
             ]
           },
-                 {
+          {
             value: 'G',
             label: '运动、乐器类',
             children: [
@@ -528,7 +528,7 @@
               }
             ]
           },
-                 {
+          {
             value: 'H',
             label: '动漫影视类',
             children: [
@@ -546,7 +546,7 @@
               }
             ]
           },
-                 {
+          {
             value: 'I',
             label: '食品类',
             children: [
@@ -564,7 +564,7 @@
               }
             ]
           },
-                 {
+          {
             value: 'J',
             label: '宠物园艺类',
             children: [
@@ -600,7 +600,7 @@
               }
             ]
           },
-                {
+          {
             value: 'L',
             label: '家居类',
             children: [
@@ -636,7 +636,7 @@
               }
             ]
           },
-                {
+          {
             value: 'N',
             label: '办公五金类',
             children: [
@@ -672,7 +672,7 @@
               }
             ]
           },
-           {
+          {
             value: 'P',
             label: '学习服务类',
             children: [
@@ -749,7 +749,7 @@
         })
       },
       handleChange (value) {
-          console.log(value)
+          // console.log(value)
         },
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
@@ -806,7 +806,7 @@
 <style lang="less">
 @blue: #409EFF;
 .submitBtn{
-  padding:80px 0 100px 300px;
+  padding:80px 0 300px 300px!important;
 }
 .input-with-select .el-input-group__prepend {
   background-color: #fff;

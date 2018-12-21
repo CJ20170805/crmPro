@@ -21,6 +21,9 @@
                 <el-menu-item index='1'>
                    首页
                 </el-menu-item>
+                <el-menu-item index='2'>
+                   问题反馈
+                </el-menu-item>
               <el-menu-item index='1111'>
                    <!-- <span style="font-size:1.4em;font-weight:bold;padding-left:400px;">正在维护中，可能出现功能异常！请稍后使用！(11-20,16:40)</span> -->
                 </el-menu-item>
@@ -93,7 +96,10 @@ export default {
     handleSelect (key, keyPath) {
       if (key === '1') {
         this.$store.state.defaultComp = 'homePage'
+      } else if (key === '2') {
+        this.$store.state.defaultComp = 'feedBack'
       }
+      // console.log(key, keyPath)
     },
     gotoAudit () {
       this.$store.state.defaultComp = 'myAudit'
@@ -131,7 +137,7 @@ export default {
         }
           //  fetch audit order's id
           setInterval(() => {
-               let formData2 = new FormData()
+                let formData2 = new FormData()
                 formData2.append('st_flag', 'auditFetch')
                 formData2.append('staff_id', data.id)
                 that.$http.post('staff_mng.php', formData2)
@@ -147,7 +153,7 @@ export default {
                   }).catch(function (err) {
                     console.log(err)
                   })
-          }, 6000)
+          }, 20000)
       }).catch(function (err) {
         console.log(err)
       })

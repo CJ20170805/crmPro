@@ -112,88 +112,95 @@ export default {
     }
   },
   created () {
+    let that = this
     this.writeMan = this.$store.state.userDepart
     this.writeMan += '=>'
     this.writeMan += this.$store.state.userName
+
+    //  all  users' name
+        let formData5 = new FormData()
+        formData5.append('code', '400')
+        this.$http.post('user_info.php', formData5)
+            .then(function (res) {
+                let data = res.data
+                // console.log('DDDDAta:', data)
+                for (let i = 0; i < data.length; i++) {
+                that.options.push({
+                    value: data[i].id + ';' + data[i].st_departmentVal + ';' + data[i].st_name,
+                    label: data[i].st_departmentVal + data[i].st_name
+                })
+                }
+            //   console.log('StaffName:', that.staffNames)
+            }).catch(function (err) {
+                console.log(err)
+            })
+        let formData6 = new FormData()
+        formData6.append('flag', 'fetchUserInfo')
+        this.$http.post('computed_home.php', formData6)
+            .then(function (res) {
+            let data = res.data
+            // console.log('homeee666', data)
+            if (data.length !== 0) {
+                that.bt_name = data[0].st_name
+                that.bt_apart = data[0].st_departmentVal
+                that.bt_reason = data[0].best_reason
+                that.bt_avatar = data[0].st_avatar
+            }
+            }).catch(function (err) {
+            console.log(err)
+            })
+
     setTimeout(() => {
         // my  client
-    let that = this
-    let usern = this.$store.state.userName
+        let that = this
+        let usern = this.$store.state.userName
+        let depart = this.$store.state.userDepart
 
-    let formData = new FormData()
-    formData.append('flag', 'myClient')
-    formData.append('user_name', that.writeMan)
-    this.$http.post('computed_home.php', formData)
-        .then(function (res) {
-        // console.log('homeee1', res.data.length)
-            that.myClient = res.data.length
-        }).catch(function (err) {
-        console.log(err)
-    })
-    // my order
-      let formData2 = new FormData()
-      formData2.append('flag', 'myOrder')
-      formData2.append('user_name', usern)
-      this.$http.post('computed_home.php', formData2)
-        .then(function (res) {
-        // console.log('homeee2', res.data)
-            that.myOrder = res.data.length
-            // that.$set(that.myOrder, 0, res.data.length)
-        }).catch(function (err) {
-          console.log(err)
-        })
-    // my pm total
-     let formData3 = new FormData()
-      formData3.append('flag', 'myPm')
-      formData3.append('user_name', usern)
-      this.$http.post('computed_home.php', formData3)
-        .then(function (res) {
-          let data = res.data
-        //   console.log('homeee3', res.data)
-          let pm = 0
-          data.forEach(item => {
-            pm += parseInt(item.pay_price)
-          })
-          that.myPm = pm
-        //   if (res.data.length !== 0) {
-        //     that.myOrder = res.data.length
-        //   }
-        }).catch(function (err) {
-          console.log(err)
-        })
-      //  all  users' name
-      let formData5 = new FormData()
-      formData5.append('code', '400')
-      this.$http.post('user_info.php', formData5)
-        .then(function (res) {
-            let data = res.data
-            // console.log('DDDDAta:', data)
-            for (let i = 0; i < data.length; i++) {
-            that.options.push({
-                value: data[i].id + ';' + data[i].st_departmentVal + ';' + data[i].st_name,
-                label: data[i].st_departmentVal + data[i].st_name
-            })
-            }
-        //   console.log('StaffName:', that.staffNames)
-        }).catch(function (err) {
+        let formData = new FormData()
+        formData.append('flag', 'myClient')
+        formData.append('depart', depart)
+        formData.append('user_name', that.writeMan)
+        this.$http.post('computed_home.php', formData)
+            .then(function (res) {
+            // console.log('homeee1', res.data.length)
+                that.myClient = res.data.length
+            }).catch(function (err) {
             console.log(err)
         })
-      let formData6 = new FormData()
-      formData6.append('flag', 'fetchUserInfo')
-      this.$http.post('computed_home.php', formData6)
-        .then(function (res) {
-          let data = res.data
-          // console.log('homeee666', data)
-          if (data.length !== 0) {
-            that.bt_name = data[0].st_name
-            that.bt_apart = data[0].st_departmentVal
-            that.bt_reason = data[0].best_reason
-            that.bt_avatar = data[0].st_avatar
-          }
-        }).catch(function (err) {
-          console.log(err)
-        })
-    }, 1600)
+        // my order
+        let formData2 = new FormData()
+        formData2.append('flag', 'myOrder')
+        formData2.append('user_name', usern)
+        formData2.append('depart', depart)
+        this.$http.post('computed_home.php', formData2)
+            .then(function (res) {
+            // console.log('homeee2', res.data)
+                that.myOrder = res.data.length
+                // that.$set(that.myOrder, 0, res.data.length)
+            }).catch(function (err) {
+            console.log(err)
+            })
+        // my pm total
+        let formData3 = new FormData()
+        formData3.append('flag', 'myPm')
+        formData3.append('user_name', usern)
+        formData3.append('depart', depart)
+        this.$http.post('computed_home.php', formData3)
+            .then(function (res) {
+            let data = res.data
+            //   console.log('homeee3', res.data)
+            let pm = 0
+            data.forEach(item => {
+                pm += parseInt(item.pay_price)
+            })
+            that.myPm = pm
+            //   if (res.data.length !== 0) {
+            //     that.myOrder = res.data.length
+            //   }
+            }).catch(function (err) {
+            console.log(err)
+            })
+    }, 2000)
   },
   methods: {
     setBest () {

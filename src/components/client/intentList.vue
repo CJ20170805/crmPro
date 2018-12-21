@@ -1,83 +1,114 @@
 <template>
-    <div class="client-list">
-    <el-table
-    :data="clientData"
-    style="width: 100%">
-    <el-table-column
-      label="客户编号"
-      width="80">
-      <template slot-scope="scope">
-        <span style="margin-left: 10px">{{ scope.row.id }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column
-      label="客户名称"
-      >
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>地区: {{ scope.row.client_address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.client_name }}</el-tag>
+    <div class="client-list" ref="table">
+        <el-table
+        :data="clientData"
+        highlight-current-row
+        style="width: 100%">
+        <el-table-column
+          label="客户编号"
+          width="80">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.id }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="客户名称"
+          >
+          <template slot-scope="scope">
+            <el-popover trigger="hover" placement="top">
+              <p>地区: {{ scope.row.client_address }}</p>
+              <div slot="reference" class="name-wrapper">
+                <el-tag size="medium">{{ scope.row.client_name }}</el-tag>
+              </div>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="店铺名称"
+          >
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.shop_name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="主营类目"
+          >
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.shop_industry }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="旺旺名称"
+          >
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.ww_name }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          prop="tag"
+          label="录入人员"
+          >
+          <template slot-scope="scope">
+            <!-- <span style="margin-left: 10px">{{ scope.row.write_man }}</span> -->
+              <el-tag
+                type="primary"
+                disable-transitions>{{scope.row.write_man}}</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          label="录入日期"
+          >
+          <template slot-scope="scope">
+            <i class="el-icon-time"></i>
+            <span style="margin-left: 10px">{{ scope.row.reg_date }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="300">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              @click="handleDetail(scope.$index, scope.row)">详情</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              <!-- v-if="$store.getters.userAuthority === '80002' || $store.getters.userAuthority === '80003'" -->
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- intent sort -->
+      <div class="intent-sort" v-if="$store.getters.userAuthority === '80001'" @click="flexBtn" :style="{width: flexWidth}" ref="flexBtn">
+        <transition name="sortMan">
+           <div class="intent-sort-main" v-show="!sortFlexFlag">
+            <el-select v-model="sortValue" filterable  @change="sortChange" placeholder="请选择">
+              <el-option
+                v-for="item in sortOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <el-button type="info" plain v-show="!sortFlexFlag" @click="fetchAll">显示全部</el-button>
           </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-    <el-table-column
-      label="店铺名称"
-      >
-      <template slot-scope="scope">
-        <span style="margin-left: 10px">{{ scope.row.shop_name }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column
-      label="主营类目"
-      >
-      <template slot-scope="scope">
-        <span style="margin-left: 10px">{{ scope.row.shop_industry }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column
-      label="旺旺名称"
-      >
-      <template slot-scope="scope">
-        <span style="margin-left: 10px">{{ scope.row.ww_name }}</span>
-      </template>
-    </el-table-column>
-
-    <el-table-column
-      label="录入人员"
-      >
-      <template slot-scope="scope">
-        <span style="margin-left: 10px">{{ scope.row.write_man }}</span>
-      </template>
-    </el-table-column>
-
-    <el-table-column
-      label="录入日期"
-      >
-      <template slot-scope="scope">
-        <i class="el-icon-time"></i>
-        <span style="margin-left: 10px">{{ scope.row.reg_date }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column label="操作" width="300">
-      <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleDetail(scope.$index, scope.row)">详情</el-button>
-        <el-button
-          size="mini"
-          type="primary"
-          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-          <!-- v-if="$store.getters.userAuthority === '80002' || $store.getters.userAuthority === '80003'" -->
-      </template>
-    </el-table-column>
-  </el-table>
-
+        </transition>
+      </div>
+      <!-- list pagination -->
+     <div class="pag" :style="{width: tableWidth}">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            :page-size="pageSize"
+            layout="prev, pager, next, jumper, total"
+            :total="total">
+          </el-pagination>
+    </div>
     <!--Order Detail dialog -->
     <el-dialog title="" :visible.sync="clientInfoVisible">
       <div class="clientInfoTable">
@@ -326,6 +357,11 @@
 export default {
   data () {
     return {
+      sortOptions: [],
+      sortFlexFlag: true,
+      flexWidth: '20px',
+      sortValue: '',
+      search: '',
       clientData: [],
       clientInfoVisible: false,
       editInfoVisible: false,
@@ -346,25 +382,157 @@ export default {
       clientFiles: [],
       wwName: '',
       linkDate: '',
-      desc: ''
+      desc: '',
+      tableWidth: '100%',
+      currentPage: 1,
+      pageSize: 7,
+      total: null,
+      queryMan: '',
+      fFlag: 'false'
     }
   },
   created () {
+    if (window.screen.width >= 1920) {
+      this.pageSize = 10
+    }
     let writeM = this.$store.state.userDepart + '=>' + this.$store.state.userName
+    this.queryMan = writeM
     let that = this
     let formData = new FormData()
     formData.append('flag', 'fetchIntent')
     formData.append('power', this.$store.state.userPower)
     formData.append('writeM', writeM)
+    formData.append('cur_page', 1)
+    formData.append('page_size', this.pageSize)
     this.$http.post('client_mng.php', formData)
       .then(function (res) {
-        that.clientData = res.data
+        that.clientData = res.data.data
+        that.total = parseInt(res.data.total)
         // console.log('Client', res)
       }).catch(function (err) {
         console.log(err)
       })
+
+      //  all  users' name
+        let formData5 = new FormData()
+        formData5.append('code', '400')
+        this.$http.post('user_info.php', formData5)
+            .then(function (res) {
+                let data = res.data
+                // console.log('DDDDAta:', data)
+                for (let i = 0; i < data.length; i++) {
+                that.sortOptions.push({
+                  value: data[i].st_departmentVal + '=>' + data[i].st_name,
+                  label: data[i].st_departmentVal + '=>' + data[i].st_name
+                })
+                }
+            //   console.log('StaffName:', that.staffNames)
+            }).catch(function (err) {
+                console.log(err)
+            })
+  },
+  mounted () {
+    this.tableWidth = this.$refs.table.clientWidth + 'px'
+    // console.log(window.screen.width)
+    // console.log(this.$refs.table.clientWidth)
+    const that = this
+    document.addEventListener('click', function (e) {
+      if (that.$refs.flexBtn.contains(e.target) === false) {
+        // console.log('yes')
+        that.flexWidth = '10px'
+        that.sortFlexFlag = true
+      }
+    })
   },
   methods: {
+    fetchAll () {
+      let that = this
+      this.fFlag = 'false'
+      let formData = new FormData()
+      formData.append('flag', 'fetchIntent')
+      formData.append('power', this.$store.state.userPower)
+      formData.append('cur_page', 1)
+      formData.append('page_size', this.pageSize)
+      this.$http.post('client_mng.php', formData)
+        .then(function (res) {
+          that.clientData = res.data.data
+          that.total = parseInt(res.data.total)
+          // console.log('Client', res)
+        }).catch(function (err) {
+          console.log(err)
+        })
+    },
+    flexBtn () {
+      this.sortFlexFlag = !this.sortFlexFlag
+      // console.log(this.sortFlexFlag)
+      this.sortFlexFlag ? this.flexWidth = '10px' : this.flexWidth = '332px'
+      // this.flexWidth = '240px'? this.flexWidth = '40px'" : this.flexWidth = '40px'
+    },
+    sortChange () {
+      // console.log('a')
+      this.queryMan = this.sortValue
+      this.fFlag = 'true'
+      let that = this
+      let formData = new FormData()
+      formData.append('flag', 'fetchIntent')
+      formData.append('power', this.$store.state.userPower)
+      formData.append('writeM', this.sortValue)
+      formData.append('f_flag', this.fFlag)
+      formData.append('cur_page', 1)
+      formData.append('page_size', this.pageSize)
+      this.$http.post('client_mng.php', formData)
+        .then(function (res) {
+          that.clientData = res.data.data
+          that.total = parseInt(res.data.total)
+          // console.log('ClientFilter', res)
+        }).catch(function (err) {
+          console.log(err)
+        })
+    },
+    filterTag (value, row) {
+      // let writeM = this.$store.state.userDepart + '=>' + this.$store.state.userName
+      // let that = this
+      // let formData = new FormData()
+      // formData.append('flag', 'fetchIntent')
+      // formData.append('power', this.$store.state.userPower)
+      // formData.append('writeM', value)
+      // formData.append('f_flag', true)
+      // formData.append('cur_page', 1)
+      // formData.append('page_size', this.pageSize)
+      // this.$http.post('client_mng.php', formData)
+      //   .then(function (res) {
+      //     that.clientData = res.data.data
+      //     that.total = parseInt(res.data.total)
+      //     console.log('ClientFilter', res)
+      //   }).catch(function (err) {
+      //     console.log(err)
+      //   })
+
+      return row.write_man === value
+      //  console.log(value)
+    },
+    handleSizeChange (val) {
+      // console.log(`每页 ${val} 条`)
+    },
+    handleCurrentChange (val) {
+      // console.log(`当前页: ${val}`)
+      // power-flag  power
+      let that = this
+      let formData = new FormData()
+      formData.append('flag', 'fetchIntent')
+      formData.append('power', this.$store.state.userPower)
+      formData.append('writeM', this.queryMan)
+      formData.append('cur_page', val)
+      formData.append('f_flag', this.fFlag)
+      formData.append('page_size', this.pageSize)
+      this.$http.post('client_mng.php', formData)
+      .then(function (res) {
+        that.clientData = res.data.data
+        // console.log('paginationDetail', res)
+      }).catch(function (err) {
+        console.log(err)
+      })
+    },
     handleDetail (index, row) {
       this.clientInfoVisible = true
       // console.log(index, row)
@@ -397,38 +565,38 @@ export default {
         }
     },
     handleDelete (index, row) {
-     console.log(index, row)
-     this.$confirm('此操作将永久删除该意向客户, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        let that = this
-        let formData = new FormData()
-        formData.append('flag', 'delClient')
-        formData.append('delId', row.id)
-        this.$http.post('client_mng.php', formData)
-          .then(function (res) {
-            // console.log(res)
-            if (res.data === 'delClientSuc') {
-              that.$message({
-                type: 'success',
-                message: '删除成功!'
-              })
-            that.$store.state.defaultComp = 'clientAdd'
-            setTimeout(() => {
-              that.$store.state.defaultComp = 'intentList'
-            }, 10)
-            }
-          }).catch(function (err) {
-            console.log(err)
+      //  console.log(index, row)
+      this.$confirm('此操作将永久删除该意向客户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let that = this
+          let formData = new FormData()
+          formData.append('flag', 'delClient')
+          formData.append('delId', row.id)
+          this.$http.post('client_mng.php', formData)
+            .then(function (res) {
+              // console.log(res)
+              if (res.data === 'delClientSuc') {
+                that.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+              that.$store.state.defaultComp = 'clientAdd'
+              setTimeout(() => {
+                that.$store.state.defaultComp = 'intentList'
+              }, 10)
+              }
+            }).catch(function (err) {
+              console.log(err)
+            })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
           })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
         })
-      })
     },
     handleEdit (index, row) {
       this.editInfoVisible = true
@@ -488,11 +656,59 @@ export default {
 </script>
 <style lang="less">
 @blue: #409EFF;
+.intent-sort{
+  position: fixed;
+  right: 0;
+  top: 74px;
+  width: 10px;
+  height: 44px;
+  border-radius: 6px 0 0 6px;
+  background-color: #409EFF;
+  transition: all .3s ease-in-out;
+}
+.intent-sort::before{
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 28px;
+  border-radius: 4px;
+  background-color: #ffffff;
+  position: absolute;
+  top: 8px;
+  left: 4px;
+}
+.intent-sort-main{
+  // display: none;
+  // transition: all 1s;
+  padding-top: 2px;
+  float: right;
+}
+.sortMan-enter-active, .sortMan-leave-active {
+  transition: opacity 1s;
+}
+.sortMan-enter, .sortMan-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.pag{
+  height: 80px;
+  width: 100%;
+  background-color: #ffffff;
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  .el-pagination{
+    margin-top: 20px;
+  }
+  .el-pagination__total{
+    margin-left: 20px;
+  }
+}
 .el-table th>.cell{
   text-align: center;
 }
 .client-list{
-  padding-bottom: 100px;
+  position: relative;
+  padding-bottom: 30px;
 .clientInfoTable{
   width: 100%;
   .imgList{

@@ -89,7 +89,7 @@
       </tr>
       <tr>
         <td class="tdTit">姓名：</td>
-             <el-input v-model="m_name"></el-input>
+            <el-input v-model="m_name"></el-input>
         <td></td>
       </tr>
       <tr>
@@ -199,7 +199,11 @@
         <tr>
         <td class="tdTit">职位类型：</td>
         <td>
-          <el-input v-model="m_jobVal"></el-input>
+               <el-cascader
+                         style="float:left"
+                        :options="jobData"
+                        v-model="m_jobVal"
+                        ></el-cascader>
         </td>
       </tr>
       <tr>
@@ -244,6 +248,16 @@
           </div>
           </td>
       </tr>
+      <tr class="edit-title">
+        <td>重置密码</td>
+      </tr>
+       <tr>
+        <td class="tdTit">新密码：</td>
+        <td>
+            <el-input v-model="m_newWord"></el-input>
+        </td>
+        <td></td>
+      </tr>
       <tr>
         <td></td>
         <td></td>
@@ -272,7 +286,7 @@ export default {
       m_staffPhone: '',
       m_staffPhone2: '',
       m_deparmentVal: [],
-      m_jobVal: '',
+      m_jobVal: [],
       m_elseInfo: '',
       m_files: [],
       m_whetherRegular: '',
@@ -281,6 +295,8 @@ export default {
       m_eduBack: '',
       m_schoolName: '',
       m_major: '',
+      m_newWord: '',
+      m_newWord2: '',
       departmentOptions: [
         {
           value: '销售部',
@@ -388,6 +404,44 @@ export default {
           { text: '客服三部', value: '客服部,三部' },
           { text: '管理层', value: '其他,管理层' },
           { text: '人事部', value: '其他,人事部' }
+      ],
+      jobData: [
+        {
+          value: 'AM',
+          label: 'AM'
+        },
+        {
+          value: 'AE',
+          label: 'AE'
+        },
+        {
+          value: 'BD',
+          label: 'BD'
+        },
+        {
+          value: 'BD经理',
+          label: 'BD经理'
+        },
+        {
+          value: '客服',
+          label: '客服'
+        },
+        {
+          value: '销售总监',
+          label: '销售总监'
+        },
+        {
+          value: '技术总监',
+          label: '技术总监'
+        },
+        {
+          value: '人事行政专员',
+          label: '人事行政专员'
+        },
+        {
+          value: '分公司总经理',
+          label: '分公司总经理'
+        }
       ]
     }
   },
@@ -406,7 +460,7 @@ export default {
       this.m_staffPhone = row.st_staffPhone
       this.m_staffPhone2 = row.st_staffPhone2
       // this.m_deparmentVal = ['技术部','一部']
-      this.m_jobVal = row.st_jobVal
+      // this.m_jobVal = row.st_jobVal
       this.m_elseInfo = row.st_elseInfo
       this.m_whetherRegular = row.whether_regular
       this.m_regularDate = row.regular_date
@@ -414,6 +468,8 @@ export default {
       this.m_eduBack = row.edu_back
       this.m_schoolName = row.school_name
       this.m_major = row.major
+
+      this.m_newWord2 = row.st_word
       // this.m_files = row.files
       // split string for array
       let someImgArr = []
@@ -431,6 +487,10 @@ export default {
       // depart split
       let departStr = row.st_departmentVal.split(',')
       this.m_deparmentVal = departStr
+      // depart split
+      let jobStr = row.st_jobVal.split(',')
+      this.m_jobVal = jobStr
+      // console.log(typeof(row.st_jobVal))
       // let deArr = []
       // console.log('Q', departStr)
     },
@@ -505,6 +565,10 @@ export default {
           formData.append('school_name', this.m_schoolName)
            formData.append('major', this.m_major)
             formData.append('edu_back', this.m_eduBack)
+      // pass word
+      let password = ''
+      this.m_newWord === '' ? password = this.m_newWord2 : password = this.m_newWord
+       formData.append('new_word', password)
 
       this.$http.post('staff_mng.php', formData)
         .then(function (res) {
