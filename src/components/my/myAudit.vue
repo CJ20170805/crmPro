@@ -297,6 +297,11 @@
 
       <el-row>
         <div class="audit-btn">
+            <el-col :span="24" v-if="$store.getters.userAuthority === '80001'" style="border-bottom:2px solid #409EFF;margin-bottom:10px;padding-bottom:10px;">
+              <el-input placeholder="请输入新的成本值" v-model="newPayCost">
+                <el-button slot="append" icon="el-icon-check" @click="changePayCost"></el-button>
+              </el-input>
+            </el-col>
             <el-col :span="12">
                     <el-checkbox-group v-model="auditPass">
                        <el-checkbox label="确认已通过审核"></el-checkbox>
@@ -312,6 +317,19 @@
         </div>
       </el-row>
       </div>
+    </el-dialog>
+
+    <!-- change pay cost dialog -->
+    <el-dialog
+      title="提示"
+      :visible.sync="centerDialogVisible"
+      width="30%"
+      center>
+      <p style="text-align:center">即将把成本值改为：<span style="color:red;font-weight:600;">{{ newPayCost }}</span>,是否继续？</p>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="changePayCostData">确 定</el-button>
+      </span>
     </el-dialog>
 
   </div>
@@ -330,30 +348,32 @@
         tableData: [],
         tableData2: [],
         dialogTableVisible: false,
+        centerDialogVisible: false,
         shopInfo: {
-        id: '',
-        s_name: '',
-        s_id: '',
-        s_url: '',
-        s_type: '',
-        s_linkMan: '',
-        s_linkMethods: '',
-        s_comboInfo: '',
-        s_payPrice: '',
-        s_descInfo: '',
-        s_timeLimit: '',
-        s_someImg: [],
-        s_salesMan: '',
-        s_priceId: '',
-        s_recId: '',
-        reach_type: '',
-        reach_methods: '',
-        pay_cost: '',
-        sales_apart: '',
-        serv_price: ''
-        // s_jlAudit: '',
-        // s_zjlAudit: ''
-      }
+          id: '',
+          s_name: '',
+          s_id: '',
+          s_url: '',
+          s_type: '',
+          s_linkMan: '',
+          s_linkMethods: '',
+          s_comboInfo: '',
+          s_payPrice: '',
+          s_descInfo: '',
+          s_timeLimit: '',
+          s_someImg: [],
+          s_salesMan: '',
+          s_priceId: '',
+          s_recId: '',
+          reach_type: '',
+          reach_methods: '',
+          pay_cost: '',
+          sales_apart: '',
+          serv_price: ''
+          // s_jlAudit: '',
+          // s_zjlAudit: ''
+        },
+        newPayCost: ''
       }
     },
     created () {
@@ -420,6 +440,35 @@
               console.log(err)
             })
         }
+      },
+      changePayCost () {
+        this.centerDialogVisible = true
+      },
+      changePayCostData () {
+        let orderId = this.shopInfo.id
+            //  alert(order_id + '****' + power)
+              let that = this
+              let formData = new FormData()
+              formData.append('flag', 'changePayCost')
+              formData.append('order_id', orderId)
+              formData.append('new_cost', this.newPayCost)
+
+              this.$http.post('order_mng.php', formData)
+                  .then(function (res) {
+                    // console.log('WWWW', res)
+                  if (res.data === 'paycostchangesuc') {
+                    that.$message({
+                      message: '更改成功！',
+                      type: 'success'
+                    })
+                    that.centerDialogVisible = false
+                    that.newPayCost = '已成功修改'
+                  } else {
+                    that.$message.error('更改失败，请重新尝试！')
+                  }
+                  }).catch(function (err) {
+                    console.log(err)
+                  })
       },
       passA () {
          let orderId = this.shopInfo.id
@@ -613,6 +662,7 @@
          }
       },
       handleEdit (index, row) {
+        console.log(row)
         this.dialogTableVisible = true
         this.shopInfo.s_name = row.shop_name
         this.shopInfo.s_id = row.shop_id
